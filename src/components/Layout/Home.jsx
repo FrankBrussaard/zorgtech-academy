@@ -42,7 +42,7 @@ export default function Home() {
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Leerpaden</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tracks.map((track) => {
-            const progress = getTrackProgress(track)
+            const trackProgress = getTrackProgress(track)
             return (
               <Link
                 key={track.id}
@@ -66,12 +66,12 @@ export default function Home() {
                 <div className="mt-auto">
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-gray-600">Voortgang</span>
-                    <span className="font-medium text-zorg-600">{progress.percentage}%</span>
+                    <span className="font-medium text-zorg-600">{trackProgress.percentage}%</span>
                   </div>
                   <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-zorg-500 rounded-full transition-all duration-500"
-                      style={{ width: `${progress.percentage}%` }}
+                      style={{ width: `${trackProgress.percentage}%` }}
                     />
                   </div>
                 </div>
