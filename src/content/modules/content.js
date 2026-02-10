@@ -528,6 +528,1653 @@ Let op: strenge regels over wie het BSN mag verwerken!
       { name: "UZI-register", url: "https://www.uziregister.nl" },
       { name: "BIG-register", url: "https://www.bigregister.nl" }
     ]
+  },
+
+  // TRACK 2: Bekostiging & DBC's
+
+  "2.1": {
+    title: "Wat is een DBC/DOT? Basisprincipes",
+    summary: "DBC's (Diagnose Behandel Combinaties) vormen de basis van ziekenhuisbekostiging. DOT is de doorontwikkeling voor meer transparantie.",
+    content: `
+## In het kort
+
+Een DBC beschrijft het complete traject van diagnose tot behandeling voor een patiënt. Het is de basis waarop ziekenhuizen betaald worden voor geleverde zorg.
+
+## Wat is een DBC?
+
+DBC staat voor **Diagnose Behandel Combinatie**. Het is een "product" dat:
+
+- Begint bij de zorgvraag van de patiënt
+- Alle zorgactiviteiten omvat (consulten, onderzoeken, operaties)
+- Eindigt wanneer de behandeling is afgerond
+
+### Voorbeeld
+
+Een patiënt komt met knieklachten:
+1. Eerste consult orthopeed
+2. Röntgenfoto
+3. MRI-scan
+4. Diagnose: meniscusscheur
+5. Operatie
+6. Nacontroles
+
+Al deze activiteiten vallen samen in één DBC.
+
+## Van DBC naar DOT
+
+**DOT** staat voor "DBC's Op weg naar Transparantie". Het is de doorontwikkeling waarbij:
+
+- Zorgproducten automatisch worden afgeleid uit registraties
+- De Grouper-software bepaalt welk product het wordt
+- Meer uniformiteit tussen ziekenhuizen
+
+## Waarom is dit relevant?
+
+Als adviseur moet je begrijpen dat:
+- IT-systemen zorgactiviteiten moeten registreren
+- Deze registraties bepalen de bekostiging
+- Fouten in registratie = fouten in inkomsten
+
+## Kernbegrippen
+
+- **DBC**: Diagnose Behandel Combinatie - het zorgproduct
+- **DOT**: DBC's Op weg naar Transparantie - huidige systematiek
+- **Zorgactiviteit**: Individuele handeling (consult, operatie, etc.)
+    `,
+    sources: [
+      { name: "NZa - DBC-systematiek", url: "https://www.nza.nl" },
+      { name: "DBC-onderhoud", url: "https://www.dhd.nl" }
+    ]
+  },
+
+  "2.2": {
+    title: "DBC-systematiek: zorgproducten, zorgactiviteiten",
+    summary: "Zorgproducten worden afgeleid uit zorgactiviteiten. De registratie van activiteiten is cruciaal voor correcte bekostiging.",
+    content: `
+## In het kort
+
+De DBC-systematiek kent een hiërarchie: zorgactiviteiten worden gegroepeerd tot zorgproducten, die weer worden gedeclareerd aan verzekeraars.
+
+## Zorgactiviteiten
+
+Zorgactiviteiten zijn de bouwstenen. Voorbeelden:
+
+- **Polikliniekbezoek** (190007)
+- **CT-scan hersenen** (080070)
+- **Operatie heupprothese** (038965)
+
+Elke activiteit heeft een unieke code en wordt geregistreerd in het EPD.
+
+## Zorgproducten
+
+Een zorgproduct is het declarabele eindresultaat:
+
+- Combinatie van diagnose + behandeling
+- Heeft een vaste prijs (tarief)
+- Wordt bepaald door de Grouper
+
+### Productstructuur
+
+\`\`\`
+Zorgproduct = Diagnosecode + Zorgtype + Zorgactiviteiten
+\`\`\`
+
+## De registratieketen
+
+1. Arts registreert activiteiten in EPD
+2. Systeem koppelt aan DBC-traject
+3. Bij afsluiten: Grouper bepaalt zorgproduct
+4. Declaratie naar verzekeraar
+
+## Veelgemaakte fouten
+
+- Verkeerde activiteitcodes
+- Ontbrekende registraties
+- Verkeerde koppeling aan DBC
+
+## Kernbegrippen
+
+- **Zorgactiviteit**: Kleinste registreerbare eenheid
+- **Zorgproduct**: Declarabel product met tarief
+- **Activiteitencode**: Unieke code per type activiteit
+    `,
+    sources: [
+      { name: "NZa - Zorgactiviteiten", url: "https://www.nza.nl" }
+    ]
+  },
+
+  "2.3": {
+    title: "Grouper logica en afleiding",
+    summary: "De Grouper is software die automatisch het juiste zorgproduct afleidt uit geregistreerde zorgactiviteiten.",
+    content: `
+## In het kort
+
+De Grouper is het hart van de DBC-systematiek. Het is software die bepaalt welk zorgproduct gedeclareerd mag worden op basis van de geregistreerde activiteiten.
+
+## Wat doet de Grouper?
+
+De Grouper analyseert:
+
+1. **Diagnose** - Welke aandoening?
+2. **Zorgtype** - Regulier, spoed, intercollegiaal?
+3. **Zorgactiviteiten** - Welke handelingen zijn verricht?
+4. **Beslisbomen** - Welk pad in de beslislogica?
+
+Resultaat: één zorgproduct met bijbehorend tarief.
+
+## Afleidingsregels
+
+De Grouper volgt strikte regels:
+
+- **Hiërarchie**: Zwaardere ingrepen "winnen"
+- **Combinaties**: Bepaalde activiteiten leiden tot specifieke producten
+- **Uitsluitingen**: Sommige combinaties zijn niet toegestaan
+
+### Voorbeeld
+
+Patiënt met:
+- Polikliniekbezoek
+- CT-scan
+- Operatie knie
+
+→ Grouper kiest: "Operatief zorgproduct knie"
+
+## Versies en updates
+
+- Jaarlijks nieuwe Grouper-versie
+- Regels kunnen veranderen
+- Ziekenhuizen moeten up-to-date blijven
+
+## IT-implicaties
+
+- EPD moet correct registreren
+- Grouper moet geïntegreerd zijn
+- Controles op volledigheid nodig
+
+## Kernbegrippen
+
+- **Grouper**: Software voor productafleiding
+- **Beslisboom**: Logica die product bepaalt
+- **Afleiding**: Proces van activiteiten naar product
+    `,
+    sources: [
+      { name: "DHD - Grouper", url: "https://www.dhd.nl" }
+    ]
+  },
+
+  "2.4": {
+    title: "Add-ons, overige producten, IC-bekostiging",
+    summary: "Naast reguliere DBC's zijn er add-ons voor dure geneesmiddelen, overige producten en aparte IC-bekostiging.",
+    content: `
+## In het kort
+
+Niet alle zorg past in standaard DBC's. Voor specifieke situaties zijn er aanvullende bekostigingsvormen.
+
+## Add-on geneesmiddelen
+
+Dure medicijnen worden apart bekostigd:
+
+- **Stofnaam-add-ons**: Per medicijn apart declarabel
+- **Indicatiegebonden**: Alleen bij specifieke diagnoses
+- **Prijsplafonds**: Maximum vergoeding per eenheid
+
+### Voorbeelden
+- Oncologische medicatie
+- Reumamedicijnen (biologicals)
+- Weesgeneesmiddelen
+
+## Overige zorgproducten (OZP's)
+
+Voor zorg die niet in DBC's past:
+
+- **Ondersteunende producten**: Lab, radiologie voor derden
+- **Paramedische zorg**: Fysiotherapie in ziekenhuis
+- **Specifieke verrichtingen**: Second opinions
+
+## IC-bekostiging
+
+Intensive Care heeft eigen systematiek:
+
+- **IC-dagen**: Per opnamedag
+- **Zorgzwaarte**: Classificatie naar intensiteit
+- **NICE-registratie**: Landelijke kwaliteitsregistratie
+
+## Combinatieregels
+
+- Add-ons altijd naast een DBC
+- OZP's kunnen los of gekoppeld
+- IC naast reguliere DBC
+
+## Kernbegrippen
+
+- **Add-on**: Aanvullend declarabel product
+- **OZP**: Overig Zorgproduct
+- **IC-dag**: Bekostigingseenheid intensive care
+    `,
+    sources: [
+      { name: "NZa - Add-ons", url: "https://www.nza.nl" }
+    ]
+  },
+
+  "2.5": {
+    title: "GGZ: DBC-GGZ vs ZPM",
+    summary: "De GGZ kent eigen bekostigingssystemen: het oude DBC-GGZ en het nieuwe Zorgprestatiemodel (ZPM).",
+    content: `
+## In het kort
+
+De geestelijke gezondheidszorg heeft een eigen bekostigingsgeschiedenis. Recent is overgestapt van DBC-GGZ naar het Zorgprestatiemodel.
+
+## DBC-GGZ (oud systeem)
+
+Het oude systeem werkte met:
+
+- **Tijdschrijven**: Behandeltijd bepaalde het product
+- **Productgroepen**: Op basis van diagnose en tijd
+- **Lange trajecten**: DBC's konden maanden duren
+
+### Problemen
+- Perverse prikkels (meer tijd = meer geld)
+- Ondoorzichtig voor patiënten
+- Administratieve last
+
+## Zorgprestatiemodel (ZPM)
+
+Sinds 2022 het nieuwe model:
+
+### Prestaties
+- **Consult**: Per gesprek, ongeacht duur
+- **Verblijfsdag**: Per opnamedag
+- **Behandelcomponent**: Specifieke interventies
+
+### Voordelen
+- Transparanter voor patiënt
+- Minder administratie
+- Beter te contracteren
+
+## Overgang
+
+De transitie bracht uitdagingen:
+
+- Herinrichting registratie
+- Aanpassing EPD-systemen
+- Nieuwe contracten met verzekeraars
+
+## Kernbegrippen
+
+- **DBC-GGZ**: Oud bekostigingssysteem GGZ
+- **ZPM**: Zorgprestatiemodel - nieuw systeem
+- **Consult**: Basisprestatie in ZPM
+    `,
+    sources: [
+      { name: "NZa - Zorgprestatiemodel", url: "https://www.nza.nl" },
+      { name: "Nederlandse ggz", url: "https://www.denederlandseggz.nl" }
+    ]
+  },
+
+  "2.6": {
+    title: "Huisartsenzorg: bekostiging en ketenzorg",
+    summary: "Huisartsen worden bekostigd via inschrijftarieven, consulten en ketenzorg voor chronische aandoeningen.",
+    content: `
+## In het kort
+
+De huisarts kent een mix van bekostigingsvormen: een vast bedrag per ingeschreven patiënt plus vergoedingen voor consulten en speciale programma's.
+
+## Segmenten
+
+### Segment 1: Basisvoorziening
+- **Inschrijftarief**: Vast bedrag per patiënt per jaar
+- **Consulttarief**: Per consult (kort, normaal, lang)
+- **Visites**: Huisbezoeken
+
+### Segment 2: Multidisciplinaire zorg
+- **Ketenzorg**: Diabetes, COPD, cardiovasculair risico
+- **Per patiënt per jaar**: Vast bedrag
+- **Inclusief**: Praktijkondersteuner, diëtist, etc.
+
+### Segment 3: Resultaatbeloning
+- **Kwaliteitsindicatoren**: Prestatie-afspraken
+- **Innovatie**: Nieuwe zorgvormen
+
+## Ketenzorg in detail
+
+Chronische aandoeningen georganiseerd in "ketens":
+
+1. **Zorggroep** contracteert met verzekeraar
+2. **Huisarts** is aangesloten bij zorggroep
+3. **Keten-DBC**: Integrale vergoeding
+4. **Onderaannemers**: POH, apotheek, lab
+
+## IT-aspecten
+
+- Ketenregistratie in KIS (Keten Informatie Systeem)
+- Koppelingen met HIS
+- Benchmarking en spiegelinformatie
+
+## Kernbegrippen
+
+- **Inschrijftarief**: Vast bedrag per patiënt
+- **Ketenzorg**: Geïntegreerde chronische zorg
+- **Zorggroep**: Samenwerkingsverband huisartsen
+    `,
+    sources: [
+      { name: "LHV - Bekostiging", url: "https://www.lhv.nl" },
+      { name: "InEen - Ketenzorg", url: "https://ineen.nl" }
+    ]
+  },
+
+  // TRACK 4: Interoperabiliteit & Standaarden
+
+  "4.1": {
+    title: "HL7v2: De legacy standaard",
+    summary: "HL7 versie 2 is de meest gebruikte standaard voor berichtenuitwisseling tussen zorgsystemen, ondanks zijn leeftijd.",
+    content: `
+## In het kort
+
+HL7v2 is de "taal" die zorgsystemen al decennia gebruiken om te communiceren. Het is een berichtenstandaard voor het uitwisselen van patiëntgegevens.
+
+## Wat is HL7v2?
+
+HL7 staat voor **Health Level Seven** - een internationale standaardorganisatie. Versie 2 (v2) is:
+
+- Ontwikkeld in de jaren '80
+- Nog steeds meest gebruikte standaard
+- Gebaseerd op tekstberichten
+
+### Berichtstructuur
+
+\`\`\`
+MSH|^~\\&|EPD|ZKH|LAB|ZKH|202402101200||ADT^A01|123|P|2.4
+PID|||123456^^^ZKH||Jansen^Jan||19800515|M
+\`\`\`
+
+- **Segmenten**: MSH, PID, OBR, etc.
+- **Velden**: Gescheiden door |
+- **Componenten**: Gescheiden door ^
+
+## Berichttypen
+
+- **ADT**: Admission, Discharge, Transfer (opname/ontslag)
+- **ORM/ORU**: Orders en uitslagen
+- **SIU**: Scheduling (afspraken)
+- **MDM**: Documenten
+
+## Voordelen
+
+- Breed geïmplementeerd
+- Bewezen technologie
+- Veel kennis beschikbaar
+
+## Nadelen
+
+- Geen strikte validatie
+- Veel variatie in implementatie
+- Moeilijk uit te breiden
+
+## Kernbegrippen
+
+- **Segment**: Onderdeel van bericht (PID = Patient ID)
+- **Trigger event**: Aanleiding voor bericht (A01 = opname)
+- **Encoding**: Manier van coderen (|^~\\&)
+    `,
+    sources: [
+      { name: "HL7 International", url: "https://www.hl7.org" },
+      { name: "HL7 Nederland", url: "https://www.hl7.nl" }
+    ]
+  },
+
+  "4.2": {
+    title: "HL7 FHIR: Moderne zorgdata-uitwisseling",
+    summary: "FHIR is de moderne HL7-standaard, gebaseerd op web-technologie en REST API's. De toekomst van zorginteroperabiliteit.",
+    content: `
+## In het kort
+
+FHIR (Fast Healthcare Interoperability Resources) is de nieuwste HL7-standaard. Het combineert het beste van eerdere standaarden met moderne webtechnologie.
+
+## Wat is FHIR?
+
+FHIR is:
+
+- **REST-gebaseerd**: Werkt via HTTP/HTTPS
+- **Resource-georiënteerd**: Alles is een "resource"
+- **JSON/XML**: Moderne dataformaten
+- **Open**: Specificatie is gratis beschikbaar
+
+## Resources
+
+De bouwstenen van FHIR:
+
+- **Patient**: Patiëntgegevens
+- **Observation**: Metingen (bloeddruk, lab)
+- **Medication**: Medicatie-informatie
+- **Condition**: Diagnoses
+- **Encounter**: Contactmomenten
+
+### Voorbeeld (JSON)
+
+\`\`\`json
+{
+  "resourceType": "Patient",
+  "id": "123",
+  "name": [{
+    "family": "Jansen",
+    "given": ["Jan"]
+  }],
+  "birthDate": "1980-05-15"
+}
+\`\`\`
+
+## REST API
+
+FHIR gebruikt standaard HTTP-operaties:
+
+- **GET**: Ophalen van resources
+- **POST**: Nieuwe resource aanmaken
+- **PUT**: Resource bijwerken
+- **DELETE**: Resource verwijderen
+
+## Voordelen
+
+- Moderne technologie
+- Makkelijk te implementeren
+- Goede tooling beschikbaar
+- Internationale adoptie
+
+## Kernbegrippen
+
+- **Resource**: Basiseenheid van data
+- **REST**: Architectural style voor API's
+- **Bundle**: Collectie van resources
+    `,
+    sources: [
+      { name: "HL7 FHIR", url: "https://www.hl7.org/fhir" },
+      { name: "SMART on FHIR", url: "https://smarthealthit.org" }
+    ]
+  },
+
+  "4.3": {
+    title: "FHIR in Nederland: Nictiz, informatiestandaarden",
+    summary: "Nictiz beheert de Nederlandse FHIR-profielen en informatiestandaarden. Ze zorgen voor landelijke uniformiteit.",
+    content: `
+## In het kort
+
+Nederland heeft een eigen "smaak" van FHIR, beheerd door Nictiz. Dit zorgt voor uniformiteit in hoe we FHIR gebruiken.
+
+## Rol van Nictiz
+
+Nictiz is het nationale kennisinstituut:
+
+- Beheert Nederlandse FHIR-profielen
+- Ontwikkelt informatiestandaarden
+- Coördineert implementatie
+- Biedt ondersteuning
+
+## Nederlandse profielen
+
+FHIR-resources worden "geprofileerd" voor Nederland:
+
+- **nl-core-Patient**: Nederlandse patiëntgegevens
+- **nl-core-Observation**: Metingen volgens NL-standaard
+- **nl-core-MedicationRequest**: Medicatievoorschriften
+
+### Wat zit in een profiel?
+
+- Welke velden verplicht zijn
+- Welke waardenlijsten te gebruiken
+- Nederlandse extensies
+- Validatieregels
+
+## Informatiestandaarden
+
+Nictiz definieert complete uitwisselingsstandaarden:
+
+- **BgZ**: Basisgegevensset Zorg (samenvatting patiëntdossier)
+- **eOverdracht**: Verpleegkundige overdracht
+- **Medicatieproces**: Voorschrijven en verstrekken
+- **Geboortezorg**: Perinatale keten
+
+## Implementatie
+
+- **Simplifier.net**: Platform voor profielen
+- **Kwalificatie**: Leveranciers moeten kwalificeren
+- **Validator**: Controle op conformiteit
+
+## Kernbegrippen
+
+- **Profiel**: Nederlandse aanpassing van FHIR-resource
+- **Informatiestandaard**: Complete uitwisselingsspecificatie
+- **BgZ**: Basisgegevensset Zorg
+    `,
+    sources: [
+      { name: "Nictiz - FHIR", url: "https://www.nictiz.nl" },
+      { name: "Simplifier.net", url: "https://simplifier.net/nictiz" }
+    ]
+  },
+
+  "4.4": {
+    title: "Zibs (Zorginformatiebouwstenen)",
+    summary: "Zibs zijn gestandaardiseerde definities van zorginformatie. Ze vormen de basis voor alle Nederlandse informatiestandaarden.",
+    content: `
+## In het kort
+
+Zorginformatiebouwstenen (zibs) definiëren hoe we zorginformatie vastleggen. Ze zijn de "blauwdruk" voor gegevensuitwisseling.
+
+## Wat is een zib?
+
+Een zib beschrijft één concept uit de zorg:
+
+- **Naam**: Bijv. "Bloeddruk"
+- **Definitie**: Wat bedoelen we ermee?
+- **Dataelementen**: Welke gegevens horen erbij?
+- **Waardenlijsten**: Toegestane waarden
+
+### Voorbeeld: Bloeddruk
+
+- Systolische waarde (mmHg)
+- Diastolische waarde (mmHg)
+- Meetmethode (auscultatoir, oscillometrisch)
+- Manchettype (standaard, groot)
+- Lichaamshouding (zittend, liggend)
+- Meetlocatie (linker arm, rechter arm)
+
+## Zibs en FHIR
+
+Zibs zijn technologie-onafhankelijk. Ze worden "vertaald" naar:
+
+- FHIR-profielen
+- HL7v3 templates
+- CDA-secties
+
+## Belangrijke zibs
+
+- **Patient**: Identificatie en demografische gegevens
+- **Medicatiegebruik**: Wat gebruikt de patiënt?
+- **AllergieIntolerantie**: Overgevoeligheden
+- **Probleem**: Diagnoses en aandoeningen
+- **Verrichting**: Uitgevoerde ingrepen
+
+## Governance
+
+- Beheerd door Nictiz
+- Jaarlijkse releases
+- Publiek beschikbaar
+- Internationale afstemming (via HL7)
+
+## Kernbegrippen
+
+- **Zib**: Zorginformatiebouwsteen
+- **Dataelement**: Individueel gegeven binnen zib
+- **Waardenlijst**: Lijst met toegestane waarden
+    `,
+    sources: [
+      { name: "Nictiz - Zibs", url: "https://zibs.nl" }
+    ]
+  },
+
+  "4.5": {
+    title: "SNOMED CT, LOINC, ICD-10: Terminologie",
+    summary: "Terminologiestelsels zorgen voor eenduidige codering van diagnoses, verrichtingen en labbepalingen.",
+    content: `
+## In het kort
+
+Om zorginformatie uit te wisselen moet iedereen dezelfde "taal" spreken. Terminologiestelsels bieden gestandaardiseerde codes en definities.
+
+## SNOMED CT
+
+De meest uitgebreide medische terminologie:
+
+- **1+ miljoen concepten**
+- **Hiërarchisch**: Van algemeen naar specifiek
+- **Internationale standaard**
+- **Nederlandse editie** beschikbaar
+
+### Voorbeelden
+- 73211009 = Diabetes mellitus
+- 38341003 = Hypertensie
+- 22298006 = Myocardinfarct
+
+## ICD-10
+
+International Classification of Diseases:
+
+- **WHO-standaard** voor diagnoses
+- **Verplicht** voor ziekenhuisregistratie (DBC)
+- **Hoofdstukken**: A00-B99 (infecties), C00-D48 (tumoren), etc.
+
+### Voorbeelden
+- I10 = Essentiële hypertensie
+- E11 = Diabetes mellitus type 2
+- J18 = Pneumonie
+
+## LOINC
+
+Logical Observation Identifiers Names and Codes:
+
+- **Laboratoriumbepalingen**
+- **Observaties en metingen**
+- **Vragenlijsten**
+
+### Voorbeelden
+- 2345-7 = Glucose in bloed
+- 2160-0 = Creatinine in serum
+- 8480-6 = Systolische bloeddruk
+
+## Wanneer wat gebruiken?
+
+| Doel | Stelsel |
+|------|---------|
+| Diagnoses (klinisch) | SNOMED CT |
+| Diagnoses (registratie) | ICD-10 |
+| Labwaarden | LOINC |
+| Verrichtingen | SNOMED CT of CBV |
+
+## Kernbegrippen
+
+- **SNOMED CT**: Uitgebreide klinische terminologie
+- **ICD-10**: Classificatie voor diagnoses
+- **LOINC**: Codes voor lab en observaties
+    `,
+    sources: [
+      { name: "Nictiz - SNOMED", url: "https://www.nictiz.nl" },
+      { name: "SNOMED International", url: "https://www.snomed.org" }
+    ]
+  },
+
+  "4.6": {
+    title: "XDS/XCA, DICOM: Beelduitwisseling",
+    summary: "XDS en XCA zijn IHE-profielen voor documentuitwisseling. DICOM is de standaard voor medische beelden.",
+    content: `
+## In het kort
+
+Medische beelden (röntgen, CT, MRI) vereisen speciale standaarden. DICOM definieert het formaat, XDS/XCA regelt de uitwisseling.
+
+## DICOM
+
+Digital Imaging and Communications in Medicine:
+
+### Wat regelt het?
+- **Beeldformaat**: Hoe worden beelden opgeslagen?
+- **Metadata**: Patiënt, onderzoek, apparatuur
+- **Communicatie**: Hoe verstuur je beelden?
+- **Worklists**: Welke onderzoeken moeten gedaan worden?
+
+### DICOM in de praktijk
+- CT-scanner produceert DICOM-beelden
+- PACS slaat ze op
+- Viewer toont ze aan radioloog
+- Alles via DICOM-protocol
+
+## IHE-profielen
+
+IHE (Integrating the Healthcare Enterprise) definieert:
+
+### XDS (Cross-Enterprise Document Sharing)
+- **Binnen een affinity domain** (regio)
+- **Documenten registreren en opvragen**
+- **Repository + Registry model**
+
+### XCA (Cross-Community Access)
+- **Tussen regio's onderling**
+- **Federatief model**
+- **Twiin gebruikt XCA**
+
+### XDS-I (XDS for Imaging)
+- **Specifiek voor beelden**
+- **DICOM-manifesten**
+
+## Beelduitwisseling in Nederland
+
+Via Twiin:
+1. Ziekenhuis A maakt CT-scan
+2. Registreert in XDS-registry
+3. Ziekenhuis B vraagt op via XCA
+4. Ontvangt DICOM-beelden
+
+## Kernbegrippen
+
+- **DICOM**: Standaard voor medische beelden
+- **PACS**: Picture Archiving and Communication System
+- **XDS**: Documentdeling binnen regio
+- **XCA**: Documentdeling tussen regio's
+    `,
+    sources: [
+      { name: "IHE International", url: "https://www.ihe.net" },
+      { name: "DICOM Standard", url: "https://www.dicomstandard.org" }
+    ]
+  },
+
+  "4.7": {
+    title: "CDA vs FHIR Documents",
+    summary: "CDA is de traditionele standaard voor klinische documenten. FHIR Documents is het moderne alternatief.",
+    content: `
+## In het kort
+
+Klinische documenten (ontslagbrieven, uitslagen) kunnen in verschillende formaten. CDA is de gevestigde standaard, FHIR Documents de opkomende.
+
+## CDA (Clinical Document Architecture)
+
+HL7 CDA is:
+
+- **XML-gebaseerd**
+- **Menselijk leesbaar** (narrative block)
+- **Machine-verwerkbaar** (structured entries)
+- **Ondertekend document**
+
+### Structuur
+\`\`\`
+CDA Document
+├── Header (wie, wat, wanneer)
+├── Body
+│   ├── Section 1 (Anamnese)
+│   ├── Section 2 (Lichamelijk onderzoek)
+│   └── Section 3 (Conclusie)
+\`\`\`
+
+### Gebruik in Nederland
+- Specialistenbrief
+- Ontslagbrief
+- Laboratoriumuitslag
+
+## FHIR Documents
+
+FHIR kent ook documenten:
+
+- **Bundle van type "document"**
+- **Composition resource als inhoudsopgave**
+- **Moderne structuur**
+
+### Voordelen
+- Consistentie met andere FHIR-resources
+- Makkelijker te verwerken
+- Betere tooling
+
+## Vergelijking
+
+| Aspect | CDA | FHIR Documents |
+|--------|-----|----------------|
+| Formaat | XML | JSON/XML |
+| Volwassenheid | Hoog | Groeiend |
+| Tooling | Legacy | Modern |
+| Adoptie NL | Breed | Opkomend |
+
+## Transitie
+
+Nederland zit in transitie:
+- Bestaande CDA's blijven werken
+- Nieuwe standaarden in FHIR
+- Geen "big bang" vervanging
+
+## Kernbegrippen
+
+- **CDA**: Clinical Document Architecture
+- **Composition**: FHIR-equivalent van documentstructuur
+- **Narrative**: Leesbare tekst in document
+    `,
+    sources: [
+      { name: "HL7 CDA", url: "https://www.hl7.org/implement/standards/product_brief.cfm?product_id=7" },
+      { name: "FHIR Documents", url: "https://www.hl7.org/fhir/documents.html" }
+    ]
+  },
+
+  // TRACK 5: Wet- & Regelgeving
+
+  "5.1": {
+    title: "AVG/GDPR in de zorg",
+    summary: "De AVG stelt strenge eisen aan verwerking van persoonsgegevens. Gezondheidsgegevens zijn extra beschermd.",
+    content: `
+## In het kort
+
+De Algemene Verordening Gegevensbescherming (AVG/GDPR) regelt hoe organisaties met persoonsgegevens moeten omgaan. In de zorg gelden extra strenge regels.
+
+## Gezondheidsgegevens
+
+Gezondheidsgegevens zijn **bijzondere persoonsgegevens**:
+
+- In principe verboden te verwerken
+- Uitzonderingen voor zorgverlening
+- Extra beveiligingseisen
+
+## Rechtmatige grondslagen in de zorg
+
+### Voor zorgverlening
+- **Uitvoering behandelingsovereenkomst** (art. 6 + 9.2h)
+- Geen toestemming nodig voor directe zorg
+
+### Voor secundair gebruik
+- **Uitdrukkelijke toestemming** vereist
+- Wetenschappelijk onderzoek: aparte regels
+- Kwaliteitsregistraties: wettelijke grondslag
+
+## Rechten van betrokkenen
+
+Patiënten hebben recht op:
+- **Inzage**: Wat staat er over mij?
+- **Correctie**: Fouten laten herstellen
+- **Verwijdering**: Onder voorwaarden
+- **Dataportabiliteit**: Gegevens meenemen
+
+## Verplichtingen zorgaanbieder
+
+- **Verwerkingsregister**: Documenteer alle verwerkingen
+- **DPIA**: Bij hoog-risico verwerkingen
+- **Datalekprotocol**: Melden binnen 72 uur
+- **FG**: Functionaris Gegevensbescherming aanstellen
+
+## Boetes
+
+De AP kan forse boetes opleggen:
+- Tot €20 miljoen
+- Of 4% van wereldwijde omzet
+
+## Kernbegrippen
+
+- **AVG/GDPR**: Privacywetgeving
+- **Bijzondere persoonsgegevens**: Extra beschermde categorie
+- **Grondslag**: Juridische basis voor verwerking
+    `,
+    sources: [
+      { name: "Autoriteit Persoonsgegevens", url: "https://autoriteitpersoonsgegevens.nl" },
+      { name: "AVG-tekst", url: "https://eur-lex.europa.eu" }
+    ]
+  },
+
+  "5.2": {
+    title: "WGBO: Wet op de Geneeskundige Behandelingsovereenkomst",
+    summary: "De WGBO regelt de rechten en plichten van patiënten en zorgverleners binnen de behandelrelatie.",
+    content: `
+## In het kort
+
+De WGBO is de basis van de arts-patiëntrelatie. Het regelt informed consent, dossierplicht en geheimhouding.
+
+## Kernrechten patiënt
+
+### Informed consent
+- Recht op **informatie** over behandeling
+- Recht om **toestemming** te geven of weigeren
+- Bij ingrijpende behandelingen: **schriftelijk**
+
+### Dossierrechten
+- Recht op **inzage** in eigen dossier
+- Recht op **afschrift**
+- Recht op **correctie** en **aanvulling**
+- Beperkt recht op **vernietiging**
+
+## Dossierplicht
+
+Zorgverleners moeten:
+- **Dossier bijhouden** van de behandeling
+- **Bewaartermijn**: 20 jaar (sinds 2020)
+- **Toegang beperken** tot betrokken zorgverleners
+
+## Geheimhouding
+
+Het medisch beroepsgeheim:
+- Zorgverlener mag niet delen zonder toestemming
+- Uitzonderingen: wettelijke meldplichten
+- Doorbreken alleen bij conflict van plichten
+
+## Vertegenwoordiging
+
+Bij wilsonbekwaamheid:
+- Curator of mentor
+- Schriftelijk gemachtigde
+- Echtgenoot/partner
+- Ouder of kind
+
+## Digitale aspecten
+
+- Patiëntportalen vallen onder WGBO
+- Logging van inzage verplicht
+- Elektronische toestemming mogelijk
+
+## Kernbegrippen
+
+- **Informed consent**: Geïnformeerde toestemming
+- **Dossierplicht**: Verplichting tot bijhouden dossier
+- **Beroepsgeheim**: Geheimhoudingsplicht
+    `,
+    sources: [
+      { name: "KNMG - WGBO", url: "https://www.knmg.nl" },
+      { name: "Rijksoverheid - WGBO", url: "https://www.rijksoverheid.nl" }
+    ]
+  },
+
+  "5.3": {
+    title: "Wabvpz: Elektronische gegevensuitwisseling",
+    summary: "De Wabvpz regelt rechten van patiënten bij elektronische uitwisseling van medische gegevens.",
+    content: `
+## In het kort
+
+De Wet aanvullende bepalingen verwerking persoonsgegevens in de zorg (Wabvpz) geeft patiënten specifieke rechten bij elektronische gegevensuitwisseling.
+
+## Kernpunten
+
+### Toestemming vereist
+- Uitwisseling via elektronisch uitwisselingssysteem
+- Alleen met **uitdrukkelijke toestemming** patiënt
+- Toestemming moet specifiek zijn
+
+### Wat is een uitwisselingssysteem?
+- LSP valt eronder
+- Regionale netwerken
+- **Niet**: directe communicatie tussen twee partijen
+
+## Rechten onder Wabvpz
+
+- **Gespecificeerde toestemming**: Per type gegevens
+- **Inzicht in loggegevens**: Wie heeft ingekeken?
+- **Intrekken toestemming**: Op elk moment mogelijk
+
+## Logging
+
+Verplichte logging van:
+- Wie heeft gegevens ingezien?
+- Wanneer?
+- Welke gegevens?
+- Met welk doel?
+
+Patiënt heeft recht op inzage in deze logging.
+
+## Relatie met andere wetten
+
+- **AVG**: Wabvpz is aanvullend
+- **WGBO**: Dossierrechten blijven gelden
+- **Wegiz**: Nieuwe wet voor specifieke uitwisselingen
+
+## In de praktijk
+
+- Huisarts vraagt toestemming voor LSP
+- Registratie bij VZVZ
+- Patiënt kan inzien via Volgjezorg.nl
+
+## Kernbegrippen
+
+- **Wabvpz**: Wet aanvullende bepalingen verwerking persoonsgegevens zorg
+- **Uitwisselingssysteem**: Infrastructuur voor gegevensdeling
+- **Logging**: Registratie van inzage-acties
+    `,
+    sources: [
+      { name: "VZVZ - Toestemming", url: "https://www.vzvz.nl" },
+      { name: "Volgjezorg", url: "https://www.volgjezorg.nl" }
+    ]
+  },
+
+  "5.4": {
+    title: "NEN 7510, 7512, 7513: Informatiebeveiliging",
+    summary: "De NEN 75xx-normen vormen het raamwerk voor informatiebeveiliging in de Nederlandse zorg.",
+    content: `
+## In het kort
+
+De NEN 7510-serie is het fundament voor informatiebeveiliging in de zorg. Naleving is vaak verplicht via wetgeving of contracten.
+
+## NEN 7510: Managementsysteem
+
+De hoofdnorm voor informatiebeveiliging:
+
+### Inhoud
+- **Risicomanagement**: Identificeer en beheers risico's
+- **Beleid**: Formeel informatiebeveiligingsbeleid
+- **Organisatie**: Rollen en verantwoordelijkheden
+- **Maatregelen**: Technisch en organisatorisch
+
+### Certificering
+- ISO 27001 + NEN 7510-toets
+- Jaarlijkse audits
+- Steeds vaker geëist door verzekeraars
+
+## NEN 7512: Vertrouwensbasis
+
+Voor elektronische communicatie:
+
+- **Authenticatie**: Wie is de ander?
+- **Autorisatie**: Wat mag de ander?
+- **Vertrouwelijkheid**: Encryptie van transport
+- **Integriteit**: Is het bericht ongewijzigd?
+
+### Niveaus
+- Laag, midden, hoog vertrouwensniveau
+- Afhankelijk van type gegevens
+
+## NEN 7513: Logging
+
+Specifiek voor vastleggen van acties:
+
+- **Wat loggen**: Toegang, mutaties, exports
+- **Hoe lang bewaren**: Minimaal 5 jaar
+- **Onweerlegbaarheid**: Logs niet te manipuleren
+- **Inzage**: Patiënt kan logs opvragen
+
+## Implementatie
+
+1. Gap-analyse uitvoeren
+2. Maatregelenplan opstellen
+3. Implementeren
+4. Auditen en certificeren
+5. Continu verbeteren
+
+## Kernbegrippen
+
+- **NEN 7510**: Managementsysteem informatiebeveiliging
+- **NEN 7512**: Eisen aan elektronische communicatie
+- **NEN 7513**: Logging van gebeurtenissen
+    `,
+    sources: [
+      { name: "NEN - Zorgnormen", url: "https://www.nen.nl" }
+    ]
+  },
+
+  "5.5": {
+    title: "Wegiz: Wet elektronische gegevensuitwisseling",
+    summary: "De Wegiz maakt elektronische gegevensuitwisseling verplicht voor aangewezen situaties.",
+    content: `
+## In het kort
+
+De Wet elektronische gegevensuitwisseling in de zorg (Wegiz) maakt het mogelijk om gegevensuitwisseling te verplichten via AMvB's.
+
+## Doel van de wet
+
+Oplossen van het "kip-ei probleem":
+- Leveranciers wachten op vraag
+- Zorgaanbieders wachten op aanbod
+- Niemand investeert
+
+De Wegiz doorbreekt dit door te verplichten.
+
+## Hoe werkt het?
+
+### Kaderwet
+De Wegiz zelf verplicht niets. Het is een **kaderwet** die:
+- De minister bevoegdheid geeft
+- Randvoorwaarden stelt
+- Toezicht regelt
+
+### AMvB's
+Per gegevensuitwisseling een Algemene Maatregel van Bestuur:
+- Welke uitwisseling?
+- Welke standaard?
+- Per wanneer verplicht?
+
+## Aangewezen uitwisselingen
+
+Geprioriteerd door Meerjarenagenda:
+
+1. **Medicatieoverdracht** - bij ontslag
+2. **BgZ** - basisgegevensset bij verwijzing
+3. **Verpleegkundige overdracht**
+4. **Beelduitwisseling**
+
+## Eisen aan systemen
+
+- Voldoen aan informatiestandaard
+- Gecertificeerd/gekwalificeerd
+- Aansluiten op infrastructuur
+
+## Toezicht en handhaving
+
+- IGJ houdt toezicht
+- Kan aanwijzingen geven
+- Kan last onder dwangsom opleggen
+
+## Kernbegrippen
+
+- **Wegiz**: Kaderwet voor verplichte uitwisseling
+- **AMvB**: Besluit dat specifieke uitwisseling verplicht
+- **Informatiestandaard**: Technische specificatie
+    `,
+    sources: [
+      { name: "Rijksoverheid - Wegiz", url: "https://www.rijksoverheid.nl" }
+    ]
+  },
+
+  "5.6": {
+    title: "NIS2 en cybersecurity in de zorg",
+    summary: "NIS2 stelt nieuwe eisen aan cybersecurity voor essentiële sectoren, waaronder de zorg.",
+    content: `
+## In het kort
+
+De NIS2-richtlijn verscherpt cybersecurity-eisen voor vitale sectoren. Zorginstellingen vallen hier grotendeels onder.
+
+## Wat is NIS2?
+
+Network and Information Security Directive 2:
+
+- **EU-richtlijn** (moet in nationale wet)
+- **Opvolger van NIS1**
+- **Vanaf 2024** van kracht
+- **Forse boetes** bij niet-naleving
+
+## Wie valt eronder?
+
+In de zorg:
+- **Ziekenhuizen** (>50 medewerkers of >10M omzet)
+- **Laboratoria**
+- **Leveranciers van medische hulpmiddelen**
+- **ICT-dienstverleners aan zorg**
+
+## Verplichtingen
+
+### Technisch
+- Risicoanalyse en beheersmaatregelen
+- Incidentafhandeling
+- Business continuity
+- Supply chain security
+- Encryptie
+
+### Organisatorisch
+- Cybersecurity beleid op directieniveau
+- Training medewerkers
+- Meldplicht incidenten (24 uur!)
+
+## Toezicht
+
+- Rijksinspectie Digitale Infrastructuur (RDI)
+- Kan audits uitvoeren
+- Boetes tot €10 miljoen of 2% omzet
+
+## Relatie met bestaande normen
+
+NIS2 bouwt voort op:
+- NEN 7510 (blijft relevant)
+- ISO 27001
+- Maar gaat verder (supply chain, directie-aansprakelijkheid)
+
+## Kernbegrippen
+
+- **NIS2**: Europese cybersecurity-richtlijn
+- **Essentiële entiteit**: Organisatie die onder NIS2 valt
+- **Meldplicht**: Verplichting incidenten te melden
+    `,
+    sources: [
+      { name: "NCSC", url: "https://www.ncsc.nl" },
+      { name: "EU NIS2", url: "https://digital-strategy.ec.europa.eu" }
+    ]
+  },
+
+  "5.7": {
+    title: "Medische hulpmiddelen: MDR en software als medical device",
+    summary: "De MDR regelt wanneer software een medisch hulpmiddel is en aan welke eisen het moet voldoen.",
+    content: `
+## In het kort
+
+Software kan een medisch hulpmiddel zijn. De Medical Device Regulation (MDR) stelt dan strenge eisen aan ontwikkeling en gebruik.
+
+## Wanneer is software een medisch hulpmiddel?
+
+Software is een Medical Device als het:
+
+- Een **medisch doel** heeft, én
+- **Informatie genereert** die klinische beslissingen beïnvloedt
+
+### Wel medisch hulpmiddel
+- Diagnose-ondersteunende AI
+- Dosis-berekeningssoftware
+- Monitoring met alerts
+
+### Geen medisch hulpmiddel
+- Administratieve systemen
+- Communicatietools
+- Generieke databases
+
+## Risicoklassen
+
+De MDR kent klassen:
+
+| Klasse | Risico | Voorbeeld |
+|--------|--------|-----------|
+| I | Laag | Afsprakenplanner |
+| IIa | Matig-laag | Symptoomchecker |
+| IIb | Matig-hoog | Insulinedosering |
+| III | Hoog | AI-diagnose kanker |
+
+## Eisen
+
+### Klasse I
+- Technische documentatie
+- Zelf-declaratie
+- CE-markering
+
+### Klasse IIa en hoger
+- Notified Body betrokken
+- Klinisch bewijs vereist
+- Striktere kwaliteitssystemen
+
+## Kwaliteitsmanagementsysteem
+
+Verplicht voor alle klassen:
+- ISO 13485 certificering
+- Risicomanagement (ISO 14971)
+- Post-market surveillance
+
+## Gevolgen voor IT in de zorg
+
+- Leveranciers moeten MDR-compliance aantonen
+- Ziekenhuizen moeten inkoopeisen stellen
+- Zelf ontwikkelen wordt complexer
+
+## Kernbegrippen
+
+- **MDR**: Medical Device Regulation
+- **SaMD**: Software as a Medical Device
+- **Notified Body**: Certificeringsinstantie
+- **CE-markering**: Bewijs van conformiteit
+    `,
+    sources: [
+      { name: "MDCG Guidelines", url: "https://health.ec.europa.eu" },
+      { name: "Rijksoverheid - MDR", url: "https://www.rijksoverheid.nl" }
+    ]
+  },
+
+  // TRACK 6: AI & Innovatie in de Zorg
+
+  "6.1": {
+    title: "AI Act: Wat betekent dit voor zorgtechnologie?",
+    summary: "De EU AI Act reguleert kunstmatige intelligentie. Zorg-AI valt vaak in de hoog-risico categorie.",
+    content: `
+## In het kort
+
+De AI Act is de eerste uitgebreide AI-wetgeving ter wereld. Voor zorgtechnologie heeft dit grote gevolgen vanwege de hoog-risico classificatie.
+
+## Wat regelt de AI Act?
+
+Een risicogebaseerde aanpak:
+
+### Verboden AI
+- Social scoring
+- Manipulatie van gedrag
+- Real-time biometrische identificatie (uitzonderingen)
+
+### Hoog-risico AI
+- Medische hulpmiddelen
+- Kritieke infrastructuur
+- Werknemersbeoordeling
+
+### Beperkt risico
+- Chatbots (transparantieverplichting)
+- Deepfakes (labeling)
+
+### Minimaal risico
+- Geen specifieke eisen
+
+## Zorg-AI = vaak hoog-risico
+
+AI in de zorg is bijna altijd hoog-risico:
+
+- Diagnostische AI
+- Behandelingsaanbevelingen
+- Risicopredictie
+- Triagesystemen
+
+## Eisen voor hoog-risico AI
+
+1. **Risicomanagement**: Doorlopend proces
+2. **Data governance**: Kwaliteit trainingsdata
+3. **Transparantie**: Uitlegbaarheid beslissingen
+4. **Menselijk toezicht**: Mogelijkheid tot ingrijpen
+5. **Nauwkeurigheid**: Robuust en betrouwbaar
+6. **Logging**: Traceerbaarheid
+
+## Tijdlijn
+
+- 2024: AI Act aangenomen
+- 2025: Verboden praktijken van kracht
+- 2026/2027: Overige bepalingen gefaseerd
+
+## Kernbegrippen
+
+- **AI Act**: Europese AI-verordening
+- **Hoog-risico AI**: Streng gereguleerde categorie
+- **Conformiteitsbeoordeling**: Bewijs van naleving
+    `,
+    sources: [
+      { name: "EU AI Act", url: "https://artificialintelligenceact.eu" }
+    ]
+  },
+
+  "6.2": {
+    title: "AI classificatie: hoog-risico AI in de zorg",
+    summary: "Hoe bepaal je of jouw AI-systeem hoog-risico is? Een praktische handleiding voor classificatie.",
+    content: `
+## In het kort
+
+Niet alle AI in de zorg is automatisch hoog-risico. De classificatie hangt af van het beoogde doel en de impact op patiënten.
+
+## Classificatiestappen
+
+### Stap 1: Is het AI?
+
+De AI Act definitie:
+- Machine-gebaseerd systeem
+- Ontworpen om autonoom te opereren
+- Genereert output (voorspellingen, aanbevelingen, beslissingen)
+
+### Stap 2: Valt het onder een verbod?
+
+Check of het systeem:
+- Gedrag manipuleert
+- Kwetsbaarheden exploiteert
+- Sociale scoring toepast
+
+### Stap 3: Is het een medisch hulpmiddel?
+
+Als het systeem onder de MDR valt:
+- Klasse IIa en hoger = automatisch hoog-risico
+- Klasse I = niet automatisch hoog-risico
+
+### Stap 4: Andere hoog-risico categorieën
+
+Annex III van de AI Act noemt:
+- Toegang tot kritieke diensten
+- Evaluatie van personen
+- Wetshandhaving
+
+## Praktijkvoorbeelden
+
+| Systeem | Classificatie | Reden |
+|---------|---------------|-------|
+| AI-diagnose longfoto | Hoog-risico | MDR klasse IIa |
+| Chatbot symptomen | Hangt af | Alleen info vs advies |
+| Planning AI | Minimaal risico | Geen medisch doel |
+| Risicoscore sepsis | Hoog-risico | Beïnvloedt behandeling |
+
+## Grensgevallen
+
+Bij twijfel:
+- Conservatief classificeren
+- Juridisch advies inwinnen
+- Notified Body consulteren
+
+## Kernbegrippen
+
+- **Beoogd doel**: Waarvoor is het systeem ontworpen?
+- **Annex III**: Lijst met hoog-risico categorieën
+- **Intended purpose**: Formele doelomschrijving
+    `,
+    sources: [
+      { name: "AI Act Annex III", url: "https://artificialintelligenceact.eu" }
+    ]
+  },
+
+  "6.3": {
+    title: "Klinische beslisondersteuning (CDSS)",
+    summary: "Clinical Decision Support Systems helpen zorgverleners bij diagnose en behandeling. Wat zijn de mogelijkheden en risico's?",
+    content: `
+## In het kort
+
+CDSS (Clinical Decision Support Systems) zijn informatiesystemen die zorgverleners ondersteunen bij klinische beslissingen. Van eenvoudige alerts tot complexe AI.
+
+## Typen CDSS
+
+### Kennisgebaseerd
+- **Regels**: Als X dan Y
+- **Alerts**: Waarschuwingen bij interacties
+- **Reminders**: Herinneringen voor screenings
+
+### Data-gedreven
+- **Machine learning**: Patronen in data
+- **Predictieve modellen**: Risicoscores
+- **NLP**: Analyse van vrije tekst
+
+## Voorbeelden in de praktijk
+
+### Medicatiebewaking
+- Interactiecheck bij voorschrijven
+- Dubbelmedicatie-alert
+- Dosiscontrolemaar nierfunctie
+
+### Diagnostiek
+- Differentiaal diagnose suggesties
+- Beeldherkenning (radiologie, pathologie)
+- Lab-interpretatie
+
+### Behandeling
+- Richtlijn-reminders
+- Behandelprotocollen
+- Risicostratificatie
+
+## Implementatie-uitdagingen
+
+### Alert fatigue
+- Te veel waarschuwingen
+- Arts gaat negeren
+- Oplossing: relevantie verhogen
+
+### Integratie
+- Moet in workflow passen
+- EPD-integratie essentieel
+- Real-time beschikbaar
+
+### Validatie
+- Werkt het systeem correct?
+- Klinische evaluatie nodig
+- Continue monitoring
+
+## Regelgeving
+
+CDSS kan vallen onder:
+- **MDR**: Als het diagnose/behandeling beïnvloedt
+- **AI Act**: Als het AI bevat
+
+## Kernbegrippen
+
+- **CDSS**: Clinical Decision Support System
+- **Alert fatigue**: Negeren van waarschuwingen door overvloed
+- **CDS Hooks**: Standaard voor CDSS-integratie
+    `,
+    sources: [
+      { name: "HL7 CDS Hooks", url: "https://cds-hooks.org" }
+    ]
+  },
+
+  "6.4": {
+    title: "LLMs en generatieve AI in de zorg",
+    summary: "Large Language Models zoals GPT bieden nieuwe mogelijkheden in de zorg, maar ook risico's. Wat kan en mag?",
+    content: `
+## In het kort
+
+Generatieve AI en Large Language Models (LLMs) veroveren de zorg. Van administratieve ontlasting tot klinische ondersteuning - de toepassingen groeien snel.
+
+## Huidige toepassingen
+
+### Administratief
+- **Notities genereren**: Consult → samenvatting
+- **Brieven schrijven**: Ontslagbrief, verwijzing
+- **Coderen**: DBC-codes suggereren
+
+### Klinisch ondersteunend
+- **Literatuuronderzoek**: Sneller evidence vinden
+- **Differentiaal diagnose**: Brainstormen met AI
+- **Uitleg voor patiënt**: Begrijpelijke taal
+
+### Patiëntgericht
+- **Chatbots**: Eerste triage
+- **Educatie**: Uitleg over aandoening
+- **Voorbereiding consult**: Klachten inventariseren
+
+## Risico's
+
+### Hallucinaties
+- LLMs kunnen onjuiste informatie verzinnen
+- Bronvermelding niet altijd betrouwbaar
+- Kritische beoordeling nodig
+
+### Privacy
+- Waar gaan de gegevens heen?
+- Cloud vs on-premise
+- Verwerkersovereenkomst nodig
+
+### Bias
+- Trainingsdata kan vooroordelen bevatten
+- Kan leiden tot ongelijke zorg
+- Validatie op diverse populaties
+
+## Regelgevend kader
+
+- **AVG**: Persoonsgegevens beschermen
+- **WGBO**: Dossierplicht blijft
+- **AI Act**: Mogelijk hoog-risico
+- **MDR**: Als het diagnose beïnvloedt
+
+## Implementatieadvies
+
+1. Start met lage-risico toepassingen
+2. Pilot met duidelijke evaluatiecriteria
+3. Train gebruikers in mogelijkheden én beperkingen
+4. Houd mens in de loop
+
+## Kernbegrippen
+
+- **LLM**: Large Language Model
+- **Generatieve AI**: AI die nieuwe content creëert
+- **Hallucinatie**: Feitelijk onjuiste output
+    `,
+    sources: [
+      { name: "KNMG - AI in de zorg", url: "https://www.knmg.nl" }
+    ]
+  },
+
+  "6.5": {
+    title: "Validatie en certificering van AI-systemen",
+    summary: "AI-systemen in de zorg moeten gevalideerd en vaak gecertificeerd worden. Hoe werkt dit proces?",
+    content: `
+## In het kort
+
+Voordat AI-systemen in de zorg gebruikt mogen worden, moeten ze bewezen veilig en effectief zijn. Dit vereist validatie en vaak certificering.
+
+## Validatieproces
+
+### Technische validatie
+- **Nauwkeurigheid**: Doet het systeem wat het moet doen?
+- **Robuustheid**: Werkt het ook bij edge cases?
+- **Reproduceerbaarheid**: Consistent gedrag?
+
+### Klinische validatie
+- **Effectiviteit**: Verbetert het de zorg?
+- **Veiligheid**: Geen schade voor patiënten?
+- **Bruikbaarheid**: Past het in de werkflow?
+
+### Stappen
+1. Retrospectieve studie op historische data
+2. Prospectieve studie in klinische setting
+3. Implementatiestudie (real-world)
+
+## Certificering (MDR)
+
+Als het AI-systeem onder MDR valt:
+
+### Klasse I
+- Technisch dossier opstellen
+- Zelfverklaring conformiteit
+- CE-markering aanbrengen
+
+### Klasse IIa en hoger
+- Notified Body beoordeling
+- Kwaliteitsmanagementsysteem (ISO 13485)
+- Klinisch bewijs leveren
+
+## AI Act conformiteit
+
+Aanvullend op MDR:
+
+- Risicomanagement documenteren
+- Data governance aantonen
+- Transparantie-eisen invullen
+- Post-market monitoring opzetten
+
+## Continue monitoring
+
+Na implementatie:
+- **Prestatiemonitoring**: Werkt het nog?
+- **Drift detectie**: Verandert de data?
+- **Incidentregistratie**: Wat gaat mis?
+- **Gebruikersfeedback**: Ervaringen verzamelen
+
+## Kernbegrippen
+
+- **Validatie**: Bewijs dat systeem werkt
+- **Certificering**: Formele goedkeuring
+- **Post-market surveillance**: Monitoring na implementatie
+    `,
+    sources: [
+      { name: "MDCG Guidance", url: "https://health.ec.europa.eu" },
+      { name: "FDA AI/ML Guidance", url: "https://www.fda.gov" }
+    ]
+  },
+
+  "6.6": {
+    title: "Ethische kaders en responsible AI",
+    summary: "AI in de zorg roept ethische vragen op. Hoe zorgen we voor verantwoorde inzet van AI-technologie?",
+    content: `
+## In het kort
+
+Technische mogelijkheid betekent niet automatisch wenselijkheid. Ethische kaders helpen om AI verantwoord in te zetten.
+
+## Ethische principes
+
+### Autonomie
+- Patiënt blijft zelf beslissen
+- Informed consent voor AI-gebruik
+- Recht op menselijke arts
+
+### Weldoen (beneficence)
+- AI moet daadwerkelijk helpen
+- Bewezen effectiviteit
+- Niet alleen efficiëntie
+
+### Niet schaden (non-maleficence)
+- Fouten kunnen ernstige gevolgen hebben
+- Voorzichtigheidsprincipe
+- Falen gracefully
+
+### Rechtvaardigheid
+- Gelijke toegang tot AI-zorg
+- Geen discriminatie door bias
+- Eerlijke verdeling van voordelen
+
+## Praktische richtlijnen
+
+### Transparantie
+- Uitlegbaarheid van beslissingen
+- Openheid over gebruik van AI
+- Documentatie van werking
+
+### Menselijk toezicht
+- Geen volledig autonome beslissingen
+- Arts blijft eindverantwoordelijk
+- Override mogelijkheid
+
+### Data-ethiek
+- Representatieve trainingsdata
+- Privacy by design
+- Minimalisatie
+
+## Governance
+
+### Organisatieniveau
+- AI-ethiekcommissie
+- Implementatieprotocollen
+- Training medewerkers
+
+### Nationaal niveau
+- Richtlijnen beroepsgroepen
+- Toezicht door IGJ
+- Publiek debat
+
+## Dilemma's
+
+- Efficiëntie vs menselijk contact
+- Innovatie vs voorzichtigheid
+- Individueel vs collectief belang
+- Kort- vs langetermijneffecten
+
+## Kernbegrippen
+
+- **Responsible AI**: Verantwoorde AI-ontwikkeling
+- **Uitlegbaarheid**: Kunnen begrijpen waarom AI iets besluit
+- **Bias**: Systematische vertekening in AI-systemen
+    `,
+    sources: [
+      { name: "WHO Ethics & AI", url: "https://www.who.int" },
+      { name: "EU Ethics Guidelines AI", url: "https://digital-strategy.ec.europa.eu" }
+    ]
   }
 }
 

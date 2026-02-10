@@ -210,6 +210,556 @@ export const quizzes = {
         explanation: "Mitz bevat logging-functionaliteit waarmee burgers kunnen zien wie wanneer welke gegevens heeft ingezien."
       }
     ]
+  },
+
+  "3.5": {
+    moduleId: "3.5",
+    questions: [
+      {
+        id: "q1",
+        type: "true-false",
+        question: "AORTA is een operationeel zorgsysteem waar zorgverleners direct mee werken.",
+        correct: false,
+        explanation: "AORTA is een referentiearchitectuur (blauwdruk), geen operationeel systeem. Het beschrijft hoe zorgnetwerken moeten werken."
+      }
+    ]
+  },
+
+  "3.6": {
+    moduleId: "3.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is een PGO?",
+        options: [
+          { id: "a", text: "Patiënt Gerichte Organisatie" },
+          { id: "b", text: "Persoonlijke Gezondheidsomgeving" },
+          { id: "c", text: "Praktijk Gegevens Overdracht" },
+          { id: "d", text: "Primaire Gezondheidszorg Ondersteuning" }
+        ],
+        correct: "b",
+        explanation: "PGO staat voor Persoonlijke Gezondheidsomgeving - een app waar burgers hun eigen gezondheidsgegevens kunnen verzamelen."
+      }
+    ]
+  },
+
+  "3.7": {
+    moduleId: "3.7",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Waarvoor dient de UZI-pas?",
+        options: [
+          { id: "a", text: "Patiëntidentificatie" },
+          { id: "b", text: "Betaling van zorgkosten" },
+          { id: "c", text: "Identificatie en authenticatie van zorgverleners" },
+          { id: "d", text: "Toegang tot zorgverzekeringsinformatie" }
+        ],
+        correct: "c",
+        explanation: "De UZI-pas is een smartcard waarmee zorgverleners zich kunnen identificeren en authenticeren bij zorgsystemen en -netwerken."
+      }
+    ]
+  },
+
+  "2.1": {
+    moduleId: "2.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Waar staat DBC voor?",
+        options: [
+          { id: "a", text: "Directe Behandel Code" },
+          { id: "b", text: "Diagnose Behandel Combinatie" },
+          { id: "c", text: "Declaratie Basis Classificatie" },
+          { id: "d", text: "Diagnostisch Behandel Centrum" }
+        ],
+        correct: "b",
+        explanation: "DBC staat voor Diagnose Behandel Combinatie - het beschrijft het complete traject van diagnose tot behandeling."
+      },
+      {
+        id: "q2",
+        type: "true-false",
+        question: "DOT staat voor 'DBC's Op weg naar Transparantie'.",
+        correct: true,
+        explanation: "DOT is de doorontwikkeling van de DBC-systematiek met als doel meer transparantie en uniformiteit."
+      }
+    ]
+  },
+
+  "2.2": {
+    moduleId: "2.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het verschil tussen een zorgactiviteit en een zorgproduct?",
+        options: [
+          { id: "a", text: "Ze zijn hetzelfde" },
+          { id: "b", text: "Zorgactiviteiten zijn de bouwstenen, zorgproducten het declarabele resultaat" },
+          { id: "c", text: "Zorgproducten zijn goedkoper dan zorgactiviteiten" },
+          { id: "d", text: "Alleen zorgactiviteiten worden geregistreerd" }
+        ],
+        correct: "b",
+        explanation: "Zorgactiviteiten zijn individuele handelingen die worden gegroepeerd tot zorgproducten - het declarabele eindresultaat met een tarief."
+      }
+    ]
+  },
+
+  "2.3": {
+    moduleId: "2.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat doet de Grouper?",
+        options: [
+          { id: "a", text: "Patiënten indelen in groepen" },
+          { id: "b", text: "Automatisch het juiste zorgproduct afleiden uit registraties" },
+          { id: "c", text: "Zorgverleners groeperen per specialisme" },
+          { id: "d", text: "Factureren aan verzekeraars" }
+        ],
+        correct: "b",
+        explanation: "De Grouper is software die op basis van geregistreerde zorgactiviteiten automatisch het juiste zorgproduct bepaalt."
+      }
+    ]
+  },
+
+  "2.4": {
+    moduleId: "2.4",
+    questions: [
+      {
+        id: "q1",
+        type: "true-false",
+        question: "Add-on geneesmiddelen worden altijd samen met een DBC gedeclareerd, nooit los.",
+        correct: true,
+        explanation: "Add-ons zijn aanvullende declaraties die altijd naast een DBC worden gedeclareerd, niet als losstaand product."
+      }
+    ]
+  },
+
+  "2.5": {
+    moduleId: "2.5",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het Zorgprestatiemodel (ZPM)?",
+        options: [
+          { id: "a", text: "Een oud bekostigingssysteem voor ziekenhuizen" },
+          { id: "b", text: "Het nieuwe bekostigingssysteem voor de GGZ sinds 2022" },
+          { id: "c", text: "Een kwaliteitsmodel voor huisartsen" },
+          { id: "d", text: "Een Europese standaard voor zorgprestaties" }
+        ],
+        correct: "b",
+        explanation: "Het Zorgprestatiemodel (ZPM) vervangt sinds 2022 het oude DBC-GGZ systeem met transparantere prestaties per consult."
+      }
+    ]
+  },
+
+  "2.6": {
+    moduleId: "2.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is ketenzorg?",
+        options: [
+          { id: "a", text: "Zorg in een ziekenhuis" },
+          { id: "b", text: "Geïntegreerde zorg voor chronische aandoeningen door meerdere zorgverleners" },
+          { id: "c", text: "Spoedzorg in een keten van ziekenhuizen" },
+          { id: "d", text: "Zorg door vrijwilligers" }
+        ],
+        correct: "b",
+        explanation: "Ketenzorg is geïntegreerde zorg voor chronische aandoeningen (diabetes, COPD) waarbij huisarts, POH, specialist en andere zorgverleners samenwerken."
+      }
+    ]
+  },
+
+  "4.1": {
+    moduleId: "4.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat betekent ADT in HL7v2?",
+        options: [
+          { id: "a", text: "Automatic Data Transfer" },
+          { id: "b", text: "Admission, Discharge, Transfer" },
+          { id: "c", text: "Administrative Data Type" },
+          { id: "d", text: "Advanced Diagnostic Tool" }
+        ],
+        correct: "b",
+        explanation: "ADT staat voor Admission, Discharge, Transfer - berichten over opname, ontslag en overplaatsing van patiënten."
+      },
+      {
+        id: "q2",
+        type: "true-false",
+        question: "HL7v2 is een moderne standaard die pas in 2020 is geïntroduceerd.",
+        correct: false,
+        explanation: "HL7v2 is ontwikkeld in de jaren '80 en is ondanks zijn leeftijd nog steeds de meest gebruikte standaard voor berichtenuitwisseling."
+      }
+    ]
+  },
+
+  "4.2": {
+    moduleId: "4.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Waar staat FHIR voor?",
+        options: [
+          { id: "a", text: "Fast Health Information Resources" },
+          { id: "b", text: "Fast Healthcare Interoperability Resources" },
+          { id: "c", text: "Federal Health Information Registry" },
+          { id: "d", text: "Formatted Healthcare Integration Records" }
+        ],
+        correct: "b",
+        explanation: "FHIR staat voor Fast Healthcare Interoperability Resources - de moderne HL7-standaard voor zorgdata-uitwisseling."
+      },
+      {
+        id: "q2",
+        type: "true-false",
+        question: "FHIR maakt gebruik van REST API's en JSON/XML formaten.",
+        correct: true,
+        explanation: "FHIR is gebaseerd op moderne webtechnologie met REST API's en ondersteunt zowel JSON als XML dataformaten."
+      }
+    ]
+  },
+
+  "4.3": {
+    moduleId: "4.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is de BgZ?",
+        options: [
+          { id: "a", text: "Basis gezondheidsZorg" },
+          { id: "b", text: "Basisgegevensset Zorg" },
+          { id: "c", text: "Bescherming gegevens Ziekenhuizen" },
+          { id: "d", text: "Beveiliging gezondheidsZaken" }
+        ],
+        correct: "b",
+        explanation: "BgZ staat voor Basisgegevensset Zorg - een samenvatting van de belangrijkste patiëntgegevens voor uitwisseling."
+      }
+    ]
+  },
+
+  "4.4": {
+    moduleId: "4.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is een zib?",
+        options: [
+          { id: "a", text: "Een type zorginstelling" },
+          { id: "b", text: "Een zorginformatiebouwsteen - gestandaardiseerde definitie van zorginformatie" },
+          { id: "c", text: "Een beveiligingsprotocol" },
+          { id: "d", text: "Een type medisch hulpmiddel" }
+        ],
+        correct: "b",
+        explanation: "Een zib (zorginformatiebouwsteen) is een gestandaardiseerde definitie van zorginformatie, zoals 'Bloeddruk' of 'Allergie'."
+      }
+    ]
+  },
+
+  "4.5": {
+    moduleId: "4.5",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welk codestelsel wordt primair gebruikt voor laboratoriumbepalingen?",
+        options: [
+          { id: "a", text: "SNOMED CT" },
+          { id: "b", text: "ICD-10" },
+          { id: "c", text: "LOINC" },
+          { id: "d", text: "CBV" }
+        ],
+        correct: "c",
+        explanation: "LOINC (Logical Observation Identifiers Names and Codes) is het standaard codestelsel voor laboratoriumbepalingen en observaties."
+      }
+    ]
+  },
+
+  "4.6": {
+    moduleId: "4.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is DICOM?",
+        options: [
+          { id: "a", text: "Een netwerk voor gegevensuitwisseling" },
+          { id: "b", text: "De standaard voor medische beelden" },
+          { id: "c", text: "Een type CT-scanner" },
+          { id: "d", text: "Een zorginformatiesysteem" }
+        ],
+        correct: "b",
+        explanation: "DICOM (Digital Imaging and Communications in Medicine) is de internationale standaard voor medische beelden en hun uitwisseling."
+      }
+    ]
+  },
+
+  "4.7": {
+    moduleId: "4.7",
+    questions: [
+      {
+        id: "q1",
+        type: "true-false",
+        question: "CDA-documenten zijn alleen machine-leesbaar, niet menselijk leesbaar.",
+        correct: false,
+        explanation: "CDA-documenten bevatten zowel een 'narrative block' (menselijk leesbaar) als structured entries (machine-verwerkbaar)."
+      }
+    ]
+  },
+
+  "5.1": {
+    moduleId: "5.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Gezondheidsgegevens zijn volgens de AVG:",
+        options: [
+          { id: "a", text: "Gewone persoonsgegevens" },
+          { id: "b", text: "Bijzondere persoonsgegevens met extra bescherming" },
+          { id: "c", text: "Geen persoonsgegevens" },
+          { id: "d", text: "Openbare gegevens" }
+        ],
+        correct: "b",
+        explanation: "Gezondheidsgegevens zijn bijzondere persoonsgegevens die extra beschermd zijn en in principe niet verwerkt mogen worden, behalve met specifieke uitzonderingen."
+      },
+      {
+        id: "q2",
+        type: "true-false",
+        question: "Voor directe zorgverlening is altijd expliciete toestemming van de patiënt nodig volgens de AVG.",
+        correct: false,
+        explanation: "Voor directe zorgverlening geldt de grondslag 'uitvoering behandelingsovereenkomst' - hiervoor is geen aparte toestemming nodig."
+      }
+    ]
+  },
+
+  "5.2": {
+    moduleId: "5.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Hoe lang moeten medische dossiers minimaal bewaard worden volgens de WGBO?",
+        options: [
+          { id: "a", text: "10 jaar" },
+          { id: "b", text: "15 jaar" },
+          { id: "c", text: "20 jaar" },
+          { id: "d", text: "Levenslang" }
+        ],
+        correct: "c",
+        explanation: "Sinds 2020 geldt een bewaartermijn van 20 jaar voor medische dossiers (was eerder 15 jaar)."
+      }
+    ]
+  },
+
+  "5.3": {
+    moduleId: "5.3",
+    questions: [
+      {
+        id: "q1",
+        type: "true-false",
+        question: "De Wabvpz vereist uitdrukkelijke toestemming voor gegevensuitwisseling via elektronische uitwisselingssystemen zoals het LSP.",
+        correct: true,
+        explanation: "De Wabvpz bepaalt dat uitwisseling via elektronische uitwisselingssystemen alleen mag met uitdrukkelijke toestemming van de patiënt."
+      }
+    ]
+  },
+
+  "5.4": {
+    moduleId: "5.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welke NEN-norm gaat specifiek over logging van gebeurtenissen in de zorg?",
+        options: [
+          { id: "a", text: "NEN 7510" },
+          { id: "b", text: "NEN 7512" },
+          { id: "c", text: "NEN 7513" },
+          { id: "d", text: "NEN 7520" }
+        ],
+        correct: "c",
+        explanation: "NEN 7513 specificeert de eisen voor logging van gebeurtenissen, zoals wie wanneer welke gegevens heeft ingezien."
+      }
+    ]
+  },
+
+  "5.5": {
+    moduleId: "5.5",
+    questions: [
+      {
+        id: "q1",
+        type: "true-false",
+        question: "De Wegiz verplicht direct specifieke gegevensuitwisselingen.",
+        correct: false,
+        explanation: "De Wegiz is een kaderwet die de minister bevoegdheid geeft om via AMvB's specifieke uitwisselingen te verplichten. De wet zelf verplicht nog niets."
+      }
+    ]
+  },
+
+  "5.6": {
+    moduleId: "5.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is NIS2?",
+        options: [
+          { id: "a", text: "Een Nederlandse informatiestandaard" },
+          { id: "b", text: "Een Europese cybersecurity-richtlijn" },
+          { id: "c", text: "Een type ziekenhuisinformatiesysteem" },
+          { id: "d", text: "Een netwerk voor beelduitwisseling" }
+        ],
+        correct: "b",
+        explanation: "NIS2 is de Network and Information Security Directive 2 - een EU-richtlijn die cybersecurity-eisen stelt aan vitale sectoren, waaronder de zorg."
+      }
+    ]
+  },
+
+  "5.7": {
+    moduleId: "5.7",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wanneer is software een medisch hulpmiddel volgens de MDR?",
+        options: [
+          { id: "a", text: "Altijd als het in een ziekenhuis wordt gebruikt" },
+          { id: "b", text: "Als het een medisch doel heeft en klinische beslissingen beïnvloedt" },
+          { id: "c", text: "Alleen als het door een arts wordt gebruikt" },
+          { id: "d", text: "Nooit, software is geen hulpmiddel" }
+        ],
+        correct: "b",
+        explanation: "Software is een medisch hulpmiddel als het een medisch doel heeft én informatie genereert die klinische beslissingen beïnvloedt."
+      }
+    ]
+  },
+
+  "6.1": {
+    moduleId: "6.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Onder welke categorie valt medische AI meestal in de AI Act?",
+        options: [
+          { id: "a", text: "Verboden AI" },
+          { id: "b", text: "Hoog-risico AI" },
+          { id: "c", text: "Beperkt risico" },
+          { id: "d", text: "Minimaal risico" }
+        ],
+        correct: "b",
+        explanation: "AI in de zorg valt bijna altijd onder hoog-risico vanwege de potentiële impact op diagnose en behandeling van patiënten."
+      }
+    ]
+  },
+
+  "6.2": {
+    moduleId: "6.2",
+    questions: [
+      {
+        id: "q1",
+        type: "true-false",
+        question: "Een AI-systeem dat onder MDR klasse IIa valt, is automatisch ook hoog-risico onder de AI Act.",
+        correct: true,
+        explanation: "AI-systemen die als medisch hulpmiddel klasse IIa of hoger vallen, worden automatisch als hoog-risico geclassificeerd onder de AI Act."
+      }
+    ]
+  },
+
+  "6.3": {
+    moduleId: "6.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is 'alert fatigue'?",
+        options: [
+          { id: "a", text: "Vermoeidheid van patiënten door te veel medicatie" },
+          { id: "b", text: "Het negeren van waarschuwingen door zorgverleners vanwege te veel alerts" },
+          { id: "c", text: "Systeemuitval door overbelasting" },
+          { id: "d", text: "Stress bij IT-personeel" }
+        ],
+        correct: "b",
+        explanation: "Alert fatigue treedt op wanneer zorgverleners te veel waarschuwingen krijgen en deze gaan negeren, ook de belangrijke."
+      }
+    ]
+  },
+
+  "6.4": {
+    moduleId: "6.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is een 'hallucinatie' in de context van LLMs?",
+        options: [
+          { id: "a", text: "Een visueel effect in medische beelden" },
+          { id: "b", text: "Het genereren van feitelijk onjuiste informatie door de AI" },
+          { id: "c", text: "Een fout in de trainingsdata" },
+          { id: "d", text: "Een type cyberaanval" }
+        ],
+        correct: "b",
+        explanation: "Een hallucinatie is wanneer een LLM overtuigend klinkende maar feitelijk onjuiste informatie genereert."
+      }
+    ]
+  },
+
+  "6.5": {
+    moduleId: "6.5",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is post-market surveillance bij AI-systemen?",
+        options: [
+          { id: "a", text: "Marketing na productlancering" },
+          { id: "b", text: "Continue monitoring van prestaties na implementatie" },
+          { id: "c", text: "Verkoop aan andere ziekenhuizen" },
+          { id: "d", text: "Archivering van oude systemen" }
+        ],
+        correct: "b",
+        explanation: "Post-market surveillance is het continu monitoren van AI-systemen na implementatie om prestaties, drift en incidenten te detecteren."
+      }
+    ]
+  },
+
+  "6.6": {
+    moduleId: "6.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welk ethisch principe houdt in dat AI daadwerkelijk moet helpen en niet alleen efficiënt moet zijn?",
+        options: [
+          { id: "a", text: "Autonomie" },
+          { id: "b", text: "Weldoen (beneficence)" },
+          { id: "c", text: "Rechtvaardigheid" },
+          { id: "d", text: "Transparantie" }
+        ],
+        correct: "b",
+        explanation: "Het principe van weldoen (beneficence) houdt in dat AI daadwerkelijk moet bijdragen aan betere zorg, niet alleen aan efficiëntie."
+      },
+      {
+        id: "q2",
+        type: "true-false",
+        question: "Bij responsible AI moet altijd een mens de mogelijkheid hebben om AI-beslissingen te overrulen.",
+        correct: true,
+        explanation: "Menselijk toezicht en de mogelijkheid tot override zijn kernprincipes van responsible AI, vooral in de zorg."
+      }
+    ]
   }
 }
 
