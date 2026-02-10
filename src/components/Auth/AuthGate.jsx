@@ -1,35 +1,19 @@
 import { useState } from 'react'
 
-// SHA-256 hash van "zorgtech2024"
-const PASSWORD_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'
-
-async function hashPassword(password) {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(password)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-}
+// Wachtwoord voor toegang
+const PASSWORD = 'zorgtech2026'
 
 export default function AuthGate({ onLogin }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setLoading(true)
-    setError('')
-
-    const hash = await hashPassword(password)
-
-    // Accepteer ook direct het wachtwoord voor gemak
-    if (hash === PASSWORD_HASH || password === 'zorgtech2024') {
+    if (password === PASSWORD) {
       onLogin()
     } else {
       setError('Onjuist wachtwoord')
     }
-    setLoading(false)
   }
 
   return (
@@ -67,10 +51,9 @@ export default function AuthGate({ onLogin }) {
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-zorg-600 hover:bg-zorg-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+            className="w-full bg-zorg-600 hover:bg-zorg-700 text-white font-semibold py-3 rounded-lg transition"
           >
-            {loading ? 'Controleren...' : 'Inloggen'}
+            Inloggen
           </button>
         </form>
 
