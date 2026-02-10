@@ -760,6 +760,436 @@ export const quizzes = {
         explanation: "Menselijk toezicht en de mogelijkheid tot override zijn kernprincipes van responsible AI, vooral in de zorg."
       }
     ]
+  },
+
+  // EXPERT - Twiin Deep Dive Quizzes
+  "101.1": {
+    moduleId: "101.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het fundamentele architectuurprincipe van Twiin?",
+        options: [
+          { id: "a", text: "Centrale opslag van alle zorggegevens in een landelijke database" },
+          { id: "b", text: "Federatief netwerk waarbij data decentraal blijft bij de bron" },
+          { id: "c", text: "Peer-to-peer netwerk zonder governance" },
+          { id: "d", text: "Cloudgebaseerde SaaS-oplossing voor zorgaanbieders" }
+        ],
+        correct: "b",
+        explanation: "Twiin is een federatief vertrouwensnetwerk: gegevens blijven bij de bron, er is geen centrale database. De uitwisseling gebeurt via afspraken, standaarden en ondersteunende diensten."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke organisatie beheert het Twiin-afsprakenstelsel en de kwalificaties?",
+        options: [
+          { id: "a", text: "Nictiz" },
+          { id: "b", text: "VZVZ" },
+          { id: "c", text: "Stichting Twiin" },
+          { id: "d", text: "Ministerie van VWS" }
+        ],
+        correct: "c",
+        explanation: "Stichting Twiin is de juridische entiteit die het afsprakenstelsel beheert, met een bestuur van koepelorganisaties, een deelnemersraad en expertgroepen."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Wat is de relatie tussen Twiin en het LSP?",
+        options: [
+          { id: "a", text: "Twiin vervangt het LSP volledig" },
+          { id: "b", text: "Het zijn concurrerende systemen" },
+          { id: "c", text: "Complementaire systemen met verschillende usecases" },
+          { id: "d", text: "LSP is een onderdeel van Twiin" }
+        ],
+        correct: "c",
+        explanation: "LSP en Twiin zijn complementair: LSP is een opt-in verwijsindex voor huisarts/apotheek, Twiin heeft bredere usecases en andere governance. In de toekomst is convergentie via Wegiz mogelijk."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "In de Twiin-architectuur is het GtK (Goed-toegerust-Knooppunt) verantwoordelijk voor lokalisatie, authenticatie en toestemmingsverificatie.",
+        correct: true,
+        explanation: "Het GtK is de centrale technische laag die alle beveiligings- en routeringsfuncties afhandelt, inclusief integratie met Mitz voor toestemmingsverificatie."
+      }
+    ]
+  },
+
+  "101.2": {
+    moduleId: "101.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wie is de verwerkingsverantwoordelijke voor gegevens die via Twiin worden uitgewisseld?",
+        options: [
+          { id: "a", text: "Stichting Twiin" },
+          { id: "b", text: "De GtK-beheerder" },
+          { id: "c", text: "De zorgaanbieder" },
+          { id: "d", text: "De softwareleverancier" }
+        ],
+        correct: "c",
+        explanation: "De zorgaanbieder blijft verwerkingsverantwoordelijke. De GtK-beheerder is verwerker en handelt namens de zorgaanbieder via een verwerkersovereenkomst."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is de minimale bewaartermijn voor logging volgens NEN 7513 in Twiin?",
+        options: [
+          { id: "a", text: "1 jaar" },
+          { id: "b", text: "3 jaar" },
+          { id: "c", text: "5 jaar" },
+          { id: "d", text: "10 jaar" }
+        ],
+        correct: "c",
+        explanation: "Volgens NEN 7513 moet logging minimaal 5 jaar bewaard worden. Dit omvat wie, welke gegevens, wanneer en met welke grondslag heeft opgevraagd."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Welke certificering is verplicht voor GtK-beheerders?",
+        options: [
+          { id: "a", text: "Alleen NEN 7510" },
+          { id: "b", text: "Alleen ISO 27001" },
+          { id: "c", text: "ISO 27001 én NEN 7510" },
+          { id: "d", text: "SOC 2 Type II" }
+        ],
+        correct: "c",
+        explanation: "GtK-beheerders moeten zowel ISO 27001 als NEN 7510 gecertificeerd zijn, met 24/7 beschikbaarheid (99,5%), incidentrespons binnen 4 uur en jaarlijkse audits."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "Bij een fout in de brondata is de GtK-beheerder verantwoordelijk omdat de data via zijn systeem wordt getransporteerd.",
+        correct: false,
+        explanation: "Bij fouten in brondata is de bronhouder verantwoordelijk. De GtK-beheerder is alleen verantwoordelijk voor transportfouten en systeembeschikbaarheid."
+      }
+    ]
+  },
+
+  "101.3": {
+    moduleId: "101.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welk type certificaat wordt gebruikt voor machine-to-machine authenticatie tussen GtK's?",
+        options: [
+          { id: "a", text: "UZI-pas certificaat" },
+          { id: "b", text: "PKIoverheid Private Services Server certificaat" },
+          { id: "c", text: "SSL/TLS certificaat van een commerciële CA" },
+          { id: "d", text: "Self-signed certificaat" }
+        ],
+        correct: "b",
+        explanation: "Voor mTLS tussen GtK's worden PKIoverheid Private Services Server certificaten gebruikt, uitgegeven door Logius. Dit garandeert de identiteit van aangesloten organisaties."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is de functie van de Twiin-lokalisatiedienst?",
+        options: [
+          { id: "a", text: "Het bepalen van de fysieke locatie van patiënten" },
+          { id: "b", text: "Het vinden welk GtK gegevens over een patiënt kan leveren" },
+          { id: "c", text: "Het routeren van netwerkverkeer" },
+          { id: "d", text: "Het bijhouden van GPS-coördinaten van ziekenhuizen" }
+        ],
+        correct: "b",
+        explanation: "De lokalisatiedienst bepaalt bij welke GtK's mogelijk gegevens over een specifieke patiënt beschikbaar zijn, zodat gericht opgevraagd kan worden."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Welk adresseringsformaat gebruikt Twiin voor het identificeren van organisaties?",
+        options: [
+          { id: "a", text: "IP-adressen" },
+          { id: "b", text: "OID's (Object Identifiers)" },
+          { id: "c", text: "E-mailadressen" },
+          { id: "d", text: "URL's" }
+        ],
+        correct: "b",
+        explanation: "Twiin gebruikt OID's (Object Identifiers) uit het Zorgadresboek voor unieke identificatie van organisaties. Dit zorgt voor consistente adressering ongeacht technische infrastructuur."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "Een GtK kan zowel als Initiating Gateway als Responding Gateway fungeren in IHE-transacties.",
+        correct: true,
+        explanation: "GtK's kunnen beide rollen vervullen: als Initiating Gateway sturen ze queries uit, als Responding Gateway beantwoorden ze queries van andere GtK's."
+      }
+    ]
+  },
+
+  "101.4": {
+    moduleId: "101.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welke IHE-transactie wordt gebruikt voor het opvragen van documenten uit een XDS Registry?",
+        options: [
+          { id: "a", text: "ITI-18 (Registry Stored Query)" },
+          { id: "b", text: "ITI-43 (Retrieve Document Set)" },
+          { id: "c", text: "ITI-41 (Provide and Register)" },
+          { id: "d", text: "ITI-38 (Cross Gateway Query)" }
+        ],
+        correct: "a",
+        explanation: "ITI-18 (Registry Stored Query) wordt gebruikt om metadata op te vragen uit de XDS Registry. ITI-43 is voor het daadwerkelijk ophalen van documenten uit de Repository."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is het verschil tussen XDS en XCA?",
+        options: [
+          { id: "a", text: "XDS is voor beelden, XCA voor documenten" },
+          { id: "b", text: "XDS is voor lokale uitwisseling, XCA voor cross-community uitwisseling" },
+          { id: "c", text: "XDS is nieuwer dan XCA" },
+          { id: "d", text: "Er is geen verschil, het zijn synoniemen" }
+        ],
+        correct: "b",
+        explanation: "XDS (Cross-Enterprise Document Sharing) is voor uitwisseling binnen een Affinity Domain. XCA (Cross-Community Access) bouwt hierop en maakt uitwisseling tussen verschillende communities mogelijk."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Welke actor in XCA fungeert als gateway naar externe communities?",
+        options: [
+          { id: "a", text: "Document Consumer" },
+          { id: "b", text: "Document Repository" },
+          { id: "c", text: "Initiating/Responding Gateway" },
+          { id: "d", text: "Patient Identity Source" }
+        ],
+        correct: "c",
+        explanation: "De Initiating Gateway en Responding Gateway zijn de XCA-actoren die communicatie tussen communities afhandelen. Het GtK vervult deze rollen in Twiin."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "In Twiin wordt voor elk document een SubmissionSet aangemaakt dat metadata bevat over de context van publicatie.",
+        correct: true,
+        explanation: "Een SubmissionSet groepeert documenten die tegelijk worden gepubliceerd en bevat metadata over de publicatiecontext, zoals auteur en tijdstip."
+      }
+    ]
+  },
+
+  "101.5": {
+    moduleId: "101.5",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welk IHE-profiel wordt specifiek gebruikt voor beelduitwisseling in Twiin?",
+        options: [
+          { id: "a", text: "XDS.b" },
+          { id: "b", text: "XDS-I.b (Cross-Enterprise Document Sharing for Imaging)" },
+          { id: "c", text: "PIX" },
+          { id: "d", text: "ATNA" }
+        ],
+        correct: "b",
+        explanation: "XDS-I.b is het IHE-profiel specifiek voor beelduitwisseling. Het combineert XDS-metadata met DICOM-referenties zodat beelden via de XDS-infrastructuur gevonden kunnen worden."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is een WADO-RS request in de context van beelduitwisseling?",
+        options: [
+          { id: "a", text: "Een request om patiënttoestemming te controleren" },
+          { id: "b", text: "Een RESTful request om DICOM-objecten op te halen" },
+          { id: "c", text: "Een authenticatie-request naar de IDP" },
+          { id: "d", text: "Een query naar de XDS Registry" }
+        ],
+        correct: "b",
+        explanation: "WADO-RS (Web Access to DICOM Objects - RESTful Services) is een moderne, REST-gebaseerde methode om DICOM-beelden op te halen, ondersteund in Twiin naast traditionele DICOM C-MOVE."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Welke uitdaging speelt specifiek bij beelduitwisseling vanwege de grootte van DICOM-studies?",
+        options: [
+          { id: "a", text: "Studies zijn te klein voor efficiënte overdracht" },
+          { id: "b", text: "Bandbreedte en performance bij grote datasets (CT/MRI kunnen gigabytes zijn)" },
+          { id: "c", text: "DICOM ondersteunt geen metadata" },
+          { id: "d", text: "Beelden kunnen niet worden gecomprimeerd" }
+        ],
+        correct: "b",
+        explanation: "Beeldstudies kunnen zeer groot zijn (CT/MRI studies van meerdere gigabytes). Dit vereist goede performance-optimalisatie, prefetching, en soms geselecteerde series in plaats van volledige studies."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "In XDS-I.b worden de DICOM-beelden zelf opgeslagen in de XDS Document Repository.",
+        correct: false,
+        explanation: "De DICOM-beelden blijven in een PACS/Imaging Repository. De XDS Repository bevat alleen een 'manifest' document met referenties (retrieve-URLs) naar de beelden."
+      }
+    ]
+  },
+
+  "101.6": {
+    moduleId: "101.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Hoe integreert Twiin met Mitz voor toestemmingsverificatie?",
+        options: [
+          { id: "a", text: "De patiënt moet bij elke opvraging opnieuw toestemming geven" },
+          { id: "b", text: "Het GtK raadpleegt Mitz via een FHIR Consent API" },
+          { id: "c", text: "Toestemming wordt lokaal gecached voor 30 dagen" },
+          { id: "d", text: "Mitz-integratie is optioneel in Twiin" }
+        ],
+        correct: "b",
+        explanation: "Het GtK raadpleegt Mitz real-time via een gestandaardiseerde FHIR Consent API om te verifiëren of de patiënt toestemming heeft gegeven voor de specifieke uitwisseling."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welk autorisatiemodel gebruikt Twiin voor toegangscontrole?",
+        options: [
+          { id: "a", text: "Alleen rol-gebaseerd (RBAC)" },
+          { id: "b", text: "Alleen attribuut-gebaseerd (ABAC)" },
+          { id: "c", text: "Combinatie van RBAC en behandelrelatie-verificatie" },
+          { id: "d", text: "Geen autorisatie, iedereen heeft toegang" }
+        ],
+        correct: "c",
+        explanation: "Twiin combineert RBAC (rolverificatie via UZI) met verificatie van de behandelrelatie en patiënttoestemming via Mitz. Alle drie elementen moeten aanwezig zijn."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Wat gebeurt als een Mitz-toestemmingscheck een 'deny' teruggeeft?",
+        options: [
+          { id: "a", text: "De opvraging wordt toch uitgevoerd met een waarschuwing" },
+          { id: "b", text: "Het GtK blokkeert de opvraging en logt dit" },
+          { id: "c", text: "De patiënt krijgt automatisch een notificatie" },
+          { id: "d", text: "De behandelend arts moet telefonisch toestemming vragen" }
+        ],
+        correct: "b",
+        explanation: "Bij een 'deny' blokkeert het GtK de opvraging volledig. Dit wordt gelogd conform NEN 7513 voor audit-doeleinden."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "In Twiin is er altijd een noodprocedure ('break-the-glass') beschikbaar waarmee de toestemmingscheck kan worden overruled in spoedsituaties.",
+        correct: true,
+        explanation: "Er bestaat een break-the-glass procedure voor noodsituaties. Deze moet expliciet worden geactiveerd, zwaar gelogd, en achteraf verantwoord."
+      }
+    ]
+  },
+
+  "101.7": {
+    moduleId: "101.7",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welke stappen doorloopt een softwareleverancier om Twiin-gekwalificeerd te worden?",
+        options: [
+          { id: "a", text: "Alleen technische tests" },
+          { id: "b", text: "Aanmelding, conformiteitstoets, connectathon, certificering" },
+          { id: "c", text: "Registratie bij de Kamer van Koophandel" },
+          { id: "d", text: "Goedkeuring door het Ministerie van VWS" }
+        ],
+        correct: "b",
+        explanation: "Het kwalificatietraject omvat: aanmelding, documentatie-review, technische conformiteitstoets, deelname aan connectathon, en formele certificering door Stichting Twiin."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is een 'connectathon' in de context van Twiin-certificering?",
+        options: [
+          { id: "a", text: "Een marketingevenement voor leveranciers" },
+          { id: "b", text: "Een live interoperabiliteitstest met andere gekwalificeerde systemen" },
+          { id: "c", text: "Een online cursus over Twiin" },
+          { id: "d", text: "Een beveiligingsaudit" }
+        ],
+        correct: "b",
+        explanation: "Een connectathon is een georganiseerd testevenement waar leveranciers hun systemen live testen met andere gekwalificeerde systemen om interoperabiliteit te valideren."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Hoe lang is een Twiin-kwalificatie geldig?",
+        options: [
+          { id: "a", text: "Onbeperkt" },
+          { id: "b", text: "1 jaar, daarna hercertificering" },
+          { id: "c", text: "2 jaar, met tussentijdse updates bij wijzigingen" },
+          { id: "d", text: "5 jaar" }
+        ],
+        correct: "c",
+        explanation: "Kwalificaties zijn 2 jaar geldig. Bij significante wijzigingen aan het afsprakenstelsel of de software kan tussentijdse hercertificering nodig zijn."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "Een zorgaanbieder kan direct aansluiten op Twiin zonder tussenkomst van een GtK-beheerder.",
+        correct: false,
+        explanation: "Zorgaanbieders sluiten aan via een GtK-beheerder. Ze kunnen niet direct op het Twiin-netwerk aansluiten zonder gekwalificeerde intermediair."
+      }
+    ]
+  },
+
+  "101.8": {
+    moduleId: "101.8",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is typisch de eerste fase in een Twiin-implementatietraject?",
+        options: [
+          { id: "a", text: "Direct beginnen met technische integratie" },
+          { id: "b", text: "Impactanalyse en stakeholder-identificatie" },
+          { id: "c", text: "Inkoop van nieuwe hardware" },
+          { id: "d", text: "Training van eindgebruikers" }
+        ],
+        correct: "b",
+        explanation: "Een Twiin-implementatie begint met een impactanalyse: welke systemen zijn geraakt, welke stakeholders zijn betrokken, wat zijn de organisatorische en juridische implicaties?"
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke test-omgeving moet doorlopen worden voordat een zorgaanbieder live kan op Twiin?",
+        options: [
+          { id: "a", text: "Alleen lokale unit tests" },
+          { id: "b", text: "Acceptatie-omgeving, ketentest, productie-validatie" },
+          { id: "c", text: "Geen specifieke test-omgeving vereist" },
+          { id: "d", text: "Alleen de connectathon" }
+        ],
+        correct: "b",
+        explanation: "Het traject omvat testen in acceptatie-omgeving, ketentest met echte GtK's in testmodus, en productie-validatie voordat volledige productie-toegang wordt verleend."
+      },
+      {
+        id: "q3",
+        type: "multiple-choice",
+        question: "Wat is een kritische succesfactor voor Twiin-implementatie in de organisatie?",
+        options: [
+          { id: "a", text: "Zo snel mogelijk live gaan" },
+          { id: "b", text: "Betrokkenheid van zowel IT als medische staf en management" },
+          { id: "c", text: "Minimale communicatie naar medewerkers" },
+          { id: "d", text: "Uitsluitend focus op techniek" }
+        ],
+        correct: "b",
+        explanation: "Twiin-implementatie raakt IT, medische workflows, privacy en organisatieprocessen. Betrokkenheid van alle stakeholders (IT, medisch, juridisch, management) is essentieel."
+      },
+      {
+        id: "q4",
+        type: "true-false",
+        question: "Na go-live is het belangrijk om monitoring en incidentmanagement in te richten voor continue operatie.",
+        correct: true,
+        explanation: "Post-go-live vereist actieve monitoring van beschikbaarheid, performance en foutmeldingen, plus duidelijke incidentprocedures conform SLA-afspraken met de GtK-beheerder."
+      },
+      {
+        id: "q5",
+        type: "multiple-choice",
+        question: "Hoe lang duurt een typisch Twiin-implementatietraject voor een ziekenhuis?",
+        options: [
+          { id: "a", text: "2-4 weken" },
+          { id: "b", text: "3-6 maanden" },
+          { id: "c", text: "6-12 maanden of langer, afhankelijk van complexiteit" },
+          { id: "d", text: "Altijd precies 1 jaar" }
+        ],
+        correct: "c",
+        explanation: "Implementatietrajecten duren typisch 6-12 maanden of langer, afhankelijk van de complexiteit van bestaande systemen, organisatorische readiness en scope van de aansluiting."
+      }
+    ]
   }
 }
 

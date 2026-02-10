@@ -2175,6 +2175,1147 @@ Technische mogelijkheid betekent niet automatisch wenselijkheid. Ethische kaders
       { name: "WHO Ethics & AI", url: "https://www.who.int" },
       { name: "EU Ethics Guidelines AI", url: "https://digital-strategy.ec.europa.eu" }
     ]
+  },
+
+  // ============================================
+  // EXPERT TRACK: TWIIN DEEP DIVE
+  // ============================================
+
+  "101.1": {
+    title: "Twiin Architectuur & Governance",
+    summary: "Diepgaande analyse van de Twiin-architectuur: het federatieve model, governance-structuur en de relatie met andere nationale infrastructuren.",
+    content: `
+## Architectuuroverzicht
+
+Twiin is geen centraal systeem maar een **federatief vertrouwensnetwerk**. Het verbindt decentrale systemen via een set van afspraken, standaarden en ondersteunende diensten.
+
+### Fundamentele architectuurprincipes
+
+1. **Decentrale data**: Gegevens blijven bij de bron
+2. **Federatieve uitwisseling**: Geen centrale database
+3. **Vertrouwensketen**: Elke deelnemer is gekwalificeerd
+4. **Standaarden-gedreven**: IHE-profielen als basis
+
+## Governance-structuur
+
+### Stichting Twiin
+
+De juridische entiteit die het afsprakenstelsel beheert:
+
+- **Bestuur**: Vertegenwoordigers van koepelorganisaties
+- **Deelnemersraad**: Inspraak van aangesloten partijen
+- **Expertgroepen**: Technisch en juridisch advies
+
+### Rollen in het ecosysteem
+
+| Rol | Verantwoordelijkheid |
+|-----|----------------------|
+| **Twiin-beheerder** | Beheert afsprakenstelsel en kwalificaties |
+| **GtK-beheerder** | Beheert Goed-toegeruste-Knooppunten |
+| **Deelnemer** | Aangesloten zorgaanbieder |
+| **Leverancier** | Levert gekwalificeerde software |
+
+## Relatie met andere infrastructuren
+
+### Twiin en LSP
+
+- LSP: Opt-in verwijsindex voor huisarts/apotheek
+- Twiin: Bredere usecases, andere governance
+- **Complementair**, niet concurrerend
+- Toekomst: Mogelijk convergentie via Wegiz
+
+### Twiin en Mitz
+
+- Mitz: Centrale toestemmingsvoorziening
+- Twiin: Raadpleegt Mitz voor autorisatie
+- **Integratie**: Mitz-adapter in Twiin-knooppunten
+
+### Twiin en Zorgplatform/VIPP
+
+- Regionale samenwerkingsverbanden
+- Kunnen via GtK aansluiten op Twiin
+- **Opschaling**: Van regionaal naar landelijk
+
+## Technische architectuurlagen
+
+\`\`\`
+┌─────────────────────────────────────────────────┐
+│  Applicatielaag (EPD, PACS, Viewer)             │
+├─────────────────────────────────────────────────┤
+│  Integratie-laag (XDS/XCA Adapter)              │
+├─────────────────────────────────────────────────┤
+│  Twiin Knooppunt (GtK)                          │
+│  - Lokalisatie & Adressering                    │
+│  - Authenticatie & Autorisatie                  │
+│  - Toestemmingsverificatie                      │
+├─────────────────────────────────────────────────┤
+│  Netwerk (mTLS, PKI)                            │
+└─────────────────────────────────────────────────┘
+\`\`\`
+
+## Kernbegrippen
+
+- **Federatief netwerk**: Geen centrale partij, gezamenlijke afspraken
+- **GtK**: Goed-toegerust-Knooppunt - toegangspunt tot Twiin
+- **Afsprakenstelsel**: Juridische, organisatorische en technische afspraken
+    `,
+    sources: [
+      { name: "Twiin Architectuurdocument", url: "https://www.twiin.nl/architectuur" },
+      { name: "Twiin Governance", url: "https://www.twiin.nl/governance" }
+    ]
+  },
+
+  "101.2": {
+    title: "Twiin Afsprakenstelsel: Juridisch & Organisatorisch",
+    summary: "Het juridisch en organisatorisch raamwerk van Twiin: overeenkomsten, aansprakelijkheid, dataverwerking en verantwoordelijkheden.",
+    content: `
+## Juridisch raamwerk
+
+### Deelnemersovereenkomst
+
+Elke deelnemer tekent een overeenkomst die regelt:
+
+- **Verplichtingen**: Wat moet je doen?
+- **Rechten**: Wat mag je verwachten?
+- **Aansprakelijkheid**: Wie is verantwoordelijk bij incidenten?
+- **Exit**: Hoe stop je met deelname?
+
+### Verwerkersconstructie
+
+Cruciaal voor AVG-compliance:
+
+\`\`\`
+Zorgaanbieder A ──────> GtK A (verwerker) ──────> Twiin netwerk
+       │                      │
+       └── Verwerkings-      └── Subverwerkers-
+           overeenkomst          overeenkomst
+\`\`\`
+
+**Let op**: De GtK-beheerder is verwerker, niet verwerkingsverantwoordelijke. De zorgaanbieder blijft verantwoordelijk.
+
+## Aansprakelijkheidsverdeling
+
+### Principe: Ieder draagt eigen verantwoordelijkheid
+
+| Scenario | Verantwoordelijke |
+|----------|-------------------|
+| Fout in brondata | Bronhouder |
+| Fout in transport | GtK-beheerder |
+| Onterechte opvraging | Opvragende partij |
+| Systeemuitval GtK | GtK-beheerder (SLA) |
+
+### Escrow en continuïteit
+
+- Software in escrow bij faillissement leverancier
+- Continuïteitsplan verplicht voor GtK-beheerders
+- Minimale beschikbaarheidseisen in SLA
+
+## Dataverwerking
+
+### Grondslag gegevensuitwisseling
+
+Twiin faciliteert, maar de **grondslag ligt bij de zorgrelatie**:
+
+1. Behandelrelatie (WGBO)
+2. Toestemming patiënt (Wabvpz/Mitz)
+3. Wettelijke verplichting (bijv. Wegiz)
+
+### Logging en auditing
+
+Verplichte registratie:
+
+- Wie vraagt op?
+- Welke gegevens?
+- Op welk moment?
+- Met welke grondslag?
+
+Bewaartermijn: minimaal 5 jaar (NEN 7513).
+
+## Organisatorische eisen
+
+### Eisen aan deelnemers
+
+- Rechtspersoon in Nederland of EU
+- Zorgaanbieder of ondersteunende dienst
+- NEN 7510 gecertificeerd of aantoonbaar compliant
+- Getekende deelnemersovereenkomst
+
+### Eisen aan GtK-beheerders
+
+- ISO 27001 + NEN 7510 certificering
+- 24/7 beschikbaarheid (99,5%)
+- Incidentrespons binnen 4 uur
+- Jaarlijkse audit
+
+## Geschillenbeslechting
+
+1. **Eerst**: Onderling overleg
+2. **Dan**: Mediatie via Twiin
+3. **Laatste**: Arbitrage of rechter
+
+## Kernbegrippen
+
+- **Verwerkingsverantwoordelijke**: Partij die doel en middelen bepaalt
+- **Verwerker**: Partij die namens verantwoordelijke verwerkt
+- **Grondslag**: Juridische basis voor gegevensverwerking
+    `,
+    sources: [
+      { name: "Twiin Afsprakenstelsel", url: "https://www.twiin.nl/afsprakenstelsel" },
+      { name: "Twiin Deelnemersovereenkomst", url: "https://www.twiin.nl/deelname" }
+    ]
+  },
+
+  "101.3": {
+    title: "Technische Componenten: GtK, Adressering, Lokalisatie",
+    summary: "Technische deep-dive in de kerncomponenten van Twiin: het Goed-toegerust-Knooppunt, adresseringsmechanismen en lokalisatiediensten.",
+    content: `
+## Goed-toegerust-Knooppunt (GtK)
+
+### Wat is een GtK?
+
+Het GtK is het technische toegangspunt tot Twiin:
+
+- **Gateway-functie**: Vertaalt lokale systemen naar Twiin-standaarden
+- **Beveiligingslaag**: mTLS, certificaatbeheer
+- **Toestemmingscheck**: Raadpleegt Mitz
+- **Logging**: Registreert alle transacties
+
+### GtK-architectuur
+
+\`\`\`
+┌─────────────────────────────────────────────┐
+│                    GtK                       │
+├─────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────────────┐   │
+│  │ XDS/XCA     │  │ Toestemming-        │   │
+│  │ Handler     │  │ verificatie         │   │
+│  └─────────────┘  └─────────────────────┘   │
+│  ┌─────────────┐  ┌─────────────────────┐   │
+│  │ Lokalisatie │  │ Audit & Logging     │   │
+│  │ Client      │  │                     │   │
+│  └─────────────┘  └─────────────────────┘   │
+│  ┌─────────────────────────────────────────┐│
+│  │ mTLS / PKI / Certificaatbeheer          ││
+│  └─────────────────────────────────────────┘│
+└─────────────────────────────────────────────┘
+\`\`\`
+
+### GtK-varianten
+
+| Type | Kenmerken | Geschikt voor |
+|------|-----------|---------------|
+| **Lokale GtK** | Op eigen infrastructuur | Grote ziekenhuizen |
+| **Shared GtK** | Gedeeld via leverancier | Kleinere instellingen |
+| **Cloud GtK** | Volledig gehost | Wie geen beheer wil |
+
+## Adresseringsmodel
+
+### Logical Endpoint
+
+Elke deelnemer heeft een uniek adres:
+
+\`\`\`
+urn:twiin:participant:<OID>:<organizationId>
+\`\`\`
+
+Voorbeeld:
+\`\`\`
+urn:twiin:participant:2.16.840.1.113883.2.4.3:1234567890
+\`\`\`
+
+### Endpoint Discovery
+
+Hoe vind je de technische endpoint?
+
+1. **Logisch adres** → Zorgadresboek/Twiin Registry
+2. **Opzoeken** → Fysiek endpoint (URL)
+3. **Certificaat** → Valideren identiteit
+
+## Lokalisatiedienst
+
+### Probleem
+
+Waar zijn gegevens van patiënt X beschikbaar?
+
+### Oplossing: Cross-Community Patient Discovery
+
+IHE XCPD-profiel:
+
+\`\`\`
+1. GtK A stuurt: "Heeft u gegevens van BSN 123456789?"
+2. Broadcast naar alle bekende communities
+3. GtK B, C, D antwoorden: "Ja" of "Nee"
+4. GtK A verzamelt antwoorden
+\`\`\`
+
+### Caching en performance
+
+- **Patient Index Cache**: Lokaal bijhouden bekende relaties
+- **Tijdelijke cache**: Voorkomt herhaalde lookups
+- **Push-notificaties**: (Roadmap) Proactieve updates
+
+## PKI en Certificaten
+
+### Certificaathiërarchie
+
+\`\`\`
+Twiin Root CA
+    │
+    ├── Twiin Issuing CA (Organisatie-certificaten)
+    │       │
+    │       └── GtK-certificaat per deelnemer
+    │
+    └── (Optioneel) Persoons-certificaten (UZI)
+\`\`\`
+
+### Mutual TLS (mTLS)
+
+Beide partijen authenticeren:
+
+1. Client stuurt certificaat
+2. Server valideert tegen Twiin CA
+3. Server stuurt eigen certificaat
+4. Client valideert
+5. Beveiligde verbinding
+
+## Kernbegrippen
+
+- **GtK**: Goed-toegerust-Knooppunt - technisch toegangspunt
+- **XCPD**: Cross-Community Patient Discovery - patiëntlokalisatie
+- **mTLS**: Mutual TLS - tweezijdige authenticatie
+    `,
+    sources: [
+      { name: "Twiin Technische Specificaties", url: "https://www.twiin.nl/techniek" },
+      { name: "IHE ITI Profiles", url: "https://www.ihe.net/resources/technical_frameworks/" }
+    ]
+  },
+
+  "101.4": {
+    title: "XDS/XCA Implementatie in Twiin",
+    summary: "Gedetailleerde implementatiegids voor XDS en XCA binnen Twiin: transacties, metadata, query's en foutafhandeling.",
+    content: `
+## IHE XDS/XCA Basis
+
+### XDS (Cross-Enterprise Document Sharing)
+
+Binnen één "affinity domain":
+
+- **Document Source**: Publiceert documenten
+- **Document Repository**: Slaat documenten op
+- **Document Registry**: Index van metadata
+- **Document Consumer**: Vraagt documenten op
+
+### XCA (Cross-Community Access)
+
+Tussen affinity domains:
+
+- **Initiating Gateway**: Start de vraag
+- **Responding Gateway**: Beantwoordt de vraag
+- **Federatie**: Transparant voor eindgebruiker
+
+## Twiin XDS/XCA Profiel
+
+### Ondersteunde transacties
+
+| Transactie | ITI-code | Beschrijving |
+|------------|----------|--------------|
+| Registry Stored Query | ITI-18 | Zoeken in registry |
+| Retrieve Document Set | ITI-43 | Ophalen documenten |
+| Cross Gateway Query | ITI-38 | Query naar andere community |
+| Cross Gateway Retrieve | ITI-39 | Retrieve van andere community |
+| Patient Identity Feed | ITI-44 | Patiëntidentificatie sync |
+
+### Query-parameters
+
+Verplichte Twiin-parameters:
+
+\`\`\`xml
+<AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d">
+  <Slot name="$XDSDocumentEntryPatientId">
+    <ValueList>
+      <Value>'123456789^^^&amp;2.16.528.1.1007.3.1&amp;ISO'</Value>
+    </ValueList>
+  </Slot>
+  <Slot name="$XDSDocumentEntryStatus">
+    <ValueList>
+      <Value>('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')</Value>
+    </ValueList>
+  </Slot>
+</AdhocQuery>
+\`\`\`
+
+## Metadata-vereisten
+
+### DocumentEntry attributen
+
+| Attribuut | Verplicht | Beschrijving |
+|-----------|-----------|--------------|
+| uniqueId | Ja | Unieke document-ID (OID) |
+| patientId | Ja | Patiënt-ID met BSN |
+| classCode | Ja | Type document (bijv. radiology report) |
+| typeCode | Ja | Specifiek documenttype |
+| formatCode | Ja | Technisch formaat |
+| creationTime | Ja | Aanmaakdatum |
+| healthcareFacilityTypeCode | Ja | Type instelling |
+| practiceSettingCode | Ja | Specialisme |
+
+### Twiin-specifieke codes
+
+\`\`\`
+classCode:
+  - 18748-4 (Diagnostic Imaging Report)
+  - 11502-2 (Laboratory Report)
+  - 18842-5 (Discharge Summary)
+
+formatCode:
+  - urn:ihe:rad:TEXT
+  - urn:ihe:lab:xd-lab:2008
+  - urn:nl:nictiz:2017:cda-bgz
+\`\`\`
+
+## Implementatiedetails
+
+### SOAP Binding
+
+Alle berichten via SOAP 1.2:
+
+\`\`\`xml
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Header>
+    <wsa:Action>urn:ihe:iti:2007:RegistryStoredQuery</wsa:Action>
+    <wsa:MessageID>urn:uuid:...</wsa:MessageID>
+  </soap:Header>
+  <soap:Body>
+    <!-- Query content -->
+  </soap:Body>
+</soap:Envelope>
+\`\`\`
+
+### Error Handling
+
+Standaard error-responses:
+
+| Code | Betekenis | Actie |
+|------|-----------|-------|
+| XDSRegistryError | Registry niet bereikbaar | Retry met backoff |
+| XDSRepositoryError | Repository niet bereikbaar | Gebruik alternatief |
+| XDSUnknownPatientId | Patiënt niet gevonden | Controleer ID-formaat |
+| XDSAuthorizationDenied | Geen toestemming | Check Mitz-status |
+
+### Timeout en Retry
+
+Twiin-configuratie:
+
+- **Query timeout**: 30 seconden
+- **Retrieve timeout**: 120 seconden (grote documenten)
+- **Retry attempts**: 3x met exponential backoff
+- **Circuit breaker**: Na 5 failures in 1 minuut
+
+## Kernbegrippen
+
+- **Affinity Domain**: Verzameling samenwerkende partijen
+- **Registry**: Index van document-metadata
+- **Repository**: Opslag van documenten zelf
+- **Gateway**: Vertaalpunt tussen communities
+    `,
+    sources: [
+      { name: "IHE XDS Profile", url: "https://wiki.ihe.net/index.php/Cross-Enterprise_Document_Sharing" },
+      { name: "IHE XCA Profile", url: "https://wiki.ihe.net/index.php/Cross-Community_Access" }
+    ]
+  },
+
+  "101.5": {
+    title: "Beelduitwisseling: XDS-I en DICOM in Twiin",
+    summary: "Technische implementatie van beelduitwisseling via Twiin: XDS-I profielen, DICOM manifesten, WADO-RS en performance-optimalisatie.",
+    content: `
+## XDS-I: Imaging Document Sharing
+
+### Verschil met standaard XDS
+
+XDS-I is geoptimaliseerd voor medische beelden:
+
+- **Manifesten** in plaats van volledige beelden in XDS
+- **DICOM-referenties** naar beelden in PACS
+- **On-demand retrieval** via WADO
+
+### Document-types in XDS-I
+
+| Type | Beschrijving | Formaat |
+|------|--------------|---------|
+| KOS (Key Object Selection) | DICOM manifest | application/dicom |
+| PDF Report | Radiologie verslag | application/pdf |
+| CDA Report | Gestructureerd verslag | text/xml |
+
+## DICOM Manifest (KOS)
+
+### Structuur
+
+\`\`\`
+Key Object Selection Document
+├── Patient Module
+│   └── Patient ID, Name, Birth Date
+├── Study Module
+│   └── Study Instance UID, Study Date
+├── Series Module
+│   └── Series Instance UID, Modality
+└── Current Requested Procedure Evidence
+    └── Referenced Series Sequence
+        └── Referenced SOP Instances
+\`\`\`
+
+### Voorbeeld Reference
+
+\`\`\`
+Referenced SOP Class UID: 1.2.840.10008.5.1.4.1.1.2 (CT Image)
+Referenced SOP Instance UID: 1.2.840.113619.2.55.3.123456789
+Retrieve Location UID: urn:twiin:repository:12345
+\`\`\`
+
+## Retrieval Mechanismen
+
+### WADO-RS (RESTful)
+
+Moderne manier van ophalen:
+
+\`\`\`
+GET /studies/{studyUID}/series/{seriesUID}/instances/{instanceUID}
+Accept: application/dicom; transfer-syntax=*
+
+Response: multipart/related; type="application/dicom"
+\`\`\`
+
+### WADO-URI (Legacy)
+
+Oudere URL-gebaseerde retrieval:
+
+\`\`\`
+GET /wado?requestType=WADO
+    &studyUID=1.2.3.4.5
+    &seriesUID=1.2.3.4.5.6
+    &objectUID=1.2.3.4.5.6.7
+    &contentType=application/dicom
+\`\`\`
+
+### Performance Tips
+
+| Techniek | Effect |
+|----------|--------|
+| Transfer Syntax negotiation | Vermijd transcodering |
+| Compressed transfer | Sneller transport |
+| Thumbnail first | Snelle preview |
+| Background prefetch | Anticipeer op viewing |
+
+## Twiin-specifieke implementatie
+
+### Flow: Beelden opvragen
+
+\`\`\`
+1. XCA Query naar andere community
+   └─> "Welke studies voor patiënt X?"
+
+2. Response: DocumentEntry met KOS
+   └─> Bevat DICOM referenties
+
+3. Retrieve KOS document
+   └─> Manifest met instance UIDs
+
+4. WADO-RS calls naar source PACS
+   └─> Ophalen individuele beelden
+
+5. Lokale viewing/cache
+   └─> Display aan gebruiker
+\`\`\`
+
+### Cross-border beelduitwisseling
+
+- **IHE XCA-I**: Cross-community imaging
+- **Rendering**: Lokaal of via source
+- **Cached copies**: Tijdelijke lokale opslag
+
+## Viewer-integratie
+
+### Zero Footprint Viewer
+
+Browser-gebaseerd bekijken:
+
+\`\`\`javascript
+// Launch viewer with Twiin context
+viewer.open({
+  studyInstanceUID: "1.2.3.4.5",
+  accessToken: twiinToken,
+  wadoEndpoint: "https://gtk.example.nl/wado"
+});
+\`\`\`
+
+### Lokale PACS-integratie
+
+Via worklist of prefetch:
+
+1. Query Twiin voor relevante studies
+2. Push naar lokale PACS/cache
+3. Radiologie opent vanuit bekende workflow
+
+## Kernbegrippen
+
+- **KOS**: Key Object Selection - DICOM manifest document
+- **WADO**: Web Access to DICOM Objects
+- **Transfer Syntax**: Encoding van DICOM pixels
+- **Zero Footprint**: Viewer zonder installatie
+    `,
+    sources: [
+      { name: "IHE XDS-I.b Profile", url: "https://wiki.ihe.net/index.php/XDS-I.b" },
+      { name: "DICOM WADO-RS", url: "https://www.dicomstandard.org/using/dicomweb" }
+    ]
+  },
+
+  "101.6": {
+    title: "Toestemming & Autorisatie in Twiin",
+    summary: "Implementatie van toestemmingsbeheer in Twiin: Mitz-integratie, XACML policies, consent-verificatie en uitzonderingsscenario's.",
+    content: `
+## Toestemmingsmodel
+
+### Juridisch kader
+
+De toestemmingsketen:
+
+\`\`\`
+WGBO (Behandelrelatie)
+    │
+    ├── Wabvpz (Elektronische uitwisseling)
+    │       │
+    │       └── Specifieke toestemming vereist
+    │
+    └── Wegiz (Verplichte uitwisseling)
+            │
+            └── Geen toestemming nodig (wettelijk bepaald)
+\`\`\`
+
+### Toestemmingsniveaus
+
+| Niveau | Beschrijving | Bron |
+|--------|--------------|------|
+| Generiek | Algemene toestemming voor type uitwisseling | Mitz |
+| Specifiek | Per zorgaanbieder/type gegeven | Mitz |
+| Incidenteel | Eenmalige toestemming | Lokaal vastgelegd |
+| Nood | Zonder toestemming in noodsituatie | Breaking the glass |
+
+## Mitz-integratie
+
+### Architectuur
+
+\`\`\`
+┌─────────────────┐     ┌─────────────────┐
+│   GtK Client    │────>│  Mitz Adapter   │
+└─────────────────┘     └────────┬────────┘
+                                 │
+                                 v
+                        ┌─────────────────┐
+                        │  Mitz Centraal  │
+                        └─────────────────┘
+\`\`\`
+
+### Mitz Request
+
+\`\`\`json
+{
+  "bsn": "123456789",
+  "requestingOrganization": "urn:oid:2.16.840.1.113883.2.4.3.1234",
+  "dataCategory": "medical-imaging",
+  "purpose": "treatment"
+}
+\`\`\`
+
+### Mitz Response
+
+\`\`\`json
+{
+  "status": "CONSENT_GRANTED",
+  "validUntil": "2025-12-31T23:59:59Z",
+  "restrictions": [],
+  "auditId": "abc123-def456"
+}
+\`\`\`
+
+## XACML Policy Engine
+
+### Policy Structure
+
+\`\`\`xml
+<Policy PolicyId="twiin-access-policy">
+  <Target>
+    <Resource>medical-data</Resource>
+  </Target>
+
+  <Rule RuleId="treatment-access" Effect="Permit">
+    <Condition>
+      <Apply FunctionId="and">
+        <Apply FunctionId="treatment-relationship-exists"/>
+        <Apply FunctionId="mitz-consent-valid"/>
+      </Apply>
+    </Condition>
+  </Rule>
+
+  <Rule RuleId="emergency-access" Effect="Permit">
+    <Condition>
+      <Apply FunctionId="emergency-flag-set"/>
+    </Condition>
+  </Rule>
+
+  <Rule RuleId="default-deny" Effect="Deny"/>
+</Policy>
+\`\`\`
+
+### Decision Flow
+
+1. **Policy Information Point (PIP)**: Verzamelt attributen
+2. **Policy Decision Point (PDP)**: Evalueert policies
+3. **Policy Enforcement Point (PEP)**: Handhaaft beslissing
+
+## Breaking the Glass (Noodprocedure)
+
+### Wanneer toegestaan?
+
+- Acute medische noodsituatie
+- Patiënt niet in staat toestemming te geven
+- Geen behandelrelatie maar wel noodzaak
+
+### Implementatie
+
+\`\`\`
+1. Zorgverlener activeert "nood"-optie
+2. Verplichte invoer: reden voor noodtoegang
+3. Systeem logt uitgebreid:
+   - Wie, wanneer, waarom
+   - Welke gegevens ingezien
+4. Achteraf: review door FG/medisch manager
+5. Patiënt kan inzien via Mitz
+\`\`\`
+
+### Audit Trail
+
+\`\`\`json
+{
+  "eventType": "EMERGENCY_ACCESS",
+  "timestamp": "2025-02-10T15:30:00Z",
+  "practitioner": {
+    "uzi": "2.16.528.1.1007.3.1.1234567",
+    "name": "Dr. Jansen",
+    "role": "SEH-arts"
+  },
+  "patient": {
+    "bsn": "123456789"
+  },
+  "justification": "Bewusteloze patiënt, onduidelijke medicatie",
+  "dataAccessed": ["medication-overview", "allergies"]
+}
+\`\`\`
+
+## Autorisatie voor systemen
+
+### Rol-gebaseerde toegang
+
+\`\`\`
+Rol: Radioloog
+├── Mag inzien: Alle radiologie
+├── Mag inzien: Relevante medicatie
+└── Mag NIET: Psychiatrische gegevens (tenzij relevant)
+
+Rol: Huisarts
+├── Mag inzien: Alles van eigen patiënten
+└── Mag NIET: Patiënten zonder inschrijving
+\`\`\`
+
+### Attribute-Based Access Control (ABAC)
+
+Moderne aanpak in Twiin:
+
+- Niet alleen rol, maar ook context
+- Welke afdeling, welk tijdstip, welke locatie
+- Dynamische policy-evaluatie
+
+## Kernbegrippen
+
+- **Mitz**: Centrale toestemmingsvoorziening
+- **Breaking the glass**: Noodtoegang zonder toestemming
+- **XACML**: eXtensible Access Control Markup Language
+- **ABAC**: Attribute-Based Access Control
+    `,
+    sources: [
+      { name: "Mitz Technische Specificatie", url: "https://www.mitz.nl/techniek" },
+      { name: "IHE BPPC Profile", url: "https://wiki.ihe.net/index.php/Basic_Patient_Privacy_Consents" }
+    ]
+  },
+
+  "101.7": {
+    title: "Certificering & Kwalificatie voor Twiin",
+    summary: "Het kwalificatieproces voor Twiin-deelname: technische testen, conformiteitseisen, audits en onderhoud van kwalificatie.",
+    content: `
+## Kwalificatieproces
+
+### Fasen
+
+\`\`\`
+1. Vooraanmelding
+   └── Intentie tot deelname, globale check
+
+2. Voorbereiding
+   └── Technische voorbereiding, testomgeving
+
+3. Kwalificatietesten
+   └── Functionele tests, security tests
+
+4. Audit
+   └── Beoordeling door onafhankelijke auditor
+
+5. Toetreding
+   └── Ondertekening, productie-aansluiting
+
+6. Onderhoud
+   └── Jaarlijkse hercertificering
+\`\`\`
+
+### Doorlooptijd
+
+| Fase | Indicatieve duur |
+|------|------------------|
+| Voorbereiding | 2-4 maanden |
+| Kwalificatietesten | 1-2 maanden |
+| Audit | 2-4 weken |
+| Toetreding | 2 weken |
+| **Totaal** | **4-8 maanden** |
+
+## Technische Kwalificatie
+
+### Testscenario's
+
+De kwalificatietestset omvat:
+
+1. **Basisconnectiviteit**
+   - mTLS handshake
+   - Certificaatvalidatie
+   - Endpoint discovery
+
+2. **XDS/XCA Transacties**
+   - Registry Stored Query
+   - Retrieve Document Set
+   - Cross Gateway Query/Retrieve
+
+3. **Beelduitwisseling**
+   - XDS-I manifest handling
+   - WADO retrieval
+   - DICOM conformance
+
+4. **Toestemmingsverificatie**
+   - Mitz-integratie
+   - Consent enforcement
+   - Emergency access flow
+
+### Testreferenties
+
+Twiin levert:
+- **Testsuite**: Geautomatiseerde testscripts
+- **Referentie-implementatie**: Bekende goede responses
+- **Testpatiënten**: Fictieve BSN's voor test
+
+### Conformiteitseisen
+
+\`\`\`
+[ ] IHE XDS.b volledig conform
+[ ] IHE XCA volledig conform
+[ ] IHE XDS-I.b (indien beelduitwisseling)
+[ ] Twiin metadata-profiel
+[ ] Twiin security-profiel
+[ ] NEN 7512 (transport)
+[ ] NEN 7513 (logging)
+\`\`\`
+
+## Security Audit
+
+### Scope
+
+- **Penetratietest**: Externe partij test beveiliging
+- **Code review**: Bij maatwerksoftware
+- **Configuratie-audit**: Infrastructuur settings
+- **Proces-audit**: Incident response, change management
+
+### Bevindingen classificatie
+
+| Klasse | Beschrijving | Actie |
+|--------|--------------|-------|
+| Kritiek | Direct exploiteerbaar | Blokkeer tot opgelost |
+| Hoog | Significant risico | Oplossen binnen 2 weken |
+| Midden | Beperkt risico | Oplossen binnen 3 maanden |
+| Laag | Aanbeveling | Optioneel |
+
+## Organisatorische Kwalificatie
+
+### Eisen aan de organisatie
+
+\`\`\`
+[ ] Rechtspersoon (NL of EU)
+[ ] Zorgaanbieder of ondersteunend
+[ ] Bestuurlijk commitment (getekend)
+[ ] Privacy officer aangewezen
+[ ] Security officer aangewezen
+[ ] Incidentprocedure operationeel
+\`\`\`
+
+### Eisen aan personeel
+
+- Minimaal 2 technische beheerders getraind
+- Functioneel beheerder beschikbaar
+- 24/7 bereikbaarheid voor kritieke incidenten
+
+## Onderhoud van Kwalificatie
+
+### Jaarlijkse hercertificering
+
+- Self-assessment formulier
+- Bevestiging van compliance
+- Steekproefsgewijze audit
+
+### Wijzigingsprocedure
+
+Bij significante wijzigingen:
+
+1. Melden bij Twiin-beheerder
+2. Impact assessment
+3. Eventueel: hertest specifieke onderdelen
+4. Vrijgave voor productie
+
+### Intrekking kwalificatie
+
+Gronden voor intrekking:
+- Herhaalde non-compliance
+- Beveiligingsincident zonder adequate response
+- Financieel faillissement
+- Eigen verzoek
+
+## Kernbegrippen
+
+- **Kwalificatie**: Bewijs van voldoen aan eisen
+- **Conformiteit**: Technische overeenkomst met specificaties
+- **Hercertificering**: Periodieke herbevestiging
+    `,
+    sources: [
+      { name: "Twiin Kwalificatiehandboek", url: "https://www.twiin.nl/kwalificatie" },
+      { name: "IHE Connectathon", url: "https://www.ihe.net/participate/connectathon/" }
+    ]
+  },
+
+  "101.8": {
+    title: "Twiin Implementatietraject: Van Ontwerp tot Productie",
+    summary: "Praktische gids voor het implementeren van Twiin: projectfasering, technische architectuurkeuzes, integratie met bestaande systemen en go-live.",
+    content: `
+## Projectfasering
+
+### Fase 1: Initiatie (4-6 weken)
+
+**Doelen:**
+- Stakeholder alignment
+- Scope definitie
+- Business case
+
+**Activiteiten:**
+\`\`\`
+[ ] Identificeer usecases (beelden, documenten, medicatie)
+[ ] Inventariseer huidige systemen (EPD, PACS, etc.)
+[ ] Bepaal GtK-strategie (lokaal, shared, cloud)
+[ ] Stel projectteam samen
+[ ] Maak globale planning
+\`\`\`
+
+### Fase 2: Ontwerp (6-8 weken)
+
+**Doelen:**
+- Technische architectuur
+- Integratiestrategie
+- Security design
+
+**Deliverables:**
+- Solution Architecture Document (SAD)
+- Integratie-ontwerp per bronsysteem
+- Security & Privacy Impact Assessment
+
+### Fase 3: Realisatie (12-16 weken)
+
+**Doelen:**
+- Implementatie GtK
+- Integratie met bronsystemen
+- Testomgeving operationeel
+
+**Parallelle workstreams:**
+\`\`\`
+Workstream 1: GtK Setup
+├── Infrastructuur provisioning
+├── GtK software installatie
+├── Certificaatbeheer inrichten
+└── Connectiviteit met Twiin
+
+Workstream 2: Bronsysteem Integratie
+├── EPD/ZIS integratie
+├── PACS/RIS integratie
+├── Document repository
+└── Metadata mapping
+
+Workstream 3: Autorisatie & Consent
+├── Mitz-koppeling
+├── Gebruikersautorisatie
+└── Logging implementatie
+\`\`\`
+
+### Fase 4: Test & Kwalificatie (8-12 weken)
+
+**Testlagen:**
+1. Unit tests (component level)
+2. Integratie tests (end-to-end flows)
+3. Kwalificatietesten (Twiin testset)
+4. User Acceptance Test (klinische scenario's)
+5. Security test (pentest)
+
+### Fase 5: Pilot & Rollout (4-8 weken)
+
+**Gefaseerde uitrol:**
+\`\`\`
+Week 1-2: Pilot met beperkte gebruikersgroep
+Week 3-4: Evaluatie en bijsturing
+Week 5-6: Uitrol naar alle gebruikers
+Week 7-8: Hypercare en overdracht naar beheer
+\`\`\`
+
+## Technische Architectuurkeuzes
+
+### GtK Deployment Opties
+
+**Optie A: On-premise GtK**
+\`\`\`
+Voordelen:
++ Volledige controle
++ Geen cloud-afhankelijkheid
++ Mogelijk lagere latency
+
+Nadelen:
+- Eigen beheer nodig
+- Hogere initiële investering
+- Zelf verantwoordelijk voor updates
+\`\`\`
+
+**Optie B: Leverancier-hosted GtK**
+\`\`\`
+Voordelen:
++ Beheer uitbesteed
++ Snellere implementatie
++ Gedeelde kosten
+
+Nadelen:
+- Afhankelijkheid van leverancier
+- Minder controle
+- Mogelijk vendor lock-in
+\`\`\`
+
+### Integratie-patronen
+
+**Patroon 1: Directe EPD-integratie**
+\`\`\`
+EPD ──> XDS Adapter ──> GtK ──> Twiin
+
+Beste voor: Grote instellingen met technische capaciteit
+\`\`\`
+
+**Patroon 2: Via Integration Engine**
+\`\`\`
+EPD ──> Mirth/Rhapsody ──> XDS Adapter ──> GtK
+
+Beste voor: Complexe omgevingen met meerdere bronnen
+\`\`\`
+
+**Patroon 3: Vendor-native**
+\`\`\`
+EPD (met ingebouwde XDS) ──> GtK
+
+Beste voor: Als leverancier dit ondersteunt
+\`\`\`
+
+## Integratie met Bestaande Systemen
+
+### EPD/ZIS Integratie
+
+Key integration points:
+- **Patient context**: Lanceer Twiin vanuit patiëntdossier
+- **Document feed**: Push nieuwe documenten naar Twiin
+- **Query results**: Toon externe documenten in EPD
+
+### PACS Integratie
+
+\`\`\`
+Scenario: Radioloog wil externe beelden zien
+
+1. EPD toont "Externe beelden beschikbaar"
+2. Klik opent Twiin query
+3. KOS-manifest wordt opgehaald
+4. WADO retrieval naar viewer
+5. Beelden getoond in bekende viewer
+\`\`\`
+
+### Viewer Strategie
+
+| Optie | Voordeel | Nadeel |
+|-------|----------|--------|
+| Bestaande PACS viewer | Bekende workflow | Complexe integratie |
+| Zero-footprint viewer | Eenvoudig te deployen | Extra tool voor gebruiker |
+| Hybrid | Flexibiliteit | Meer onderhoud |
+
+## Go-Live Checklist
+
+\`\`\`
+Technisch:
+[ ] Alle kwalificatietesten geslaagd
+[ ] Productie-certificaten geïnstalleerd
+[ ] Monitoring operationeel
+[ ] Backup & recovery getest
+
+Organisatorisch:
+[ ] Gebruikers getraind
+[ ] Helpdesk voorbereid
+[ ] Incidentprocedure getest
+[ ] Go/no-go beslissing genomen
+
+Juridisch:
+[ ] Deelnemersovereenkomst getekend
+[ ] DPIA afgerond
+[ ] Verwerkersovereenkomsten compleet
+\`\`\`
+
+## Valkuilen en Lessons Learned
+
+### Veelvoorkomende issues
+
+1. **Metadata mapping onderschat**
+   - Plan extra tijd voor mapping
+   - Test met echte data
+
+2. **Toestemmingsflow complex**
+   - Begin vroeg met Mitz-integratie
+   - Test edge cases
+
+3. **Performance bij grote datasets**
+   - Implementeer caching
+   - Overweeg prefetching
+
+4. **Gebruikersadoptie**
+   - Betrek eindgebruikers vroeg
+   - Maak workflow intuïtief
+
+## Kernbegrippen
+
+- **SAD**: Solution Architecture Document
+- **Hypercare**: Intensieve ondersteuning na go-live
+- **Prefetching**: Proactief ophalen van data
+    `,
+    sources: [
+      { name: "Twiin Implementatiehandleiding", url: "https://www.twiin.nl/implementatie" },
+      { name: "IHE Implementation Guide", url: "https://www.ihe.net/resources/implementation_resources/" }
+    ]
   }
 }
 
