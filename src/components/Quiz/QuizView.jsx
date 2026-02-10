@@ -8,7 +8,7 @@ export default function QuizView() {
   const { moduleId } = useParams()
   const quiz = getQuiz(moduleId)
   const module = getModule(moduleId)
-  const { saveQuizScore, getQuizScore } = useProgress()
+  const { saveQuizScore, getQuizScore, markModuleComplete } = useProgress()
 
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
@@ -46,13 +46,16 @@ export default function QuizView() {
       // Calculate score
       const score = quiz.questions.reduce((acc, q) => {
         const userAnswer = answers[q.id]
-        if (q.type === 'true-false') {
-          return acc + (userAnswer === q.correct ? 1 : 0)
-        } else {
-          return acc + (userAnswer === q.correct ? 1 : 0)
-        }
+        return acc + (userAnswer === q.correct ? 1 : 0)
       }, 0)
       saveQuizScore(moduleId, score, quiz.questions.length)
+
+      // Markeer module als voltooid bij 70% of hoger
+      const percentage = Math.round((score / quiz.questions.length) * 100)
+      if (percentage >= 70) {
+        markModuleComplete(moduleId)
+      }
+
       setShowResult(true)
     }
   }
