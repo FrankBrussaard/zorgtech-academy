@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-zorg-50: #f0f9ff;
+  --color-zorg-100: #e0f2fe;
+  --color-zorg-200: #bae6fd;
+  --color-zorg-300: #7dd3fc;
+  --color-zorg-400: #38bdf8;
+  --color-zorg-500: #0ea5e9;
+  --color-zorg-600: #0284c7;
+  --color-zorg-700: #0369a1;
+  --color-zorg-800: #075985;
+  --color-zorg-900: #0c4a6e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-900);
+}
