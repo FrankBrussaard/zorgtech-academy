@@ -5848,9 +5848,9 @@ Reflex Trigger: High EWS Alert
       }, {
         "type": "FactSet",
         "facts": [
-          { "title": "Patient", "value": "${patient_id}" },
-          { "title": "Ward", "value": "${ward}" },
-          { "title": "EWS Score", "value": "${ews_total}" }
+          { "title": "Patient", "value": "\${patient_id}" },
+          { "title": "Ward", "value": "\${ward}" },
+          { "title": "EWS Score", "value": "\${ews_total}" }
         ]
       }]
     }
