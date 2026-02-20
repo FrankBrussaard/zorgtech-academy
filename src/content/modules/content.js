@@ -3316,6 +3316,6536 @@ Juridisch:
       { name: "Twiin Implementatiehandleiding", url: "https://www.twiin.nl/implementatie" },
       { name: "IHE Implementation Guide", url: "https://www.ihe.net/resources/implementation_resources/" }
     ]
+  },
+
+  // ==========================================
+  // TRACK 102: DATABRICKS IN DE ZORG
+  // ==========================================
+
+  "102.1": {
+    title: "Databricks Fundamentals voor de Zorg",
+    summary: "Introductie tot het Databricks platform en de relevantie voor data-gedreven zorginstellingen.",
+    content: `
+## In het kort
+
+Databricks is een unified analytics platform dat Apache Spark combineert met een lakehouse-architectuur. Voor zorginstellingen biedt het een krachtige basis voor het combineren van data warehousing en data science op één platform.
+
+## Wat is Databricks?
+
+Databricks is opgericht door de makers van Apache Spark en combineert:
+
+- **Data Engineering** - ETL/ELT pipelines voor grote datasets
+- **Data Science** - Notebooks voor analyse en ML
+- **Data Warehousing** - SQL analytics op Delta Lake
+- **Machine Learning** - MLflow voor model lifecycle
+
+### Het Lakehouse Paradigma
+
+Databricks pioniert het **lakehouse** concept: de flexibiliteit van een data lake met de structuur en performance van een data warehouse.
+
+\`\`\`
+Traditioneel:
+Data Lake (ongestructureerd) ←→ Data Warehouse (gestructureerd)
+              ↓ duplicatie, complexiteit
+
+Lakehouse:
+Delta Lake (beide paradigma's in één laag)
+              ↓ single source of truth
+\`\`\`
+
+## Waarom Databricks in de Zorg?
+
+### Typische zorgtoepassingen
+
+1. **Population Health Analytics** - Analyse van patiëntpopulaties
+2. **Clinical Research** - Verwerking van grote datasets voor onderzoek
+3. **Operational Analytics** - Capaciteitsplanning, doorlooptijden
+4. **Predictive Models** - Heropname-risico, sepsis-detectie
+
+### Voordelen voor zorginstellingen
+
+- **Schaal** - Van gigabytes tot petabytes aan zorgdata
+- **Unified** - Eén platform voor data engineers en data scientists
+- **Open** - Delta Lake is open source, geen vendor lock-in
+- **Cloud-native** - Beschikbaar op Azure, AWS en GCP
+
+## Databricks op Azure vs AWS vs GCP
+
+| Aspect | Azure Databricks | AWS Databricks | GCP Databricks |
+|--------|------------------|----------------|----------------|
+| Integratie | Azure Synapse, ADLS | S3, Glue, Redshift | BigQuery, GCS |
+| Healthcare | Azure Health APIs | AWS HealthLake | Cloud Healthcare API |
+| Populariteit NL | Zeer hoog | Gemiddeld | Laag |
+
+In Nederland is **Azure Databricks** dominant vanwege Microsoft-partnerships in de zorg.
+
+## Kernbegrippen
+
+- **Lakehouse**: Combinatie van data lake en data warehouse
+- **Delta Lake**: Open-source storage layer met ACID-transacties
+- **Workspace**: De Databricks omgeving met notebooks, jobs, clusters
+- **Unity Catalog**: Governance-laag voor data assets
+    `,
+    sources: [
+      { name: "Databricks Documentation", url: "https://docs.databricks.com" },
+      { name: "Delta Lake", url: "https://delta.io" }
+    ]
+  },
+
+  "102.2": {
+    title: "Data Lakehouse Architectuur in Healthcare",
+    summary: "Deep dive in de lakehouse-architectuur met Delta Lake en de medallion-structuur voor zorgdata.",
+    content: `
+## In het kort
+
+De lakehouse-architectuur combineert de schaalbaarheid van data lakes met de betrouwbaarheid van data warehouses. Delta Lake vormt de kern met ACID-transacties en schema-enforcement op cloudopslag.
+
+## Delta Lake: De Kern van het Lakehouse
+
+### Wat maakt Delta Lake uniek?
+
+Delta Lake is een open-source storage format dat Parquet-bestanden verrijkt met:
+
+- **ACID Transacties** - Atomic, Consistent, Isolated, Durable writes
+- **Schema Enforcement** - Voorkomt corrupte data
+- **Time Travel** - Query data op elk punt in de tijd
+- **Audit History** - Volledige wijzigingsgeschiedenis
+
+### Delta vs Parquet vs Iceberg
+
+\`\`\`
+Parquet: Kolomgebaseerd bestandsformaat (geen transacties)
+Delta Lake: Parquet + transactie-log + optimalisaties
+Apache Iceberg: Alternatief table format (Netflix)
+Apache Hudi: Alternatief (Uber)
+\`\`\`
+
+## De Medallion Architectuur
+
+### Bronze-Silver-Gold Model
+
+De standaard architectuur voor data lakes met toenemende datakwaliteit:
+
+**Bronze (Raw)**
+- Ruwe data zoals aangeleverd
+- Minimale transformaties
+- Behoud van originele data voor audit
+
+**Silver (Cleansed)**
+- Gestandaardiseerde schemas
+- Gevalideerde en gecleansde data
+- Business-ready datasets
+
+**Gold (Aggregated)**
+- Business-level aggregaties
+- Klaar voor rapportage en ML
+- Dimensionele modellen
+
+### Healthcare Voorbeeld
+
+\`\`\`
+Bronze:
+├── hl7_messages/          (ruwe HL7v2 berichten)
+├── fhir_bundles/          (FHIR JSON)
+├── dicom_metadata/        (DICOM tags)
+└── epic_extracts/         (EPD exports)
+
+Silver:
+├── patients/              (gestandaardiseerde patiëntdata)
+├── encounters/            (opnames, consulten)
+├── observations/          (labs, vitals)
+└── medications/           (medicatie-orders)
+
+Gold:
+├── patient_360/           (compleet patiëntbeeld)
+├── quality_metrics/       (kwaliteitsindicatoren)
+└── ml_features/           (features voor ML-modellen)
+\`\`\`
+
+## Zorgdata Architectuur Patterns
+
+### Pattern 1: Centralized Lakehouse
+
+Alle data in één lakehouse met strikte governance:
+- Geschikt voor: Eén groot ziekenhuis
+- Voordeel: Consistentie, minder complexiteit
+- Nadeel: Single point of failure
+
+### Pattern 2: Domain-Oriented Lakehouse
+
+Meerdere lakehouses per domein (Data Mesh principes):
+- Geschikt voor: Ziekenhuisgroepen, netwerken
+- Voordeel: Autonomie per domein
+- Nadeel: Meer governance-overhead
+
+## Performance Optimalisatie
+
+### Z-Ordering en Liquid Clustering
+
+\`\`\`sql
+-- Z-Order voor snelle queries op patient_id en encounter_date
+OPTIMIZE silver.encounters
+ZORDER BY (patient_id, encounter_date)
+
+-- Liquid Clustering (nieuwer, automatischer)
+ALTER TABLE silver.encounters
+CLUSTER BY (patient_id)
+\`\`\`
+
+### Partitionering voor Zorgdata
+
+\`\`\`sql
+-- Partition op datum voor tijdreeksanalyse
+CREATE TABLE gold.daily_admissions
+PARTITIONED BY (admission_date)
+AS SELECT ...
+\`\`\`
+
+## Kernbegrippen
+
+- **ACID**: Atomicity, Consistency, Isolation, Durability
+- **Medallion**: Bronze-Silver-Gold architectuur
+- **Time Travel**: Query historische versies van data
+- **Z-Ordering**: Data-layout optimalisatie voor queries
+    `,
+    sources: [
+      { name: "Delta Lake Documentation", url: "https://docs.delta.io" },
+      { name: "Databricks Lakehouse Architecture", url: "https://www.databricks.com/blog/2020/01/30/what-is-a-data-lakehouse.html" }
+    ]
+  },
+
+  "102.3": {
+    title: "Zorgdata Ingestie: HL7, FHIR en DICOM naar Delta Lake",
+    summary: "Praktische aanpak voor het inladen van zorgstandaarden zoals HL7v2, FHIR en DICOM in het lakehouse.",
+    content: `
+## In het kort
+
+Zorginstellingen werken met specifieke dataformaten: HL7v2 berichten, FHIR resources en DICOM beelden. Het inladen hiervan in Delta Lake vereist specifieke parsing en transformatie.
+
+## HL7v2 Ingestie
+
+### HL7v2 Structuur
+
+HL7v2 berichten zijn pipe-delimited tekstbestanden:
+
+\`\`\`
+MSH|^~\\&|EPD|HOSPITAL|LAB|HOSPITAL|202401151030||ADT^A01|MSG001|P|2.5
+PID|1||12345^^^HOSPITAL^MR||Jansen^Jan||19800115|M|||Hoofdstraat 1^^Amsterdam
+\`\`\`
+
+### Parsing in PySpark
+
+\`\`\`python
+from pyspark.sql.functions import *
+
+def parse_hl7v2(message):
+    segments = message.split('\\r')
+    parsed = {}
+    for segment in segments:
+        fields = segment.split('|')
+        segment_type = fields[0]
+        parsed[segment_type] = fields
+    return parsed
+
+# Streaming ingestie van HL7v2
+hl7_stream = (spark.readStream
+    .format("cloudFiles")
+    .option("cloudFiles.format", "text")
+    .load("/mnt/bronze/hl7_messages/")
+)
+
+# Parse naar structured data
+parsed_df = hl7_stream.withColumn(
+    "parsed",
+    udf(parse_hl7v2)("value")
+)
+\`\`\`
+
+## FHIR Ingestie
+
+### FHIR Bundles Verwerken
+
+FHIR data komt typisch als JSON bundles:
+
+\`\`\`python
+from pyspark.sql.types import *
+
+# Schema voor FHIR Patient resource
+patient_schema = StructType([
+    StructField("resourceType", StringType()),
+    StructField("id", StringType()),
+    StructField("name", ArrayType(StructType([
+        StructField("family", StringType()),
+        StructField("given", ArrayType(StringType()))
+    ]))),
+    StructField("birthDate", StringType()),
+    StructField("gender", StringType())
+])
+
+# Lees FHIR bundles
+fhir_df = (spark.read
+    .format("json")
+    .schema(patient_schema)
+    .load("/mnt/bronze/fhir/Patient/")
+)
+
+# Flatten naar tabular format
+patients_silver = fhir_df.select(
+    col("id").alias("patient_id"),
+    col("name")[0]["family"].alias("family_name"),
+    col("name")[0]["given"][0].alias("given_name"),
+    col("birthDate").alias("birth_date"),
+    col("gender")
+)
+\`\`\`
+
+### FHIR Libraries
+
+- **FHIR-PySpark**: Community library voor FHIR in Spark
+- **Pathling**: FHIR analytics server met Spark backend
+- **Azure FHIR Connector**: Native connector voor Azure Health Data Services
+
+## DICOM Metadata Ingestie
+
+### DICOM Tags Extraheren
+
+DICOM bestanden bevatten metadata in tags:
+
+\`\`\`python
+import pydicom
+from pyspark.sql.functions import pandas_udf
+
+@pandas_udf("struct<patient_id:string, study_date:string, modality:string>")
+def extract_dicom_metadata(file_paths):
+    results = []
+    for path in file_paths:
+        dcm = pydicom.dcmread(path)
+        results.append({
+            "patient_id": str(dcm.PatientID),
+            "study_date": str(dcm.StudyDate),
+            "modality": str(dcm.Modality)
+        })
+    return pd.DataFrame(results)
+
+# Verwerk DICOM files
+dicom_metadata = (spark.read
+    .format("binaryFile")
+    .load("/mnt/bronze/dicom/")
+    .select(extract_dicom_metadata("path").alias("metadata"))
+)
+\`\`\`
+
+## Auto Loader voor Continue Ingestie
+
+### Incrementele Data Loading
+
+\`\`\`python
+# Auto Loader voor continue ingestie
+(spark.readStream
+    .format("cloudFiles")
+    .option("cloudFiles.format", "json")
+    .option("cloudFiles.schemaLocation", "/mnt/checkpoints/fhir_schema")
+    .option("cloudFiles.inferColumnTypes", "true")
+    .load("/mnt/bronze/fhir/")
+    .writeStream
+    .format("delta")
+    .option("checkpointLocation", "/mnt/checkpoints/fhir")
+    .option("mergeSchema", "true")
+    .trigger(availableNow=True)
+    .toTable("silver.fhir_resources")
+)
+\`\`\`
+
+## Data Quality Checks
+
+### Expectations met Delta Live Tables
+
+\`\`\`python
+import dlt
+from dlt.expectations import *
+
+@dlt.table(
+    name="silver_patients",
+    comment="Gevalideerde patiëntdata"
+)
+@dlt.expect_or_drop("valid_bsn", "length(bsn) = 9")
+@dlt.expect_or_fail("has_name", "family_name IS NOT NULL")
+def silver_patients():
+    return spark.table("bronze.patients")
+\`\`\`
+
+## Kernbegrippen
+
+- **Auto Loader**: Incrementele file ingestie met schema inference
+- **cloudFiles**: Databricks format voor streaming file ingestie
+- **Delta Live Tables (DLT)**: Declaratieve ETL met data quality
+- **FHIR Flattening**: Transformatie van hiërarchische FHIR naar tabular
+    `,
+    sources: [
+      { name: "Databricks Auto Loader", url: "https://docs.databricks.com/ingestion/auto-loader/index.html" },
+      { name: "HL7 International", url: "https://www.hl7.org" }
+    ]
+  },
+
+  "102.4": {
+    title: "Unity Catalog: Governance en Compliance voor Zorgdata",
+    summary: "Implementatie van data governance met Unity Catalog voor AVG-compliance en audit in zorginstellingen.",
+    content: `
+## In het kort
+
+Unity Catalog is de governance-laag van Databricks die centrale controle biedt over data assets, toegangsrechten en lineage. Voor zorginstellingen is dit essentieel voor AVG-compliance en audit.
+
+## Unity Catalog Architectuur
+
+### Hiërarchie
+
+\`\`\`
+Metastore (organisatieniveau)
+└── Catalog (bijv. per ziekenhuis)
+    └── Schema (bijv. bronze, silver, gold)
+        └── Tables / Views / Functions
+            └── Columns (met tags en masking)
+\`\`\`
+
+### Voorbeeld Setup voor Ziekenhuis
+
+\`\`\`sql
+-- Maak catalogs per omgeving
+CREATE CATALOG IF NOT EXISTS hospital_prod;
+CREATE CATALOG IF NOT EXISTS hospital_dev;
+
+-- Schema's volgens medallion
+CREATE SCHEMA IF NOT EXISTS hospital_prod.bronze;
+CREATE SCHEMA IF NOT EXISTS hospital_prod.silver;
+CREATE SCHEMA IF NOT EXISTS hospital_prod.gold;
+
+-- Grant permissions
+GRANT USE CATALOG ON CATALOG hospital_prod TO data_engineers;
+GRANT SELECT ON SCHEMA hospital_prod.gold TO data_analysts;
+\`\`\`
+
+## Access Control voor Zorgdata
+
+### Principe van Least Privilege
+
+\`\`\`sql
+-- Groep voor onderzoekers: alleen geanonimiseerde data
+CREATE GROUP researchers;
+GRANT SELECT ON TABLE gold.anonymized_patients TO researchers;
+DENY SELECT ON TABLE silver.patients TO researchers;
+
+-- Groep voor data stewards: volledige toegang
+CREATE GROUP data_stewards;
+GRANT ALL PRIVILEGES ON SCHEMA silver TO data_stewards;
+\`\`\`
+
+### Row-Level Security
+
+\`\`\`sql
+-- Alleen data van eigen afdeling zichtbaar
+CREATE FUNCTION row_filter(department STRING)
+RETURN CASE
+    WHEN is_member('admin') THEN TRUE
+    WHEN current_user() LIKE '%' || department || '%' THEN TRUE
+    ELSE FALSE
+END;
+
+ALTER TABLE silver.encounters
+SET ROW FILTER row_filter ON (department);
+\`\`\`
+
+### Column Masking voor PII
+
+\`\`\`sql
+-- BSN maskeren voor niet-geautoriseerde gebruikers
+CREATE FUNCTION mask_bsn(bsn STRING)
+RETURN CASE
+    WHEN is_member('pii_access') THEN bsn
+    ELSE CONCAT('***', RIGHT(bsn, 3))
+END;
+
+ALTER TABLE silver.patients
+ALTER COLUMN bsn SET MASK mask_bsn;
+\`\`\`
+
+## Data Classification en Tagging
+
+### Tags voor Gevoeligheid
+
+\`\`\`sql
+-- Classificeer kolommen
+ALTER TABLE silver.patients
+ALTER COLUMN bsn SET TAGS ('pii' = 'true', 'sensitivity' = 'high');
+
+ALTER TABLE silver.patients
+ALTER COLUMN birth_date SET TAGS ('pii' = 'true', 'sensitivity' = 'medium');
+
+-- Query tagged columns
+SELECT * FROM system.information_schema.column_tags
+WHERE tag_name = 'pii' AND tag_value = 'true';
+\`\`\`
+
+## Data Lineage
+
+### Automatische Lineage Tracking
+
+Unity Catalog trackt automatisch:
+- Welke tabellen een tabel voeden (upstream)
+- Welke tabellen afhankelijk zijn (downstream)
+- Welke transformaties zijn toegepast
+
+### Lineage voor Audit
+
+\`\`\`sql
+-- Bekijk lineage van een tabel
+SELECT * FROM system.access.table_lineage
+WHERE target_table_full_name = 'gold.patient_360';
+
+-- Wie heeft welke data benaderd?
+SELECT * FROM system.access.audit
+WHERE action_name = 'getTable'
+AND request_params.full_name_arg LIKE '%patient%';
+\`\`\`
+
+## AVG Compliance
+
+### Recht op Inzage
+
+\`\`\`sql
+-- Overzicht van alle data over een patiënt
+SELECT
+    'silver.patients' as source,
+    *
+FROM silver.patients
+WHERE bsn = '123456789'
+
+UNION ALL
+
+SELECT
+    'silver.encounters' as source,
+    *
+FROM silver.encounters
+WHERE patient_id = (
+    SELECT patient_id FROM silver.patients WHERE bsn = '123456789'
+);
+\`\`\`
+
+### Recht op Verwijdering (met Delta Lake)
+
+\`\`\`sql
+-- Verwijder patiëntdata
+DELETE FROM silver.patients WHERE bsn = '123456789';
+DELETE FROM silver.encounters WHERE patient_id = 'P12345';
+
+-- Verwijder ook uit history (VACUUM)
+VACUUM silver.patients RETAIN 0 HOURS;
+\`\`\`
+
+## Monitoring en Alerting
+
+### System Tables voor Audit
+
+\`\`\`sql
+-- Toegangspogingen monitoren
+SELECT
+    event_time,
+    user_identity.email,
+    action_name,
+    request_params
+FROM system.access.audit
+WHERE event_date >= current_date() - 7
+AND action_name IN ('getTable', 'commandSubmit')
+ORDER BY event_time DESC;
+\`\`\`
+
+## Kernbegrippen
+
+- **Unity Catalog**: Centralized governance voor Databricks
+- **Row-Level Security**: Toegangscontrole op rijniveau
+- **Column Masking**: Automatisch maskeren van gevoelige kolommen
+- **Data Lineage**: Herkomst en afhankelijkheden van data
+- **System Tables**: Ingebouwde audit logging
+    `,
+    sources: [
+      { name: "Unity Catalog Documentation", url: "https://docs.databricks.com/data-governance/unity-catalog/index.html" },
+      { name: "Databricks Security Guide", url: "https://docs.databricks.com/security/index.html" }
+    ]
+  },
+
+  "102.5": {
+    title: "Healthcare Analytics met Databricks SQL",
+    summary: "SQL-gebaseerde analytics voor zorgtoepassingen: KPIs, dashboards en ad-hoc analyse.",
+    content: `
+## In het kort
+
+Databricks SQL (voorheen SQL Analytics) biedt een SQL-native interface voor data analyse. Voor zorginstellingen ideaal voor KPI-dashboards, ad-hoc queries en BI-tools integratie.
+
+## Databricks SQL Fundamentals
+
+### SQL Warehouses
+
+SQL Warehouses zijn compute-clusters specifiek voor SQL workloads:
+
+\`\`\`
+Types:
+- Classic: Traditionele clusters
+- Pro: Betere caching, Photon engine
+- Serverless: Automatisch schalen, pay-per-query
+\`\`\`
+
+### Photon Engine
+
+Photon is Databricks' native vectorized query engine:
+- 2-8x sneller dan Spark SQL
+- Automatisch geactiveerd in Pro/Serverless
+- Vooral effectief voor aggregaties
+
+## Healthcare KPIs in SQL
+
+### Operationele Metrics
+
+\`\`\`sql
+-- Gemiddelde ligduur per specialisme
+CREATE OR REPLACE VIEW gold.avg_length_of_stay AS
+SELECT
+    specialty,
+    AVG(DATEDIFF(discharge_date, admission_date)) as avg_los,
+    COUNT(*) as patient_count
+FROM silver.admissions
+WHERE discharge_date IS NOT NULL
+AND admission_date >= DATE_SUB(CURRENT_DATE(), 365)
+GROUP BY specialty;
+
+-- Bezettingsgraad per dag
+CREATE OR REPLACE VIEW gold.daily_occupancy AS
+SELECT
+    date,
+    ward,
+    SUM(occupied_beds) as occupied,
+    SUM(total_beds) as capacity,
+    ROUND(SUM(occupied_beds) / SUM(total_beds) * 100, 1) as occupancy_pct
+FROM silver.bed_census
+GROUP BY date, ward;
+\`\`\`
+
+### Kwaliteitsindicatoren
+
+\`\`\`sql
+-- Heropname binnen 30 dagen
+CREATE OR REPLACE VIEW gold.readmission_30d AS
+WITH admissions_with_next AS (
+    SELECT
+        patient_id,
+        admission_date,
+        discharge_date,
+        LEAD(admission_date) OVER (
+            PARTITION BY patient_id
+            ORDER BY admission_date
+        ) as next_admission
+    FROM silver.admissions
+    WHERE admission_type = 'inpatient'
+)
+SELECT
+    DATE_TRUNC('month', discharge_date) as month,
+    COUNT(*) as total_discharges,
+    SUM(CASE
+        WHEN DATEDIFF(next_admission, discharge_date) <= 30
+        THEN 1 ELSE 0
+    END) as readmissions,
+    ROUND(
+        SUM(CASE WHEN DATEDIFF(next_admission, discharge_date) <= 30 THEN 1 ELSE 0 END)
+        / COUNT(*) * 100, 2
+    ) as readmission_rate
+FROM admissions_with_next
+WHERE discharge_date >= DATE_SUB(CURRENT_DATE(), 365)
+GROUP BY DATE_TRUNC('month', discharge_date);
+\`\`\`
+
+### Financiële Analytics
+
+\`\`\`sql
+-- DBC-productie per specialisme
+CREATE OR REPLACE VIEW gold.dbc_production AS
+SELECT
+    specialty,
+    dbc_code,
+    dbc_description,
+    COUNT(*) as volume,
+    SUM(declared_amount) as total_revenue,
+    AVG(declared_amount) as avg_revenue
+FROM silver.dbc_declarations
+WHERE declaration_year = YEAR(CURRENT_DATE())
+GROUP BY specialty, dbc_code, dbc_description
+ORDER BY total_revenue DESC;
+\`\`\`
+
+## Dashboards en Visualisatie
+
+### Databricks SQL Dashboards
+
+Ingebouwde dashboarding met:
+- Queries als data source
+- Diverse chart types
+- Automatische refresh
+- Alerting bij drempelwaarden
+
+### BI Tool Connectiviteit
+
+\`\`\`
+Ondersteunde tools:
+- Power BI (native connector)
+- Tableau (Databricks connector)
+- Looker (JDBC)
+- Qlik (ODBC)
+\`\`\`
+
+### Power BI Integratie
+
+\`\`\`
+1. Installeer Databricks connector in Power BI
+2. Connect met SQL Warehouse endpoint
+3. Direct Query of Import mode
+4. Gebruik Unity Catalog voor row-level security
+\`\`\`
+
+## Query Optimalisatie
+
+### Best Practices
+
+\`\`\`sql
+-- Gebruik ZORDER voor veelgebruikte filters
+OPTIMIZE silver.encounters ZORDER BY (patient_id, encounter_date);
+
+-- Materialized views voor complexe aggregaties
+CREATE MATERIALIZED VIEW gold.patient_summary AS
+SELECT
+    patient_id,
+    COUNT(DISTINCT encounter_id) as total_encounters,
+    MAX(encounter_date) as last_visit,
+    SUM(total_charges) as lifetime_value
+FROM silver.encounters
+GROUP BY patient_id;
+
+-- Query caching
+SET spark.sql.execution.arrow.pyspark.enabled = true;
+\`\`\`
+
+## Alerts en Monitoring
+
+### SQL Alerts
+
+\`\`\`sql
+-- Alert wanneer wachttijd te hoog wordt
+SELECT
+    department,
+    AVG(wait_time_minutes) as avg_wait
+FROM silver.ed_visits
+WHERE visit_date = CURRENT_DATE()
+GROUP BY department
+HAVING AVG(wait_time_minutes) > 60;
+\`\`\`
+
+## Kernbegrippen
+
+- **SQL Warehouse**: Dedicated compute voor SQL workloads
+- **Photon**: Vectorized query engine voor performance
+- **Materialized View**: Voorberekende view voor snelle queries
+- **Direct Query**: Real-time data in BI tools
+    `,
+    sources: [
+      { name: "Databricks SQL Documentation", url: "https://docs.databricks.com/sql/index.html" },
+      { name: "Databricks SQL Best Practices", url: "https://docs.databricks.com/sql/admin/sql-execution-tutorial.html" }
+    ]
+  },
+
+  "102.6": {
+    title: "Machine Learning voor Zorgvoorspellingen",
+    summary: "MLflow en Databricks ML voor predictive analytics in de zorg: van experiment tot productie.",
+    content: `
+## In het kort
+
+Databricks biedt een complete ML-omgeving met MLflow voor experiment tracking, model registry en deployment. Voor zorgtoepassingen zoals heropname-voorspelling en sepsis-detectie.
+
+## MLflow Fundamentals
+
+### Componenten
+
+- **Tracking**: Log experimenten, parameters, metrics
+- **Projects**: Reproduceerbare ML code
+- **Models**: Model packaging en deployment
+- **Registry**: Versioning en lifecycle management
+
+## Healthcare ML Use Cases
+
+### Typische Toepassingen
+
+1. **Heropname-risico** - Welke patiënten komen binnen 30 dagen terug?
+2. **Sepsis Early Warning** - Vroegtijdige detectie op basis van vitals
+3. **No-show Prediction** - Welke patiënten missen hun afspraak?
+4. **Length of Stay** - Voorspelling verblijfsduur voor planning
+5. **Deterioration Score** - Verslechtering van patiënttoestand
+
+## Feature Engineering voor Zorgdata
+
+### Feature Store
+
+\`\`\`python
+from databricks.feature_store import FeatureStoreClient
+
+fs = FeatureStoreClient()
+
+# Definieer feature table
+patient_features = spark.sql("""
+    SELECT
+        patient_id,
+        age,
+        COUNT(DISTINCT diagnosis_code) as comorbidity_count,
+        SUM(CASE WHEN admission_type = 'emergency' THEN 1 ELSE 0 END) as ed_visits_1y,
+        AVG(length_of_stay) as avg_los,
+        MAX(admission_date) as last_admission
+    FROM silver.admissions
+    WHERE admission_date >= DATE_SUB(CURRENT_DATE(), 365)
+    GROUP BY patient_id, age
+""")
+
+# Registreer in Feature Store
+fs.create_table(
+    name="healthcare.patient_features",
+    primary_keys=["patient_id"],
+    df=patient_features,
+    description="Patient features voor ML modellen"
+)
+\`\`\`
+
+## Model Development
+
+### Experiment Tracking
+
+\`\`\`python
+import mlflow
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+# Start experiment
+mlflow.set_experiment("/healthcare/readmission_prediction")
+
+with mlflow.start_run(run_name="rf_baseline"):
+    # Load features
+    training_data = fs.read_table("healthcare.patient_features")
+
+    X = training_data.drop(columns=['readmitted_30d'])
+    y = training_data['readmitted_30d']
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    # Train model
+    model = RandomForestClassifier(n_estimators=100, max_depth=10)
+    model.fit(X_train, y_train)
+
+    # Log parameters
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("max_depth", 10)
+
+    # Log metrics
+    accuracy = model.score(X_test, y_test)
+    mlflow.log_metric("accuracy", accuracy)
+
+    # Log model
+    mlflow.sklearn.log_model(model, "readmission_model")
+\`\`\`
+
+### AutoML voor Snelle Experimenten
+
+\`\`\`python
+from databricks import automl
+
+# AutoML voor classificatie
+summary = automl.classify(
+    dataset=training_df,
+    target_col="readmitted_30d",
+    timeout_minutes=60,
+    max_trials=20
+)
+
+# Beste model automatisch geregistreerd
+print(f"Best model: {summary.best_trial.model_description}")
+print(f"Best metric: {summary.best_trial.metrics}")
+\`\`\`
+
+## Model Validation voor Healthcare
+
+### Clinical Validation
+
+\`\`\`python
+# Validatie op klinisch relevante subgroepen
+def validate_clinical_subgroups(model, X_test, y_test):
+    subgroups = ['elderly', 'pediatric', 'cardiac', 'oncology']
+
+    for subgroup in subgroups:
+        mask = X_test['patient_type'] == subgroup
+        X_sub = X_test[mask]
+        y_sub = y_test[mask]
+
+        if len(X_sub) > 0:
+            score = model.score(X_sub, y_sub)
+            mlflow.log_metric(f"accuracy_{subgroup}", score)
+\`\`\`
+
+### Fairness Metrics
+
+\`\`\`python
+# Check voor bias in voorspellingen
+from fairlearn.metrics import demographic_parity_difference
+
+dpd = demographic_parity_difference(
+    y_test,
+    model.predict(X_test),
+    sensitive_features=X_test['ethnicity']
+)
+mlflow.log_metric("demographic_parity_diff", dpd)
+\`\`\`
+
+## Model Deployment
+
+### Model Registry
+
+\`\`\`python
+# Registreer model voor productie
+model_uri = f"runs:/{run_id}/readmission_model"
+mv = mlflow.register_model(model_uri, "readmission_predictor")
+
+# Transition naar productie
+client = mlflow.tracking.MlflowClient()
+client.transition_model_version_stage(
+    name="readmission_predictor",
+    version=mv.version,
+    stage="Production"
+)
+\`\`\`
+
+### Real-time Serving
+
+\`\`\`python
+# Model serving endpoint
+import requests
+
+endpoint = "https://xxx.databricks.com/serving-endpoints/readmission/invocations"
+headers = {"Authorization": f"Bearer {token}"}
+
+patient_data = {
+    "dataframe_records": [{
+        "age": 75,
+        "comorbidity_count": 4,
+        "ed_visits_1y": 2,
+        "avg_los": 5.2
+    }]
+}
+
+response = requests.post(endpoint, headers=headers, json=patient_data)
+prediction = response.json()
+\`\`\`
+
+## Kernbegrippen
+
+- **MLflow**: Open-source ML lifecycle platform
+- **Feature Store**: Centrale opslag voor ML features
+- **Model Registry**: Versioning en staging van modellen
+- **AutoML**: Automatische model selectie en tuning
+- **Model Serving**: Real-time inference endpoints
+    `,
+    sources: [
+      { name: "MLflow Documentation", url: "https://mlflow.org/docs/latest/index.html" },
+      { name: "Databricks ML", url: "https://docs.databricks.com/machine-learning/index.html" }
+    ]
+  },
+
+  "102.7": {
+    title: "Real-time Streaming voor Zorgmonitoring",
+    summary: "Structured Streaming en Delta Lake voor real-time verwerking van patiëntmonitoring en alerts.",
+    content: `
+## In het kort
+
+Real-time data verwerking is cruciaal voor kritische zorgtoepassingen zoals patiëntmonitoring, sepsis-detectie en bed management. Databricks Structured Streaming met Delta Lake biedt een unified batch en streaming platform.
+
+## Structured Streaming Basics
+
+### Streaming vs Batch
+
+\`\`\`
+Batch Processing:
+[Data opgeslagen] → [Periodieke verwerking] → [Resultaten]
+             ↓
+Latency: minuten tot uren
+
+Streaming Processing:
+[Continue datastroom] → [Real-time verwerking] → [Instant resultaten]
+             ↓
+Latency: seconden tot milliseconden
+\`\`\`
+
+### Streaming Sources in de Zorg
+
+- **Kafka** - Berichten van EPD, monitoring devices
+- **Event Hubs** - Azure event streaming
+- **Kinesis** - AWS streaming (voor AWS Databricks)
+- **Auto Loader** - File-based streaming
+
+## Healthcare Streaming Use Cases
+
+### Patiënt Monitoring Pipeline
+
+\`\`\`python
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+
+# Schema voor vitale signalen
+vitals_schema = StructType([
+    StructField("patient_id", StringType()),
+    StructField("timestamp", TimestampType()),
+    StructField("heart_rate", IntegerType()),
+    StructField("blood_pressure_sys", IntegerType()),
+    StructField("blood_pressure_dia", IntegerType()),
+    StructField("spo2", IntegerType()),
+    StructField("temperature", DoubleType())
+])
+
+# Lees van Kafka
+vitals_stream = (spark
+    .readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", "kafka:9092")
+    .option("subscribe", "patient_vitals")
+    .load()
+    .select(from_json(col("value").cast("string"), vitals_schema).alias("data"))
+    .select("data.*")
+)
+\`\`\`
+
+### Early Warning Score (EWS) Berekening
+
+\`\`\`python
+def calculate_ews(df):
+    """Bereken Modified Early Warning Score"""
+    return df.withColumn("ews_score",
+        # Heart rate scoring
+        when(col("heart_rate") < 40, 2)
+        .when(col("heart_rate").between(40, 50), 1)
+        .when(col("heart_rate").between(51, 100), 0)
+        .when(col("heart_rate").between(101, 110), 1)
+        .when(col("heart_rate").between(111, 129), 2)
+        .when(col("heart_rate") >= 130, 3)
+        +
+        # SpO2 scoring
+        when(col("spo2") < 92, 3)
+        .when(col("spo2").between(92, 93), 2)
+        .when(col("spo2").between(94, 95), 1)
+        .otherwise(0)
+        +
+        # Temperature scoring
+        when(col("temperature") < 35.0, 3)
+        .when(col("temperature").between(35.0, 36.0), 1)
+        .when(col("temperature").between(36.1, 38.0), 0)
+        .when(col("temperature").between(38.1, 39.0), 1)
+        .when(col("temperature") >= 39.0, 2)
+    )
+
+# Apply EWS calculation
+ews_stream = calculate_ews(vitals_stream)
+\`\`\`
+
+### Alerting Pipeline
+
+\`\`\`python
+# Filter voor hoge EWS scores
+alerts_stream = ews_stream.filter(col("ews_score") >= 5)
+
+# Schrijf alerts naar Delta table voor dashboards
+(alerts_stream
+    .writeStream
+    .format("delta")
+    .outputMode("append")
+    .option("checkpointLocation", "/checkpoints/ews_alerts")
+    .trigger(processingTime="10 seconds")
+    .toTable("streaming.ews_alerts")
+)
+
+# Stuur ook naar notification system
+(alerts_stream
+    .writeStream
+    .foreach(send_alert_notification)
+    .outputMode("append")
+    .start()
+)
+\`\`\`
+
+## Windowed Aggregations
+
+### Sliding Window voor Trends
+
+\`\`\`python
+# Gemiddelde vitals over sliding window van 15 minuten
+windowed_vitals = (vitals_stream
+    .withWatermark("timestamp", "5 minutes")
+    .groupBy(
+        col("patient_id"),
+        window(col("timestamp"), "15 minutes", "5 minutes")
+    )
+    .agg(
+        avg("heart_rate").alias("avg_hr"),
+        avg("spo2").alias("avg_spo2"),
+        min("blood_pressure_sys").alias("min_bp_sys"),
+        max("blood_pressure_sys").alias("max_bp_sys")
+    )
+)
+\`\`\`
+
+### Anomaly Detection
+
+\`\`\`python
+# Detecteer afwijkingen van baseline
+def detect_anomalies(df):
+    return df.withColumn("hr_anomaly",
+        when(
+            abs(col("heart_rate") - col("baseline_hr")) > (2 * col("baseline_hr_std")),
+            True
+        ).otherwise(False)
+    )
+\`\`\`
+
+## Delta Lake voor Streaming
+
+### Exactly-Once Processing
+
+\`\`\`python
+# Delta als sink garandeert exactly-once semantics
+(vitals_stream
+    .writeStream
+    .format("delta")
+    .outputMode("append")
+    .option("checkpointLocation", "/checkpoints/vitals")
+    .option("mergeSchema", "true")
+    .toTable("silver.patient_vitals")
+)
+\`\`\`
+
+### Stream-Static Joins
+
+\`\`\`python
+# Join streaming data met statische patient info
+patient_info = spark.table("silver.patients")
+
+enriched_vitals = vitals_stream.join(
+    patient_info,
+    vitals_stream.patient_id == patient_info.patient_id,
+    "left"
+).select(
+    vitals_stream["*"],
+    patient_info["ward"],
+    patient_info["attending_physician"]
+)
+\`\`\`
+
+## Monitoring en Operations
+
+### Streaming Query Monitoring
+
+\`\`\`python
+# Check streaming query status
+for query in spark.streams.active:
+    print(f"Query: {query.name}")
+    print(f"Status: {query.status}")
+    print(f"Progress: {query.lastProgress}")
+\`\`\`
+
+## Kernbegrippen
+
+- **Structured Streaming**: Unified batch/streaming API
+- **Watermark**: Handling van late data
+- **Checkpoint**: Recovery point voor fault tolerance
+- **Trigger**: Wanneer te verwerken (continuous, micro-batch)
+- **Output Mode**: append, complete, update
+    `,
+    sources: [
+      { name: "Structured Streaming", url: "https://docs.databricks.com/structured-streaming/index.html" },
+      { name: "Delta Lake Streaming", url: "https://docs.delta.io/latest/delta-streaming.html" }
+    ]
+  },
+
+  "102.8": {
+    title: "Databricks Implementatie in Zorginstellingen",
+    summary: "Praktische aanpak voor Databricks implementatie: architectuur, security en change management.",
+    content: `
+## In het kort
+
+Een succesvolle Databricks implementatie in de zorg vereist aandacht voor security, compliance, integratie met bestaande systemen en change management. Deze module behandelt de praktische aspecten.
+
+## Implementatie Stappenplan
+
+### Fase 1: Foundation (Maand 1-2)
+
+**Infrastructuur Setup**
+1. Azure/AWS account configuratie
+2. Databricks workspace provisioning
+3. Netwerk setup (VNet injection, Private Link)
+4. Unity Catalog configuratie
+5. Identity provider integratie (Azure AD/Okta)
+
+**Security Baseline**
+- Encryption at rest en in transit
+- Customer-managed keys (CMK)
+- IP access lists
+- Audit logging
+
+### Fase 2: Data Platform (Maand 2-4)
+
+**Data Architecture**
+1. Landing zone voor brondata
+2. Bronze/Silver/Gold schema's
+3. Auto Loader pipelines
+4. Data quality framework
+
+**Governance Setup**
+- Data classificatie
+- Access policies
+- Column masking voor PII
+- Lineage tracking
+
+### Fase 3: Use Cases (Maand 4-6)
+
+**Pilot Use Cases**
+1. Eén analytische use case
+2. Eén ML use case
+3. Dashboard integratie
+
+## Azure Databricks Security Architecture
+
+### Network Security
+
+\`\`\`
+                    ┌─────────────────────────────────────┐
+                    │          Azure Subscription          │
+                    │                                      │
+Internet ──────► [Azure Firewall] ◄──────────────────────│
+                    │         │                           │
+                    │         ▼                           │
+                    │   [Private Endpoint]                │
+                    │         │                           │
+                    │         ▼                           │
+                    │   ┌───────────┐     ┌───────────┐  │
+                    │   │ Databricks│ ←─► │   ADLS    │  │
+                    │   │ Workspace │     │  Gen2     │  │
+                    │   └───────────┘     └───────────┘  │
+                    │         │                           │
+                    │         ▼                           │
+                    │   [Unity Catalog Metastore]         │
+                    └─────────────────────────────────────┘
+\`\`\`
+
+### Private Link Setup
+
+\`\`\`bash
+# Databricks Private Link configuratie
+az databricks workspace create \\
+  --name "healthcare-dbricks" \\
+  --resource-group "rg-healthcare" \\
+  --location "westeurope" \\
+  --sku premium \\
+  --enable-no-public-ip \\
+  --private-subnet "/subscriptions/.../databricks-private" \\
+  --public-subnet "/subscriptions/.../databricks-public"
+\`\`\`
+
+## Identity en Access Management
+
+### Azure AD Integratie
+
+\`\`\`
+Azure AD Groups         →    Databricks Groups    →    Unity Catalog Grants
+─────────────────           ──────────────────         ─────────────────────
+SG-DataEngineers       →    data_engineers       →    CREATE TABLE on bronze
+SG-DataScientists      →    data_scientists      →    SELECT on silver
+SG-DataAnalysts        →    data_analysts        →    SELECT on gold
+SG-DataStewards        →    data_stewards        →    ALL PRIVILEGES
+\`\`\`
+
+### Service Principals voor Automation
+
+\`\`\`python
+# Databricks SDK met Service Principal
+from databricks.sdk import WorkspaceClient
+
+w = WorkspaceClient(
+    host="https://xxx.azuredatabricks.net",
+    azure_client_id="xxx",
+    azure_client_secret="xxx",
+    azure_tenant_id="xxx"
+)
+
+# Automate job creation
+job = w.jobs.create(
+    name="daily_etl",
+    tasks=[{
+        "task_key": "bronze_to_silver",
+        "notebook_task": {"notebook_path": "/ETL/bronze_to_silver"}
+    }]
+)
+\`\`\`
+
+## Integratie met Zorgsystemen
+
+### EPD Integratie (Epic, HiX, Chipsoft)
+
+\`\`\`
+Pattern: Extract via JDBC/API → Land in Bronze → Transform naar Silver
+
+Epic Clarity:
+- JDBC connector naar Clarity database
+- Incrementele extractie via timestamps
+- Map naar FHIR-achtig model in Silver
+
+HiX:
+- Data export via HiX Connect
+- Parquet/CSV landing
+- Mirth Connect voor HL7v2 → Kafka
+\`\`\`
+
+### Data Extractie Pattern
+
+\`\`\`python
+# JDBC extractie met watermark
+watermark = spark.sql("""
+    SELECT MAX(last_modified) as watermark
+    FROM bronze.epic_patients
+""").collect()[0]['watermark']
+
+new_data = (spark.read
+    .format("jdbc")
+    .option("url", epic_jdbc_url)
+    .option("dbtable", f"(SELECT * FROM patients WHERE last_modified > '{watermark}')")
+    .option("user", dbutils.secrets.get("epic", "user"))
+    .option("password", dbutils.secrets.get("epic", "password"))
+    .load()
+)
+\`\`\`
+
+## Change Management
+
+### Training en Enablement
+
+**Rollen en Training Tracks**
+
+| Rol | Training | Duur |
+|-----|----------|------|
+| Data Engineer | Databricks Associate + Delta Lake | 2 weken |
+| Data Scientist | ML Associate + MLflow | 2 weken |
+| Data Analyst | SQL Associate | 1 week |
+| Platform Admin | Workspace Administration | 1 week |
+
+### CoE (Center of Excellence) Model
+
+\`\`\`
+Central Platform Team
+├── Infrastructure & Security
+├── Governance & Standards
+└── Enablement & Support
+
+Domain Teams (gedecentraliseerd)
+├── Finance Analytics
+├── Clinical Analytics
+├── Operations Analytics
+└── Research
+\`\`\`
+
+## Cost Management
+
+### Compute Optimalisatie
+
+\`\`\`python
+# Auto-termination voor cost savings
+cluster_config = {
+    "autotermination_minutes": 30,
+    "autoscale": {
+        "min_workers": 1,
+        "max_workers": 10
+    },
+    "spot_instances": True  # Gebruik spot voor non-critical workloads
+}
+\`\`\`
+
+### Monitoring Kosten
+
+\`\`\`sql
+-- Query system tables voor usage
+SELECT
+    workspace_id,
+    sku_name,
+    usage_date,
+    usage_quantity,
+    usage_unit
+FROM system.billing.usage
+WHERE usage_date >= DATE_SUB(CURRENT_DATE(), 30)
+ORDER BY usage_quantity DESC;
+\`\`\`
+
+## Kernbegrippen
+
+- **VNet Injection**: Databricks in eigen virtual network
+- **Private Link**: Private connectivity zonder public IP
+- **CMK**: Customer-Managed Keys voor encryption
+- **CoE**: Center of Excellence
+- **Spot Instances**: Goedkopere compute voor fault-tolerant workloads
+    `,
+    sources: [
+      { name: "Databricks on Azure Architecture", url: "https://docs.databricks.com/administration-guide/cloud-configurations/azure/index.html" },
+      { name: "Databricks Security Best Practices", url: "https://docs.databricks.com/security/index.html" }
+    ]
+  },
+
+  // ==========================================
+  // TRACK 103: MICROSOFT FABRIC IN DE ZORG
+  // ==========================================
+
+  "103.1": {
+    title: "Microsoft Fabric Fundamentals voor de Zorg",
+    summary: "Introductie tot Microsoft Fabric als unified analytics platform voor zorginstellingen.",
+    content: `
+## In het kort
+
+Microsoft Fabric is Microsoft's unified analytics platform dat data engineering, data science, real-time analytics en business intelligence combineert. Voor zorginstellingen biedt het naadloze integratie met het Microsoft ecosysteem.
+
+## Wat is Microsoft Fabric?
+
+Fabric combineert meerdere Azure services in één platform:
+
+- **OneLake** - Unified storage layer (één data lake)
+- **Data Factory** - Data integratie en pipelines
+- **Synapse Data Engineering** - Spark-based data engineering
+- **Synapse Data Warehouse** - T-SQL data warehousing
+- **Power BI** - Business intelligence en dashboards
+- **Real-Time Intelligence** - Streaming en event processing
+
+### Fabric vs Azure Synapse vs Power BI
+
+\`\`\`
+Vóór Fabric:
+┌─────────────┐  ┌──────────────┐  ┌─────────────┐
+│ Azure Data  │  │    Azure     │  │   Power BI  │
+│   Factory   │  │   Synapse    │  │   Service   │
+└─────────────┘  └──────────────┘  └─────────────┘
+      │                 │                 │
+      └────────── Aparte services ────────┘
+
+Met Fabric:
+┌─────────────────────────────────────────────────┐
+│              Microsoft Fabric                    │
+│  ┌──────┐ ┌────────┐ ┌───────┐ ┌──────────┐    │
+│  │ DF   │ │ Spark  │ │  DW   │ │ Power BI │    │
+│  └──────┘ └────────┘ └───────┘ └──────────┘    │
+│            │                                     │
+│            ▼                                     │
+│       [ OneLake - Unified Storage ]             │
+└─────────────────────────────────────────────────┘
+\`\`\`
+
+## Waarom Fabric voor de Zorg?
+
+### Microsoft Cloud for Healthcare
+
+Fabric integreert met Microsoft Cloud for Healthcare:
+
+- **Azure Health Data Services** - FHIR, DICOM APIs
+- **Microsoft 365** - Teams, Viva voor zorgmedewerkers
+- **Dynamics 365** - CRM voor patiëntrelaties
+- **Power Platform** - Low-code apps voor zorg
+
+### Voordelen voor Zorginstellingen
+
+1. **Unified Platform** - Eén platform voor alle data workloads
+2. **Microsoft Integratie** - Naadloos met Teams, SharePoint, Office
+3. **Power BI Native** - BI volledig geïntegreerd
+4. **Governance** - Purview integratie voor compliance
+5. **Familiar Tools** - T-SQL, Excel, Power BI zijn bekend
+
+## Fabric Capacities en Licensing
+
+### Capacity Units (CU)
+
+\`\`\`
+F2   - Development/Test
+F4   - Small workloads
+F8   - Medium workloads
+F16  - Large analytics
+F32  - Enterprise
+F64+ - Large scale
+\`\`\`
+
+### Licensing Model
+
+- **Capacity-based** - Betaal voor compute capacity
+- **Per-user** - Power BI Pro/Premium per user
+- **Pay-as-you-go** - Azure consumption model
+
+## Fabric Workspaces
+
+### Workspace Structuur
+
+\`\`\`
+Healthcare Fabric Tenant
+├── Workspace: Healthcare-Production
+│   ├── Lakehouse: clinical_data
+│   ├── Warehouse: analytics_dw
+│   ├── Dataflow: patient_etl
+│   └── Reports: clinical_dashboards
+│
+├── Workspace: Healthcare-Development
+│   └── (development items)
+│
+└── Workspace: Healthcare-Research
+    └── (research notebooks)
+\`\`\`
+
+## OneLake: De Foundation
+
+### Unified Storage
+
+OneLake is de single storage layer:
+
+- **Delta Lake format** - Parquet met transactie-log
+- **Shortcuts** - Virtuele links naar externe data
+- **Cross-workspace** - Data delen tussen workspaces
+- **Security** - Integrated met Azure AD
+
+### Shortcuts voor Bestaande Data
+
+\`\`\`
+OneLake Shortcuts:
+├── ADLS Gen2 → Bestaande data lakes
+├── Amazon S3 → AWS data
+├── GCS → Google Cloud data
+└── Dataverse → Dynamics 365 data
+\`\`\`
+
+## Kernbegrippen
+
+- **Fabric Capacity**: Compute resources voor Fabric workloads
+- **OneLake**: Unified storage layer
+- **Workspace**: Container voor Fabric items
+- **Lakehouse**: Combinatie van lake en warehouse
+- **Shortcuts**: Virtuele links naar externe data
+    `,
+    sources: [
+      { name: "Microsoft Fabric Documentation", url: "https://learn.microsoft.com/en-us/fabric/" },
+      { name: "Microsoft Cloud for Healthcare", url: "https://www.microsoft.com/en-us/industry/health/microsoft-cloud-for-healthcare" }
+    ]
+  },
+
+  "103.2": {
+    title: "OneLake en Lakehouse Architectuur",
+    summary: "Deep dive in OneLake storage en lakehouse architectuur voor zorgdata.",
+    content: `
+## In het kort
+
+OneLake is de fundatie van Microsoft Fabric - een single, unified storage layer voor alle data. Lakehouses in OneLake combineren de flexibiliteit van data lakes met de structuur van data warehouses.
+
+## OneLake Architectuur
+
+### Hiërarchie
+
+\`\`\`
+Fabric Tenant (organisatie)
+└── Capacity (compute resources)
+    └── Workspace (project/team)
+        └── Lakehouse (data container)
+            ├── Tables/ (managed Delta tables)
+            └── Files/ (unmanaged files)
+\`\`\`
+
+### OneLake vs ADLS Gen2
+
+| Aspect | ADLS Gen2 | OneLake |
+|--------|-----------|---------|
+| Scope | Per storage account | Tenant-wide |
+| Format | Vrij | Delta Lake standaard |
+| Governance | Handmatig | Automatisch via Fabric |
+| Shortcuts | Nee | Ja |
+
+## Lakehouse Aanmaken
+
+### Via UI
+
+1. Ga naar Workspace
+2. New → Lakehouse
+3. Geef naam: bijv. "clinical_lakehouse"
+4. Automatisch: Tables en Files folders
+
+### Via Spark
+
+\`\`\`python
+# Notebook in Fabric
+from pyspark.sql import SparkSession
+
+# Lakehouse is automatisch gemount
+spark.sql("CREATE DATABASE IF NOT EXISTS clinical")
+
+# Maak managed table
+df = spark.read.json("/Files/raw/patients.json")
+df.write.format("delta").saveAsTable("clinical.patients")
+\`\`\`
+
+## Medallion Architectuur in Fabric
+
+### Bronze Lakehouse
+
+\`\`\`python
+# Ruwe data inladen
+raw_hl7 = spark.read.text("/Files/landing/hl7/")
+
+# Opslaan als Bronze table
+raw_hl7.write.format("delta").mode("append").saveAsTable("bronze.hl7_messages")
+\`\`\`
+
+### Silver Lakehouse
+
+\`\`\`python
+# Transformatie naar Silver
+bronze_df = spark.table("bronze.hl7_messages")
+
+# Parse en clean
+silver_df = (bronze_df
+    .withColumn("parsed", parse_hl7_udf("value"))
+    .select("parsed.*")
+    .filter(col("patient_id").isNotNull())
+)
+
+silver_df.write.format("delta").mode("overwrite").saveAsTable("silver.patients")
+\`\`\`
+
+### Gold Lakehouse
+
+\`\`\`python
+# Aggregaties voor analytics
+gold_df = spark.sql("""
+    SELECT
+        DATE_TRUNC('month', admission_date) as month,
+        department,
+        COUNT(*) as admissions,
+        AVG(length_of_stay) as avg_los
+    FROM silver.admissions
+    GROUP BY 1, 2
+""")
+
+gold_df.write.format("delta").mode("overwrite").saveAsTable("gold.monthly_admissions")
+\`\`\`
+
+## Shortcuts
+
+### Externe Data Linken
+
+\`\`\`
+Shortcut Types:
+1. OneLake Shortcuts
+   - Link naar andere lakehouse in tenant
+   - Cross-workspace data sharing
+
+2. External Shortcuts
+   - ADLS Gen2 (Azure)
+   - Amazon S3 (AWS)
+   - Google Cloud Storage (GCP)
+   - Dataverse (Dynamics 365)
+\`\`\`
+
+### ADLS Shortcut Aanmaken
+
+\`\`\`
+1. Lakehouse → Files → New Shortcut
+2. Kies "Azure Data Lake Storage Gen2"
+3. Vul connection details in
+4. Selecteer container/folder
+5. Geef shortcut naam
+\`\`\`
+
+### Healthcare Use Case
+
+\`\`\`
+clinical_lakehouse
+├── Tables/
+│   ├── patients (managed Delta)
+│   └── encounters (managed Delta)
+└── Files/
+    ├── raw_data/          (lokale files)
+    └── epic_extracts/     ← Shortcut naar ADLS met Epic data
+\`\`\`
+
+## Data Sharing
+
+### Cross-Workspace Sharing
+
+\`\`\`
+Workspace: Clinical-Production
+└── Lakehouse: clinical_data
+    └── Tables/patients
+
+Workspace: Research
+└── Lakehouse: research_data
+    └── Shortcuts/
+        └── clinical_patients → clinical_data/Tables/patients
+\`\`\`
+
+### Semantic Model voor Sharing
+
+\`\`\`
+Lakehouse Tables → Semantic Model → Power BI Reports
+                          ↓
+              Gedeeld via Workspace permissions
+\`\`\`
+
+## Table Formats en Optimalisatie
+
+### V-Order Optimalisatie
+
+Fabric past automatisch V-Order toe voor snellere reads:
+
+\`\`\`python
+# V-Order is automatisch bij Delta writes in Fabric
+df.write.format("delta").saveAsTable("optimized_table")
+\`\`\`
+
+### Table Maintenance
+
+\`\`\`sql
+-- Optimize table
+OPTIMIZE clinical.patients
+
+-- Vacuum oude versies
+VACUUM clinical.patients RETAIN 168 HOURS
+\`\`\`
+
+## Kernbegrippen
+
+- **OneLake**: Single storage layer voor alle Fabric data
+- **Lakehouse**: Data lake + warehouse capabilities
+- **Managed Tables**: Delta tables in Tables/ folder
+- **Shortcuts**: Virtuele pointers naar externe data
+- **V-Order**: Fabric-specifieke storage optimalisatie
+    `,
+    sources: [
+      { name: "OneLake Documentation", url: "https://learn.microsoft.com/en-us/fabric/onelake/" },
+      { name: "Lakehouse Documentation", url: "https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-overview" }
+    ]
+  },
+
+  "103.3": {
+    title: "Data Factory voor Zorgdata Integratie",
+    summary: "Data integratie met Data Factory in Fabric: pipelines, dataflows en connectors voor zorgsystemen.",
+    content: `
+## In het kort
+
+Data Factory in Fabric biedt krachtige data integratie capabilities voor het inladen van data uit zorgsystemen. Het ondersteunt 150+ connectors en zowel code-free als code-first ontwikkeling.
+
+## Data Factory Components
+
+### Pipelines vs Dataflows
+
+\`\`\`
+Pipelines:
+- Orchestratie van activiteiten
+- Copy activities, notebooks, stored procedures
+- Scheduling en monitoring
+
+Dataflows Gen2:
+- Visuele data transformatie
+- Power Query M-language
+- Low-code ETL
+\`\`\`
+
+## Pipelines voor Zorg ETL
+
+### Copy Activity voor EPD Data
+
+\`\`\`json
+{
+  "name": "Copy_Epic_Patients",
+  "type": "Copy",
+  "source": {
+    "type": "SqlServerSource",
+    "sqlReaderQuery": "SELECT * FROM patients WHERE modified_date > @{pipeline().parameters.watermark}"
+  },
+  "sink": {
+    "type": "LakehouseTable",
+    "tableName": "bronze_patients"
+  }
+}
+\`\`\`
+
+### Incremental Load Pattern
+
+\`\`\`
+Pipeline: IncrementalLoad_Patients
+├── Lookup: Get_Watermark (laatste load timestamp)
+├── Copy: Extract_New_Records (records na watermark)
+├── Stored Procedure: Update_Watermark
+└── Notebook: Transform_To_Silver
+\`\`\`
+
+### Pipeline Parameters
+
+\`\`\`json
+{
+  "parameters": {
+    "source_system": { "type": "string", "defaultValue": "epic" },
+    "table_name": { "type": "string" },
+    "watermark_column": { "type": "string", "defaultValue": "modified_date" }
+  }
+}
+\`\`\`
+
+## Dataflows Gen2
+
+### Visuele Transformatie
+
+\`\`\`
+Dataflow: Transform_Patient_Data
+
+[SQL Server] → [Select Columns] → [Filter Rows] → [Rename Columns] → [Lakehouse]
+                      │                  │                │
+                   patient_id         active=true     standaard namen
+                   name
+                   birth_date
+\`\`\`
+
+### Power Query M Code
+
+\`\`\`powerquery
+let
+    Source = Sql.Database("epic-server", "clarity"),
+    Patients = Source{[Schema="dbo", Item="PATIENT"]}[Data],
+    FilterActive = Table.SelectRows(Patients, each [ACTIVE_STATUS] = "Y"),
+    RenameColumns = Table.RenameColumns(FilterActive, {
+        {"PAT_ID", "patient_id"},
+        {"PAT_NAME", "patient_name"},
+        {"BIRTH_DATE", "birth_date"}
+    }),
+    SelectColumns = Table.SelectColumns(RenameColumns, {
+        "patient_id", "patient_name", "birth_date"
+    })
+in
+    SelectColumns
+\`\`\`
+
+## Connectors voor Zorgsystemen
+
+### Beschikbare Connectors
+
+| Systeem | Connector | Type |
+|---------|-----------|------|
+| Epic Clarity | SQL Server | JDBC |
+| Cerner | Oracle | JDBC |
+| FHIR Server | REST API | HTTP |
+| HL7 (via Mirth) | Kafka | Streaming |
+| SAP IS-H | SAP | Native |
+| Excel/CSV | File | Batch |
+
+### REST API Connector voor FHIR
+
+\`\`\`json
+{
+  "name": "FHIR_Patient_Source",
+  "type": "RestSource",
+  "baseUrl": "https://fhir-server.hospital.nl/fhir",
+  "httpRequestTimeout": "00:01:40",
+  "requestMethod": "GET",
+  "relativeUrl": "Patient?_count=1000",
+  "authenticationType": "OAuth2ClientCredential"
+}
+\`\`\`
+
+## Error Handling
+
+### Retry en Fault Tolerance
+
+\`\`\`json
+{
+  "policy": {
+    "retry": 3,
+    "retryIntervalInSeconds": 30,
+    "secureOutput": false,
+    "timeout": "01:00:00"
+  }
+}
+\`\`\`
+
+### Logging naar Lakehouse
+
+\`\`\`python
+# Na elke pipeline run
+log_entry = {
+    "pipeline_name": pipeline_name,
+    "run_id": run_id,
+    "status": status,
+    "rows_copied": rows_copied,
+    "timestamp": datetime.now()
+}
+
+# Schrijf naar audit table
+spark.createDataFrame([log_entry]).write.mode("append").saveAsTable("audit.pipeline_runs")
+\`\`\`
+
+## Scheduling
+
+### Triggers
+
+\`\`\`
+Trigger Types:
+1. Schedule Trigger
+   - Cron-based (bijv. dagelijks 6:00)
+
+2. Event Trigger
+   - File arrival in storage
+   - Nieuwe data in source
+
+3. Manual Trigger
+   - Ad-hoc execution
+\`\`\`
+
+### Healthcare Schedule
+
+\`\`\`
+Pipeline: Daily_EPD_Extract
+Schedule: 0 5 * * * (dagelijks 5:00)
+
+Pipeline: Hourly_Vitals_Stream
+Schedule: 0 * * * * (elk uur)
+
+Pipeline: Weekly_Analytics_Refresh
+Schedule: 0 2 * * 0 (zondag 2:00)
+\`\`\`
+
+## Data Quality in Pipelines
+
+### Validation Activity
+
+\`\`\`json
+{
+  "name": "Validate_Patient_Data",
+  "type": "Validation",
+  "dataset": "bronze_patients",
+  "validationRules": [
+    { "column": "patient_id", "rule": "NotNull" },
+    { "column": "birth_date", "rule": "ValidDate" }
+  ]
+}
+\`\`\`
+
+## Kernbegrippen
+
+- **Pipeline**: Orchestratie van data movement en transformatie
+- **Dataflow Gen2**: Visuele ETL met Power Query
+- **Copy Activity**: High-performance data copy
+- **Incremental Load**: Alleen nieuwe/gewijzigde data laden
+- **Trigger**: Scheduled of event-based pipeline execution
+    `,
+    sources: [
+      { name: "Data Factory in Fabric", url: "https://learn.microsoft.com/en-us/fabric/data-factory/" },
+      { name: "Dataflows Gen2", url: "https://learn.microsoft.com/en-us/fabric/data-factory/dataflows-gen2-overview" }
+    ]
+  },
+
+  "103.4": {
+    title: "Healthcare Data Solutions met FHIR en DICOM",
+    summary: "Integratie van Azure Health Data Services met Fabric voor FHIR en DICOM workloads.",
+    content: `
+## In het kort
+
+Azure Health Data Services biedt managed FHIR en DICOM APIs die naadloos integreren met Microsoft Fabric. Dit maakt het mogelijk om zorgdata te combineren met analytics en AI.
+
+## Azure Health Data Services
+
+### Componenten
+
+\`\`\`
+Azure Health Data Services
+├── FHIR Service
+│   - FHIR R4 API
+│   - $export voor bulk data
+│   - SMART on FHIR authenticatie
+│
+├── DICOM Service
+│   - DICOMweb APIs
+│   - STOW-RS, WADO-RS, QIDO-RS
+│   - Integratie met imaging workflows
+│
+└── MedTech Service
+    - Device data ingestion
+    - IoMT FHIR Connector
+    - Wearables, monitors
+\`\`\`
+
+## FHIR naar Fabric Pipeline
+
+### FHIR $export naar Lakehouse
+
+\`\`\`
+┌─────────────────┐     ┌──────────────┐     ┌─────────────┐
+│  FHIR Service   │────►│    ADLS      │────►│  Lakehouse  │
+│   $export       │     │  (ndjson)    │     │   (Delta)   │
+└─────────────────┘     └──────────────┘     └─────────────┘
+\`\`\`
+
+### Export Triggeren
+
+\`\`\`python
+import requests
+
+# Trigger FHIR $export
+export_url = "https://fhir-service.fhir.azurehealthcareapis.com/$export"
+headers = {
+    "Authorization": f"Bearer {access_token}",
+    "Accept": "application/fhir+json",
+    "Prefer": "respond-async"
+}
+
+params = {
+    "_type": "Patient,Encounter,Observation",
+    "_since": "2024-01-01T00:00:00Z"
+}
+
+response = requests.get(export_url, headers=headers, params=params)
+content_location = response.headers["Content-Location"]
+\`\`\`
+
+### FHIR NDJSON naar Delta Lake
+
+\`\`\`python
+# Lees FHIR export (NDJSON format)
+fhir_patients = spark.read.json("/Files/fhir_export/Patient/*.ndjson")
+
+# Flatten FHIR resource naar tabular
+patients_flat = fhir_patients.select(
+    col("id").alias("patient_id"),
+    col("name")[0]["family"].alias("family_name"),
+    col("name")[0]["given")[0].alias("given_name"),
+    col("birthDate").alias("birth_date"),
+    col("gender"),
+    col("address")[0]["city"].alias("city"),
+    col("address")[0]["postalCode"].alias("postal_code")
+)
+
+# Schrijf naar Lakehouse
+patients_flat.write.format("delta").mode("overwrite").saveAsTable("silver.patients")
+\`\`\`
+
+## DICOM naar Fabric
+
+### DICOM Service Setup
+
+\`\`\`
+DICOM Service endpoints:
+- STOW-RS: Store images
+- WADO-RS: Retrieve images
+- QIDO-RS: Query metadata
+\`\`\`
+
+### DICOM Metadata naar Lakehouse
+
+\`\`\`python
+# Query DICOM studies via QIDO-RS
+import requests
+
+qido_url = "https://dicom-service.dicom.azurehealthcareapis.com/v1/studies"
+params = {
+    "StudyDate": "20240101-20240131",
+    "ModalitiesInStudy": "CT,MR"
+}
+
+response = requests.get(qido_url, headers=headers, params=params)
+studies = response.json()
+
+# Converteer naar DataFrame
+studies_df = spark.createDataFrame(studies)
+studies_df.write.format("delta").mode("append").saveAsTable("bronze.dicom_studies")
+\`\`\`
+
+### DICOM + Clinical Data Combineren
+
+\`\`\`sql
+-- Combineer imaging met clinical data
+SELECT
+    s.study_id,
+    s.study_date,
+    s.modality,
+    p.patient_name,
+    e.diagnosis_code,
+    e.attending_physician
+FROM silver.dicom_studies s
+JOIN silver.patients p ON s.patient_id = p.patient_id
+JOIN silver.encounters e ON s.accession_number = e.imaging_order_id
+\`\`\`
+
+## MedTech en IoMT
+
+### Device Data Ingestion
+
+\`\`\`
+Patient Monitors ──► Event Hub ──► MedTech Service ──► FHIR ──► Fabric
+    │                                    │
+ HL7v2/JSON                        FHIR Observation
+\`\`\`
+
+### Vitals naar FHIR Observation
+
+\`\`\`json
+{
+  "resourceType": "Observation",
+  "status": "final",
+  "code": {
+    "coding": [{
+      "system": "http://loinc.org",
+      "code": "8867-4",
+      "display": "Heart rate"
+    }]
+  },
+  "subject": { "reference": "Patient/12345" },
+  "valueQuantity": {
+    "value": 72,
+    "unit": "beats/minute"
+  },
+  "effectiveDateTime": "2024-01-15T10:30:00Z"
+}
+\`\`\`
+
+## Healthcare Data Model
+
+### OMOP CDM in Fabric
+
+\`\`\`
+OMOP Common Data Model:
+├── Person (patiënten)
+├── Visit_Occurrence (encounters)
+├── Condition_Occurrence (diagnoses)
+├── Drug_Exposure (medicatie)
+├── Procedure_Occurrence (procedures)
+├── Measurement (labs, vitals)
+└── Observation (overige observaties)
+\`\`\`
+
+### FHIR naar OMOP Mapping
+
+\`\`\`python
+# Map FHIR Patient naar OMOP Person
+omop_person = fhir_patients.select(
+    col("id").cast("long").alias("person_id"),
+    when(col("gender") == "male", 8507)
+        .when(col("gender") == "female", 8532)
+        .otherwise(0).alias("gender_concept_id"),
+    year(col("birthDate")).alias("year_of_birth"),
+    month(col("birthDate")).alias("month_of_birth"),
+    dayofmonth(col("birthDate")).alias("day_of_birth")
+)
+
+omop_person.write.format("delta").saveAsTable("omop.person")
+\`\`\`
+
+## Kernbegrippen
+
+- **FHIR Service**: Managed FHIR R4 API
+- **DICOM Service**: Medical imaging API
+- **MedTech Service**: Device/IoMT data ingestion
+- **$export**: Bulk FHIR data export
+- **OMOP CDM**: Gestandaardiseerd healthcare data model
+    `,
+    sources: [
+      { name: "Azure Health Data Services", url: "https://learn.microsoft.com/en-us/azure/healthcare-apis/" },
+      { name: "FHIR Analytics with Fabric", url: "https://learn.microsoft.com/en-us/azure/healthcare-apis/fhir/fhir-service-analytics-fabric" }
+    ]
+  },
+
+  "103.5": {
+    title: "Power BI in Fabric voor Zorginzichten",
+    summary: "Geïntegreerde Power BI voor healthcare dashboards en self-service analytics.",
+    content: `
+## In het kort
+
+Power BI is volledig geïntegreerd in Microsoft Fabric en biedt krachtige visualisatie en self-service analytics. Voor zorginstellingen betekent dit snelle inzichten uit lakehouse data.
+
+## Power BI in Fabric
+
+### Integratie Voordelen
+
+\`\`\`
+Fabric Integratie:
+├── Direct Lake Mode
+│   - Query Delta tables direct
+│   - Geen data duplicatie
+│   - Automatische refresh
+│
+├── Semantic Models
+│   - Gedeelde definities
+│   - Row-level security
+│   - Berekende maten
+│
+└── Reports & Dashboards
+    - Embedded in Fabric portal
+    - Delen via workspaces
+\`\`\`
+
+### Direct Lake vs Import vs DirectQuery
+
+| Mode | Data Locatie | Performance | Actualiteit |
+|------|--------------|-------------|-------------|
+| Import | In-memory | Zeer snel | Scheduled refresh |
+| DirectQuery | Bron | Langzamer | Real-time |
+| Direct Lake | OneLake | Snel | Near real-time |
+
+## Semantic Model voor Zorg
+
+### Model Aanmaken
+
+\`\`\`
+Lakehouse: clinical_lakehouse
+└── Tables/
+    ├── dim_patients
+    ├── dim_providers
+    ├── dim_departments
+    ├── fact_encounters
+    └── fact_observations
+
+           ↓ Create Semantic Model
+
+Semantic Model: Healthcare Analytics
+├── Tables (auto-detected)
+├── Relationships (defined)
+├── Measures (DAX)
+└── Hierarchies
+\`\`\`
+
+### DAX Measures voor Healthcare KPIs
+
+\`\`\`dax
+// Gemiddelde ligduur
+Average Length of Stay =
+AVERAGEX(
+    fact_encounters,
+    DATEDIFF(fact_encounters[admission_date], fact_encounters[discharge_date], DAY)
+)
+
+// Heropname percentage
+Readmission Rate =
+VAR TotalDischarges = COUNTROWS(fact_encounters)
+VAR Readmissions = CALCULATE(
+    COUNTROWS(fact_encounters),
+    FILTER(
+        fact_encounters,
+        fact_encounters[is_readmission] = TRUE
+    )
+)
+RETURN DIVIDE(Readmissions, TotalDischarges, 0)
+
+// Bed bezetting
+Bed Occupancy Rate =
+DIVIDE(
+    SUM(fact_bed_census[occupied_beds]),
+    SUM(fact_bed_census[total_beds]),
+    0
+)
+\`\`\`
+
+## Healthcare Dashboards
+
+### Executive Dashboard
+
+\`\`\`
+┌────────────────────────────────────────────────────────────┐
+│                   Healthcare Executive Dashboard            │
+├──────────────┬──────────────┬──────────────┬───────────────┤
+│   Opnames    │   Ligduur    │  Bezetting   │  Heropname    │
+│    1,234     │   4.2 dagen  │    87%       │    8.5%       │
+│   ▲ 5%       │   ▼ 0.3      │   ▲ 2%       │   ▼ 0.5%      │
+├──────────────┴──────────────┴──────────────┴───────────────┤
+│                                                             │
+│  [Line Chart: Opnames per dag - trend over tijd]           │
+│                                                             │
+├─────────────────────────────────┬───────────────────────────┤
+│ [Bar Chart: Ligduur per        │ [Donut: Opnames per       │
+│  specialisme]                  │  opnametype]               │
+└─────────────────────────────────┴───────────────────────────┘
+\`\`\`
+
+### Operationeel Dashboard
+
+\`\`\`
+┌────────────────────────────────────────────────────────────┐
+│               Operationeel Dashboard - SEH                  │
+├──────────────┬──────────────┬──────────────┬───────────────┤
+│  Wachtenden  │  Gem. Wacht  │  In Behndlng │   Vertrokken  │
+│      12      │   45 min     │      8       │     67        │
+├──────────────┴──────────────┴──────────────┴───────────────┤
+│                                                             │
+│  [Real-time: Patiënten per triage categorie]               │
+│  ████████████ Groen (42)                                   │
+│  ████████ Geel (28)                                        │
+│  ███ Oranje (12)                                           │
+│  █ Rood (3)                                                │
+│                                                             │
+└────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Row-Level Security
+
+### RLS voor Afdelingen
+
+\`\`\`dax
+// RLS filter op department
+[Department] = USERPRINCIPALNAME()
+
+// Of via lookup table
+VAR UserDept = LOOKUPVALUE(
+    dim_user_departments[department],
+    dim_user_departments[email],
+    USERPRINCIPALNAME()
+)
+RETURN [department] = UserDept
+\`\`\`
+
+### RLS Testen
+
+\`\`\`
+1. Modeling → Manage Roles
+2. Voeg filter toe op tabel
+3. View as Role om te testen
+4. Publish en assign users to roles
+\`\`\`
+
+## Embedded Analytics
+
+### Power BI Embedded voor Patiëntportaal
+
+\`\`\`javascript
+// Embed report in web applicatie
+const embedConfig = {
+    type: 'report',
+    id: reportId,
+    embedUrl: embedUrl,
+    accessToken: accessToken,
+    settings: {
+        filterPaneEnabled: false,
+        navContentPaneEnabled: false
+    }
+};
+
+powerbi.embed(container, embedConfig);
+\`\`\`
+
+## Paginated Reports
+
+### Gebruik in Zorg
+
+- **Patiëntoverzichten** - Gedetailleerde rapporten per patiënt
+- **Facturatie** - DBC overzichten, declaraties
+- **Compliance** - Audit reports, kwaliteitsindicatoren
+- **Brieven** - Ontslagbrieven, verwijzingen
+
+## Kernbegrippen
+
+- **Direct Lake**: Query lakehouse tables zonder import
+- **Semantic Model**: Gedeelde data definities en measures
+- **DAX**: Data Analysis Expressions voor berekeningen
+- **Row-Level Security**: Data filtering per gebruiker
+- **Paginated Reports**: Pixel-perfect reports voor print
+    `,
+    sources: [
+      { name: "Power BI in Fabric", url: "https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial" },
+      { name: "Direct Lake Mode", url: "https://learn.microsoft.com/en-us/power-bi/enterprise/directlake-overview" }
+    ]
+  },
+
+  "103.6": {
+    title: "Real-Time Intelligence voor Patiëntmonitoring",
+    summary: "Streaming analytics met Eventhouse en KQL voor real-time zorgmonitoring.",
+    content: `
+## In het kort
+
+Real-Time Intelligence in Fabric biedt streaming analytics voor tijdkritische zorgdata. Met Eventhouse en KQL kunnen vitale signalen real-time worden gemonitord en alerts gegenereerd.
+
+## Real-Time Intelligence Componenten
+
+### Architectuur
+
+\`\`\`
+Event Sources          Real-Time Intelligence           Outputs
+─────────────          ──────────────────────          ───────
+Patient Monitors ──┐                                   ┌── Power BI Real-time
+                   │   ┌────────────────────┐         │
+Wearables ─────────┼──►│    Eventstream     │────┬───►┼── Alerts
+                   │   └─────────┬──────────┘    │    │
+Medical Devices ───┘             │               │    └── Lakehouse
+                                 ▼               │
+                        ┌────────────────┐       │
+                        │   Eventhouse   │───────┘
+                        │    (KQL DB)    │
+                        └────────────────┘
+\`\`\`
+
+### Eventhouse vs Lakehouse
+
+| Aspect | Eventhouse | Lakehouse |
+|--------|------------|-----------|
+| Optimized for | Time-series, logs | Structured analytics |
+| Query Language | KQL | SQL/Spark |
+| Latency | Seconds | Minutes |
+| Retention | Hot/warm/cold | Unlimited |
+
+## Eventstream Setup
+
+### Patient Vitals Stream
+
+\`\`\`
+1. Create Eventstream: "patient_vitals_stream"
+2. Add Source: Azure Event Hub
+   - Connection: eventhub-patient-monitors
+   - Consumer group: fabric-consumer
+3. Add Destination: Eventhouse
+   - Database: clinical_realtime
+   - Table: vitals_raw
+\`\`\`
+
+### Event Schema
+
+\`\`\`json
+{
+  "patient_id": "P12345",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "device_id": "MON-001",
+  "measurements": {
+    "heart_rate": 72,
+    "spo2": 98,
+    "bp_systolic": 120,
+    "bp_diastolic": 80,
+    "temperature": 36.8,
+    "respiratory_rate": 16
+  }
+}
+\`\`\`
+
+## KQL voor Healthcare Analytics
+
+### Basis Queries
+
+\`\`\`kusto
+// Laatste vitals per patiënt
+vitals_raw
+| summarize arg_max(timestamp, *) by patient_id
+| project patient_id, timestamp, heart_rate, spo2, bp_systolic
+
+// Gemiddelde over laatste uur per patiënt
+vitals_raw
+| where timestamp > ago(1h)
+| summarize
+    avg_hr = avg(heart_rate),
+    avg_spo2 = avg(spo2),
+    min_spo2 = min(spo2)
+by patient_id
+\`\`\`
+
+### Early Warning Score (EWS)
+
+\`\`\`kusto
+// Bereken Modified Early Warning Score
+vitals_raw
+| where timestamp > ago(5m)
+| summarize arg_max(timestamp, *) by patient_id
+| extend ews_hr = case(
+    heart_rate < 40, 2,
+    heart_rate between (40 .. 50), 1,
+    heart_rate between (51 .. 100), 0,
+    heart_rate between (101 .. 110), 1,
+    heart_rate between (111 .. 129), 2,
+    heart_rate >= 130, 3,
+    0)
+| extend ews_spo2 = case(
+    spo2 < 92, 3,
+    spo2 between (92 .. 93), 2,
+    spo2 between (94 .. 95), 1,
+    0)
+| extend ews_total = ews_hr + ews_spo2
+| where ews_total >= 4
+| project patient_id, timestamp, ews_total, heart_rate, spo2
+\`\`\`
+
+### Anomaly Detection
+
+\`\`\`kusto
+// Detecteer afwijkingen van baseline
+let baseline = vitals_raw
+| where timestamp between (ago(7d) .. ago(1d))
+| summarize
+    baseline_hr = avg(heart_rate),
+    std_hr = stdev(heart_rate)
+by patient_id;
+
+vitals_raw
+| where timestamp > ago(1h)
+| join kind=inner baseline on patient_id
+| extend zscore = (heart_rate - baseline_hr) / std_hr
+| where abs(zscore) > 2
+| project patient_id, timestamp, heart_rate, baseline_hr, zscore
+\`\`\`
+
+## Real-Time Dashboards
+
+### KQL Dashboard
+
+\`\`\`kusto
+// Real-time patient overview
+vitals_raw
+| where timestamp > ago(5m)
+| summarize
+    last_hr = arg_max(timestamp, heart_rate),
+    last_spo2 = arg_max(timestamp, spo2)
+by patient_id, ward
+| join kind=leftouter (
+    alerts
+    | where timestamp > ago(1h)
+    | summarize alert_count = count() by patient_id
+) on patient_id
+| project ward, patient_id, last_hr, last_spo2, alert_count
+| order by alert_count desc
+\`\`\`
+
+### Power BI Real-Time
+
+\`\`\`
+1. Create KQL Query Set
+2. Connect to Eventhouse
+3. Pin query to Power BI dashboard
+4. Set auto-refresh interval (30 sec)
+\`\`\`
+
+## Alerting
+
+### Data Activator
+
+\`\`\`
+Reflex Trigger: High EWS Alert
+├── Data Source: vitals_eventhouse
+├── Condition: ews_total >= 5
+├── Action: Send Teams notification
+└── Throttle: Max 1 per 15 min per patient
+\`\`\`
+
+### Alert naar Teams
+
+\`\`\`json
+{
+  "type": "message",
+  "attachments": [{
+    "contentType": "application/vnd.microsoft.card.adaptive",
+    "content": {
+      "type": "AdaptiveCard",
+      "body": [{
+        "type": "TextBlock",
+        "text": "⚠️ High EWS Alert",
+        "weight": "bolder"
+      }, {
+        "type": "FactSet",
+        "facts": [
+          { "title": "Patient", "value": "${patient_id}" },
+          { "title": "Ward", "value": "${ward}" },
+          { "title": "EWS Score", "value": "${ews_total}" }
+        ]
+      }]
+    }
+  }]
+}
+\`\`\`
+
+## Data Retention
+
+### Hot/Warm/Cold Tiers
+
+\`\`\`kusto
+// Retention policy
+.alter table vitals_raw policy retention
+\`\`\`
+{
+  "SoftDeletePeriod": "365.00:00:00",  // 1 jaar
+  "Recoverability": "Enabled"
+}
+\`\`\`
+
+// Caching policy (hot data)
+.alter table vitals_raw policy caching
+\`\`\`
+{
+  "DataHotSpan": "7.00:00:00"  // 7 dagen hot
+}
+\`\`\`
+\`\`\`
+
+## Kernbegrippen
+
+- **Eventstream**: Managed streaming ingestion
+- **Eventhouse**: Time-series database met KQL
+- **KQL**: Kusto Query Language voor log analytics
+- **Data Activator**: No-code alerting
+- **Hot/Warm/Cold**: Data tiering voor cost optimization
+    `,
+    sources: [
+      { name: "Real-Time Intelligence", url: "https://learn.microsoft.com/en-us/fabric/real-time-intelligence/" },
+      { name: "KQL Reference", url: "https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/" }
+    ]
+  },
+
+  "103.7": {
+    title: "Data Governance en Purview Integratie",
+    summary: "Microsoft Purview integratie voor data governance, catalogus en compliance in Fabric.",
+    content: `
+## In het kort
+
+Microsoft Purview integreert naadloos met Fabric voor enterprise data governance. Het biedt data catalogus, lineage tracking, classificatie en compliance management voor zorgdata.
+
+## Purview en Fabric Integratie
+
+### Automatische Integratie
+
+\`\`\`
+Fabric Workspace
+├── Lakehouse
+│   └── Tables → Automatisch in Purview Catalog
+├── Warehouse
+│   └── Tables → Automatisch in Purview Catalog
+└── Semantic Models
+    └── Datasets → Automatisch geregistreerd
+\`\`\`
+
+### Purview Componenten
+
+- **Data Catalog** - Zoek en ontdek data assets
+- **Data Map** - Scan en classificeer data bronnen
+- **Data Lineage** - Visualiseer datastromen
+- **Data Estate Insights** - Governance analytics
+
+## Data Catalogus
+
+### Assets Zoeken
+
+\`\`\`
+Purview Portal → Data Catalog → Browse
+
+Filters:
+├── Source Type: Fabric Lakehouse
+├── Classification: PII, PHI
+├── Glossary Term: Patient Data
+└── Collection: Healthcare
+\`\`\`
+
+### Glossary Terms voor Zorg
+
+\`\`\`
+Healthcare Glossary
+├── Patient Demographics
+│   ├── BSN - Burgerservicenummer
+│   ├── Patient Name
+│   └── Date of Birth
+├── Clinical Data
+│   ├── Diagnosis Code
+│   ├── Procedure Code
+│   └── Medication
+└── Financial
+    ├── DBC Code
+    └── Declaration
+\`\`\`
+
+### Term Toewijzen
+
+\`\`\`
+1. Open asset (bijv. silver.patients)
+2. Schema tab → Column "bsn"
+3. Assign glossary term: "BSN"
+4. Save
+\`\`\`
+
+## Data Classificatie
+
+### Sensitivity Labels
+
+\`\`\`
+Classification Types:
+├── PII (Personally Identifiable Information)
+│   - Names, addresses, phone numbers
+├── PHI (Protected Health Information)
+│   - Medical records, diagnoses, treatments
+├── Financial
+│   - Insurance, billing
+└── Confidential
+    - Internal business data
+\`\`\`
+
+### Automatische Classificatie
+
+\`\`\`
+Purview scant automatisch voor:
+├── BSN patterns (9 digits)
+├── Credit card numbers
+├── Email addresses
+├── Medical terminology (ICD, SNOMED)
+└── Custom patterns (regex)
+\`\`\`
+
+### Custom Classification Rules
+
+\`\`\`json
+{
+  "name": "Dutch_BSN",
+  "description": "Dutch citizen service number",
+  "pattern": "\\b[0-9]{9}\\b",
+  "minimumPercentageMatch": 60,
+  "classification": "PII"
+}
+\`\`\`
+
+## Data Lineage
+
+### Automatische Lineage
+
+\`\`\`
+Fabric tracked automatisch:
+
+[Epic Extract] → [Bronze Table] → [Silver Table] → [Gold Table] → [Power BI Report]
+      │              │                │                │               │
+   Pipeline      Notebook         Notebook         Dataflow        Dataset
+\`\`\`
+
+### Lineage Visualisatie
+
+\`\`\`
+View in Purview:
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│ epic_extract│────►│bronze.patients│────►│silver.patients│
+└─────────────┘     └─────────────┘     └──────┬──────┘
+                                               │
+                    ┌─────────────┐            │
+                    │gold.patient_│◄───────────┘
+                    │360          │
+                    └──────┬──────┘
+                           │
+                    ┌──────▼──────┐
+                    │ Patient 360 │
+                    │  Dashboard  │
+                    └─────────────┘
+\`\`\`
+
+## Compliance Management
+
+### Information Protection
+
+\`\`\`
+Sensitivity Labels in Fabric:
+├── Public
+├── Internal
+├── Confidential
+│   └── Auto-encrypt downloads
+└── Highly Confidential
+    └── Restrict sharing
+\`\`\`
+
+### Label Inheritance
+
+\`\`\`
+Als bron data label "PHI" heeft:
+1. Downstream tables erven label
+2. Reports tonen label
+3. Exports worden beperkt
+\`\`\`
+
+## Access Reviews
+
+### Periodieke Reviews
+
+\`\`\`
+Access Review Setup:
+├── Scope: Healthcare workspace
+├── Reviewers: Data Stewards
+├── Frequency: Quarterly
+└── Actions:
+    ├── Remove stale access
+    └── Verify business need
+\`\`\`
+
+## Audit en Compliance Reports
+
+### Activity Logs
+
+\`\`\`kusto
+// Query Purview audit logs
+AuditLogs
+| where TimeGenerated > ago(7d)
+| where OperationName contains "DataAccess"
+| where TargetResources contains "patient"
+| project TimeGenerated, Identity, OperationName, Result
+\`\`\`
+
+### Compliance Dashboard
+
+\`\`\`
+┌────────────────────────────────────────────────────────────┐
+│                   Data Governance Dashboard                 │
+├──────────────┬──────────────┬──────────────┬───────────────┤
+│  Assets      │  Classified  │  With Terms  │   Lineage     │
+│   1,234      │    87%       │     65%      │    92%        │
+├──────────────┴──────────────┴──────────────┴───────────────┤
+│                                                             │
+│  [Chart: Classification coverage over time]                │
+│                                                             │
+├─────────────────────────────────┬───────────────────────────┤
+│  Data by Sensitivity           │  Top Data Stewards        │
+│  ████ PHI (340)               │  1. Jan de Vries (234)    │
+│  ███ PII (180)                │  2. Lisa Bakker (198)     │
+│  ██ Confidential (89)         │  3. Mark Jansen (156)     │
+└─────────────────────────────────┴───────────────────────────┘
+\`\`\`
+
+## Kernbegrippen
+
+- **Data Catalog**: Doorzoekbare inventaris van data assets
+- **Data Map**: Geautomatiseerde scanning en classificatie
+- **Glossary**: Gestandaardiseerde business termen
+- **Lineage**: End-to-end data flow visualisatie
+- **Sensitivity Labels**: Data classificatie met enforcement
+    `,
+    sources: [
+      { name: "Microsoft Purview", url: "https://learn.microsoft.com/en-us/purview/" },
+      { name: "Purview and Fabric", url: "https://learn.microsoft.com/en-us/fabric/governance/use-microsoft-purview-hub" }
+    ]
+  },
+
+  "103.8": {
+    title: "Fabric Implementatie en Microsoft Cloud for Healthcare",
+    summary: "Implementatieaanpak voor Fabric in zorginstellingen met Microsoft Cloud for Healthcare.",
+    content: `
+## In het kort
+
+Een succesvolle Fabric implementatie in de zorg combineert het Fabric platform met Microsoft Cloud for Healthcare componenten. Deze module behandelt de implementatieaanpak en integratie.
+
+## Microsoft Cloud for Healthcare
+
+### Componenten
+
+\`\`\`
+Microsoft Cloud for Healthcare
+├── Azure Health Data Services
+│   ├── FHIR Service
+│   ├── DICOM Service
+│   └── MedTech Service
+│
+├── Microsoft Fabric
+│   ├── Healthcare data solutions
+│   └── Analytics & AI
+│
+├── Dynamics 365
+│   ├── Patient Access Portal
+│   ├── Care Management
+│   └── Home Health
+│
+├── Microsoft 365
+│   ├── Teams for Healthcare
+│   ├── Virtual Visits
+│   └── Shifts
+│
+└── Power Platform
+    ├── Patient Outreach (Marketing)
+    └── Care Coordination apps
+\`\`\`
+
+## Implementatie Stappenplan
+
+### Fase 1: Assessment (Week 1-4)
+
+**Huidige Staat**
+- Inventariseer databronnen (EPD, PACS, labs)
+- Beoordeel huidige BI-tooling
+- Identificeer stakeholders
+- Review compliance requirements
+
+**Doelarchitectuur**
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    Microsoft Cloud                          │
+├─────────────────────────────────────────────────────────────┤
+│  ┌──────────────────┐  ┌──────────────────┐                │
+│  │ Azure Health     │  │  Microsoft       │                │
+│  │ Data Services    │  │  Fabric          │                │
+│  │                  │  │                  │                │
+│  │ FHIR ────────────┼──┼─► Lakehouse      │                │
+│  │ DICOM ───────────┼──┼─► Analytics      │                │
+│  │ MedTech ─────────┼──┼─► Power BI       │                │
+│  └──────────────────┘  └──────────────────┘                │
+│           │                     │                           │
+│           ▼                     ▼                           │
+│  ┌──────────────────────────────────────────┐              │
+│  │            Microsoft Purview              │              │
+│  │         (Governance & Compliance)         │              │
+│  └──────────────────────────────────────────┘              │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### Fase 2: Foundation (Week 5-10)
+
+**Azure Setup**
+1. Azure subscription en resource groups
+2. Azure Health Data Services provisioning
+3. Fabric capacity provisioning
+4. Netwerk (Private endpoints, Express Route)
+
+**Identity & Security**
+- Azure AD configuratie
+- Conditional Access policies
+- Privileged Identity Management
+- Security groups voor Fabric
+
+### Fase 3: Data Platform (Week 11-18)
+
+**Fabric Workspace Structuur**
+
+\`\`\`
+Tenant: ZiekenhuisX
+├── Capacity: Prod-F64
+│   ├── Workspace: Clinical-Production
+│   │   ├── Lakehouse: clinical_data
+│   │   ├── Warehouse: analytics_dw
+│   │   └── Reports: clinical_dashboards
+│   │
+│   └── Workspace: Finance-Production
+│       └── ...
+│
+└── Capacity: Dev-F8
+    └── Workspace: Development
+        └── ...
+\`\`\`
+
+**Data Integratie**
+1. FHIR Service → Fabric Lakehouse pipeline
+2. EPD extractie via Data Factory
+3. Real-time vitals via Eventstream
+
+### Fase 4: Use Cases (Week 19-26)
+
+**Pilot Use Cases**
+
+| Use Case | Data | Output |
+|----------|------|--------|
+| Patient 360 | FHIR, EPD | Power BI Dashboard |
+| Bed Management | ADT, Census | Real-time Dashboard |
+| Quality Metrics | Clinical data | Paginated Reports |
+
+## Security Configuration
+
+### Network Security
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    Virtual Network                          │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────┐     ┌─────────────────┐               │
+│  │ Private Endpoint│     │ Private Endpoint│               │
+│  │ (Fabric)        │     │ (Health Services)│              │
+│  └────────┬────────┘     └────────┬────────┘               │
+│           │                       │                         │
+│           └───────────┬───────────┘                         │
+│                       │                                     │
+│              ┌────────▼────────┐                           │
+│              │  On-premises    │                           │
+│              │  (via ExpressRoute)                         │
+│              └─────────────────┘                           │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### Encryption
+
+\`\`\`
+Encryption at Rest:
+├── OneLake: Microsoft-managed keys (default)
+├── Customer-managed keys (CMK) option
+└── Azure Health Data Services: CMK supported
+
+Encryption in Transit:
+├── TLS 1.2+ enforced
+└── Private Link for internal traffic
+\`\`\`
+
+## Governance Setup
+
+### Data Stewardship Model
+
+\`\`\`
+Central Team:
+├── Data Platform Team
+│   └── Fabric administration, security
+├── Data Governance Team
+│   └── Purview, compliance, policies
+└── Analytics CoE
+    └── Power BI standards, training
+
+Domain Teams:
+├── Clinical Analytics
+│   └── Clinical data stewards
+├── Finance Analytics
+│   └── Finance data stewards
+└── Operations Analytics
+    └── Ops data stewards
+\`\`\`
+
+### Workspace Governance
+
+\`\`\`
+Workspace Naming: {Domain}-{Environment}
+├── Clinical-Production
+├── Clinical-Development
+├── Finance-Production
+└── Research-Sandbox
+
+Lakehouse Naming: {domain}_{layer}_lakehouse
+├── clinical_bronze_lakehouse
+├── clinical_silver_lakehouse
+└── clinical_gold_lakehouse
+\`\`\`
+
+## Change Management
+
+### Training Plan
+
+| Rol | Training | Certificering |
+|-----|----------|---------------|
+| Data Engineer | DP-600 Fabric Analytics | Optional |
+| Data Analyst | PL-300 Power BI | Recommended |
+| Data Steward | SC-400 Information Protection | Recommended |
+| Admin | Fabric Admin workshop | - |
+
+### Adoption Metrics
+
+\`\`\`
+Track:
+├── Active users per week
+├── Reports viewed
+├── Queries executed
+├── Data freshness
+└── User satisfaction (surveys)
+\`\`\`
+
+## Cost Management
+
+### Capacity Planning
+
+\`\`\`
+Workload Estimation:
+├── Daily data volume: 50 GB
+├── Concurrent users: 200
+├── Complex reports: 50
+├── ML workloads: 10 jobs/day
+    ↓
+Recommended: F32 capacity
+\`\`\`
+
+### Cost Monitoring
+
+\`\`\`
+Azure Cost Management:
+├── Set budgets per workspace
+├── Alerts at 80%, 100%
+├── Monthly review meetings
+└── Chargeback to departments
+\`\`\`
+
+## Kernbegrippen
+
+- **Microsoft Cloud for Healthcare**: Verticale cloud oplossing
+- **Fabric Capacity**: Compute resources voor Fabric
+- **Private Endpoints**: Private network connectivity
+- **Data Stewardship**: Gedecentraliseerd data eigenaarschap
+- **CoE**: Center of Excellence voor best practices
+    `,
+    sources: [
+      { name: "Microsoft Cloud for Healthcare", url: "https://www.microsoft.com/en-us/industry/health/microsoft-cloud-for-healthcare" },
+      { name: "Fabric Implementation Guide", url: "https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial" }
+    ]
+  },
+
+  // ==========================================
+  // TRACK 104: SAS & SAS ON AZURE IN DE ZORG
+  // ==========================================
+
+  "104.1": {
+    title: "SAS Platform Fundamentals voor de Zorg",
+    summary: "Introductie tot het SAS platform en de historische rol in healthcare analytics.",
+    content: `
+## In het kort
+
+SAS is een van de langstlopende analytics platforms met diepe wortels in de zorgsector. Van klinische trials tot population health - SAS heeft decennialange expertise in healthcare analytics.
+
+## SAS in Perspectief
+
+### Geschiedenis
+
+\`\`\`
+1976: SAS opgericht (Statistical Analysis System)
+1980s: Eerste healthcare toepassingen (FDA, pharma)
+1990s: SAS Institute groeit, healthcare focus
+2000s: Data mining, predictive analytics
+2010s: SAS Viya, cloud transitie
+2020s: SAS on Azure, hybrid cloud
+\`\`\`
+
+### SAS Market Positie
+
+- **Sterk in**: Pharma, klinische trials, verzekeraars, overheid
+- **Legacy**: Veel zorginstellingen hebben jarenlange SAS-investeringen
+- **Uitdaging**: Modernisering naar cloud, concurrentie van open source
+
+## SAS Platform Componenten
+
+### SAS 9.4 (Legacy)
+
+\`\`\`
+SAS 9.4 Architecture:
+├── Base SAS
+│   └── Data manipulation, procedures
+├── SAS/STAT
+│   └── Statistische analyses
+├── SAS/GRAPH
+│   └── Visualisatie
+├── SAS Enterprise Guide
+│   └── GUI voor analisten
+└── SAS Enterprise Miner
+    └── Data mining, ML
+\`\`\`
+
+### SAS Viya (Modern)
+
+\`\`\`
+SAS Viya Architecture:
+├── Cloud-native (Kubernetes)
+├── In-memory analytics (CAS)
+├── Open APIs (REST)
+├── Python/R integratie
+└── Visual interfaces
+    ├── SAS Visual Analytics
+    ├── SAS Visual Data Mining
+    └── SAS Model Studio
+\`\`\`
+
+## SAS voor Healthcare
+
+### Healthcare-specifieke Oplossingen
+
+| Oplossing | Doel |
+|-----------|------|
+| SAS Health | Population health, care management |
+| SAS Clinical | Klinische trials, FDA submissions |
+| SAS Fraud | Fraudedetectie verzekeraars |
+| SAS Risk | Risicomanagement |
+
+### Typische Zorgtoepassingen
+
+1. **Klinische Trials** - Data management, statistical analysis
+2. **FDA Submissions** - CDISC-compliant outputs
+3. **Population Health** - Risicostratificatie
+4. **Claims Analytics** - Fraudedetectie
+5. **Quality Reporting** - HEDIS, CAHPS metrics
+
+## SAS vs Moderne Platforms
+
+### Vergelijking
+
+| Aspect | SAS | Databricks/Fabric |
+|--------|-----|-------------------|
+| Leercurve | Steep (SAS language) | Varies (SQL, Python) |
+| Kosten | Hoog (licenties) | Consumption-based |
+| Schaalbaarheid | Beperkt | Cloud-native |
+| Open Source | Nee | Ja (Spark, Delta) |
+| Healthcare | Diep geïntegreerd | Groeiend |
+| Statistiek | Gouden standaard | Goed (maar anders) |
+
+### Wanneer SAS?
+
+\`\`\`
+SAS is sterk wanneer:
+├── FDA-gereguleerde omgeving (validated systems)
+├── Legacy SAS code base aanwezig
+├── Complexe statistische analyses vereist
+├── CDISC standaarden (klinische trials)
+└── Bestaande SAS-expertise in team
+\`\`\`
+
+## SAS Language Basics
+
+### Data Step
+
+\`\`\`sas
+/* Lees en transformeer data */
+data patients_clean;
+    set raw.patients;
+    where age >= 18;
+    length full_name $100;
+    full_name = catx(' ', first_name, last_name);
+    bmi = weight / (height/100)**2;
+run;
+\`\`\`
+
+### Procedures
+
+\`\`\`sas
+/* Frequentietabel */
+proc freq data=patients_clean;
+    tables gender diagnosis / chisq;
+run;
+
+/* Regressie analyse */
+proc reg data=patients_clean;
+    model outcome = age gender bmi;
+run;
+\`\`\`
+
+### SQL in SAS
+
+\`\`\`sas
+proc sql;
+    create table patient_summary as
+    select
+        department,
+        count(*) as patient_count,
+        mean(los) as avg_los
+    from hospital.admissions
+    group by department;
+quit;
+\`\`\`
+
+## Kernbegrippen
+
+- **Base SAS**: Core data manipulation en procedures
+- **SAS Viya**: Cloud-native analytics platform
+- **CAS**: Cloud Analytic Services (in-memory engine)
+- **Data Step**: SAS programming voor data manipulatie
+- **PROC**: Procedure calls voor analyses
+    `,
+    sources: [
+      { name: "SAS Documentation", url: "https://documentation.sas.com" },
+      { name: "SAS for Healthcare", url: "https://www.sas.com/en_us/industry/health-care.html" }
+    ]
+  },
+
+  "104.2": {
+    title: "SAS Viya Architectuur en Cloud Opties",
+    summary: "Deep dive in SAS Viya architectuur en de verschillende cloud deployment opties.",
+    content: `
+## In het kort
+
+SAS Viya is de moderne, cloud-native versie van SAS. Het draait op Kubernetes en biedt integratie met cloud platforms zoals Azure, AWS en GCP.
+
+## SAS Viya Architectuur
+
+### High-Level Architecture
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                      SAS Viya Platform                       │
+├─────────────────────────────────────────────────────────────┤
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐   │
+│  │ Visual        │  │ Model         │  │ Data          │   │
+│  │ Analytics     │  │ Studio        │  │ Studio        │   │
+│  └───────────────┘  └───────────────┘  └───────────────┘   │
+│                            │                                 │
+│                            ▼                                 │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │            Microservices Layer (REST APIs)             │ │
+│  └───────────────────────────────────────────────────────┘ │
+│                            │                                 │
+│                            ▼                                 │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │     CAS - Cloud Analytic Services (In-Memory)         │ │
+│  └───────────────────────────────────────────────────────┘ │
+│                            │                                 │
+│                            ▼                                 │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │              Kubernetes Infrastructure                  │ │
+│  └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### CAS (Cloud Analytic Services)
+
+CAS is de in-memory engine van Viya:
+
+\`\`\`
+CAS Architecture:
+├── Controller Node
+│   └── Coördinatie, metadata
+├── Worker Nodes
+│   └── Parallelle verwerking
+├── CAS Libraries
+│   └── Data in-memory
+└── CAS Actions
+    └── Analytics operaties
+\`\`\`
+
+## Deployment Opties
+
+### SAS Viya Deployment Models
+
+| Model | Beheer | Locatie | Use Case |
+|-------|--------|---------|----------|
+| SAS Cloud | SAS | SAS Hosted | Quick start |
+| Customer Cloud | Klant | Azure/AWS/GCP | Enterprise |
+| On-Premises | Klant | Datacenter | Regulated |
+| Hybrid | Beide | Mixed | Transitie |
+
+### SAS Cloud (Managed)
+
+\`\`\`
+Voordelen:
+├── Geen infrastructuur beheer
+├── Automatische updates
+├── SAS support
+└── Snelle start
+
+Nadelen:
+├── Minder controle
+├── Data sovereignty vragen
+└── Integratie complexiteit
+\`\`\`
+
+### Customer-Managed Cloud
+
+\`\`\`
+Voordelen:
+├── Volledige controle
+├── Integratie met cloud services
+├── Data in eigen tenant
+└── Flexibele configuratie
+
+Nadelen:
+├── Kubernetes expertise nodig
+├── Onderhoud verantwoordelijkheid
+└── Hogere operationele last
+\`\`\`
+
+## SAS Viya op Kubernetes
+
+### Kubernetes Requirements
+
+\`\`\`yaml
+# Minimum cluster sizing
+nodes:
+  - type: system
+    count: 3
+    cpu: 4
+    memory: 16GB
+
+  - type: cas
+    count: 3
+    cpu: 16
+    memory: 128GB
+
+  - type: compute
+    count: 2
+    cpu: 8
+    memory: 32GB
+\`\`\`
+
+### Deployment met Viya Deployment Operator
+
+\`\`\`bash
+# Install SAS Viya Deployment Operator
+kubectl apply -f sas-bases/overlays/deployment-operator
+
+# Apply Viya deployment
+kubectl apply -f site-config/
+
+# Monitor deployment
+kubectl get pods -n sas-viya
+\`\`\`
+
+## Data Connectiviteit
+
+### Data Sources
+
+\`\`\`
+Ondersteunde bronnen:
+├── Databases
+│   ├── Oracle, SQL Server, PostgreSQL
+│   ├── Teradata, Snowflake
+│   └── Azure SQL, Amazon Redshift
+├── Cloud Storage
+│   ├── Azure Blob/ADLS
+│   ├── Amazon S3
+│   └── Google Cloud Storage
+├── Big Data
+│   ├── Hadoop HDFS
+│   ├── Spark
+│   └── Databricks
+└── Files
+    ├── CSV, Excel
+    ├── Parquet
+    └── SAS datasets (.sas7bdat)
+\`\`\`
+
+### CAS Data Loading
+
+\`\`\`sas
+/* Load data into CAS */
+cas mysession;
+
+proc casutil;
+    load data=work.patients
+    outcaslib="casuser"
+    casout="patients_cas";
+run;
+
+/* Query in CAS */
+proc cas;
+    simple.summary /
+        table={caslib="casuser", name="patients_cas"}
+        inputs={"age", "bmi"};
+run;
+\`\`\`
+
+## SAS Viya APIs
+
+### REST API Voorbeeld
+
+\`\`\`python
+import requests
+
+# Authenticate
+auth_url = "https://viya.company.com/SASLogon/oauth/token"
+response = requests.post(auth_url, data={
+    "grant_type": "password",
+    "username": "user",
+    "password": "pass"
+})
+token = response.json()["access_token"]
+
+# Execute SAS code
+headers = {"Authorization": f"Bearer {token}"}
+code_url = "https://viya.company.com/compute/sessions/{session}/jobs"
+response = requests.post(code_url, headers=headers, json={
+    "code": ["proc means data=sashelp.cars; run;"]
+})
+\`\`\`
+
+## Kernbegrippen
+
+- **SAS Viya**: Cloud-native SAS platform
+- **CAS**: In-memory analytics engine
+- **Kubernetes**: Container orchestration voor Viya
+- **SAS Deployment Operator**: Kubernetes operator voor Viya
+- **CASLIB**: Library voor CAS data access
+    `,
+    sources: [
+      { name: "SAS Viya Documentation", url: "https://documentation.sas.com/doc/en/sasadmincdc/default/itopswn/titlepage.htm" },
+      { name: "SAS Viya Architecture", url: "https://documentation.sas.com/doc/en/sasadmincdc/default/calchkadm/n08000viyaserv000000admin.htm" }
+    ]
+  },
+
+  "104.3": {
+    title: "SAS on Azure: Deployment en Integratie",
+    summary: "Implementatie van SAS Viya op Azure met integratie in het Azure ecosysteem.",
+    content: `
+## In het kort
+
+SAS on Azure combineert de kracht van SAS analytics met de schaalbaarheid van Azure. De integratie met Azure-native services maakt moderne data architecturen mogelijk.
+
+## SAS on Azure Opties
+
+### Deployment Models
+
+\`\`\`
+1. SAS Viya on Azure Kubernetes Service (AKS)
+   - Volledige SAS Viya op managed Kubernetes
+   - Meeste flexibiliteit
+
+2. SAS Viya on Azure Red Hat OpenShift (ARO)
+   - Enterprise Kubernetes met Red Hat support
+   - Stricter security model
+
+3. Azure Marketplace Quick Start
+   - Pre-configured templates
+   - Snelle proof of concept
+\`\`\`
+
+## AKS Deployment
+
+### Azure Resources
+
+\`\`\`
+Resource Group: rg-sas-viya
+├── AKS Cluster
+│   ├── System Node Pool (3x Standard_D8s_v5)
+│   ├── CAS Node Pool (3x Standard_E32s_v5)
+│   └── Compute Node Pool (2x Standard_D16s_v5)
+├── Azure Files (Premium)
+│   └── Persistent storage voor SAS
+├── Azure Database for PostgreSQL
+│   └── SAS metadata database
+├── Azure Container Registry
+│   └── SAS container images
+└── Virtual Network
+    └── Private networking
+\`\`\`
+
+### Infrastructure as Code
+
+\`\`\`hcl
+# Terraform voor SAS on Azure
+resource "azurerm_kubernetes_cluster" "sas_viya" {
+  name                = "aks-sas-viya"
+  location            = azurerm_resource_group.sas.location
+  resource_group_name = azurerm_resource_group.sas.name
+  dns_prefix          = "sasviya"
+
+  default_node_pool {
+    name       = "system"
+    node_count = 3
+    vm_size    = "Standard_D8s_v5"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  network_profile {
+    network_plugin = "azure"
+    network_policy = "calico"
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "cas" {
+  name                  = "cas"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.sas_viya.id
+  vm_size              = "Standard_E32s_v5"
+  node_count           = 3
+
+  node_labels = {
+    "workload.sas.com/class" = "cas"
+  }
+}
+\`\`\`
+
+## Azure Integratie
+
+### Data Lake Integratie
+
+\`\`\`
+Azure Data Lake Gen2
+        │
+        ▼
+┌───────────────┐
+│ SAS Viya      │
+│ ┌───────────┐ │
+│ │ CAS       │ │
+│ │           │ │
+│ │ ADLS      │ │──► Lees/schrijf Parquet, CSV
+│ │ CASLIB    │ │
+│ └───────────┘ │
+└───────────────┘
+\`\`\`
+
+### ADLS CASLIB Configuratie
+
+\`\`\`sas
+/* Definieer ADLS caslib */
+caslib adls_data datasource=(
+    srctype="adls",
+    accountName="storagesasviya",
+    filesystem="data",
+    applicationId="<app-id>",
+    tenantId="<tenant-id>",
+    secretKey="<secret>"
+);
+
+/* Laad data uit ADLS */
+proc casutil;
+    load casdata="patients.parquet"
+    incaslib="adls_data"
+    outcaslib="casuser"
+    casout="patients";
+run;
+\`\`\`
+
+### Azure SQL Integratie
+
+\`\`\`sas
+/* Libname naar Azure SQL */
+libname azuresql odbc
+    datasrc="AzureSQLDS"
+    user="sas_user"
+    password="{SAS002}encrypted_pw"
+    schema="dbo";
+
+/* Query Azure SQL */
+proc sql;
+    select * from azuresql.patients
+    where admission_date >= '2024-01-01';
+quit;
+\`\`\`
+
+## Security Configuration
+
+### Azure AD Integratie
+
+\`\`\`yaml
+# sas-viya configuration
+sas.identities.providers.azure:
+  enabled: true
+  tenantId: "<azure-tenant-id>"
+  clientId: "<app-registration-id>"
+  clientSecret: "<secret>"
+\`\`\`
+
+### Private Networking
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                      Azure Virtual Network                   │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────┐     ┌─────────────────┐               │
+│  │ AKS Subnet      │     │ Private Endpoint│               │
+│  │ (SAS Viya)      │     │ Subnet          │               │
+│  └────────┬────────┘     └────────┬────────┘               │
+│           │                       │                         │
+│           │    ┌──────────────────┼──────────────────┐     │
+│           │    │                  │                  │     │
+│           ▼    ▼                  ▼                  ▼     │
+│      ┌─────────────┐    ┌─────────────┐    ┌─────────────┐│
+│      │   ADLS      │    │  Azure SQL  │    │   Key Vault ││
+│      └─────────────┘    └─────────────┘    └─────────────┘│
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Monitoring en Operations
+
+### Azure Monitor Integratie
+
+\`\`\`yaml
+# Container Insights configuratie
+azure:
+  monitor:
+    enabled: true
+    workspaceId: "<log-analytics-workspace-id>"
+    workspaceKey: "<workspace-key>"
+\`\`\`
+
+### SAS Metrics naar Azure
+
+\`\`\`
+Beschikbare metrics:
+├── CAS memory utilization
+├── CAS CPU usage
+├── Active sessions
+├── Job queue depth
+├── Data transfer rates
+└── Error counts
+\`\`\`
+
+## Hybrid Architectuur
+
+### SAS 9.4 + Viya + Azure
+
+\`\`\`
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────┐
+│  On-Premises    │     │   SAS Viya      │     │   Azure     │
+│  SAS 9.4        │────►│   on AKS        │────►│   Services  │
+│                 │     │                 │     │             │
+│  Legacy Code    │     │  Modern         │     │  ADLS       │
+│  Production     │     │  Analytics      │     │  Synapse    │
+└─────────────────┘     └─────────────────┘     └─────────────┘
+        │                       │
+        └───────────────────────┘
+          Migration path
+\`\`\`
+
+## Kernbegrippen
+
+- **AKS**: Azure Kubernetes Service
+- **CASLIB**: CAS library definitie voor data access
+- **Private Endpoint**: Private connectivity naar Azure services
+- **Container Insights**: Azure monitoring voor containers
+- **Managed Identity**: Azure AD identity voor AKS workloads
+    `,
+    sources: [
+      { name: "SAS on Azure", url: "https://www.sas.com/en_us/partners/find-a-partner/alliance-partners/microsoft.html" },
+      { name: "SAS Viya on AKS", url: "https://documentation.sas.com/doc/en/itopscdc/default/dplyml0phy0dkr/titlepage.htm" }
+    ]
+  },
+
+  "104.4": {
+    title: "Healthcare Analytics met SAS",
+    summary: "SAS procedures en technieken voor healthcare analytics en klinische statistiek.",
+    content: `
+## In het kort
+
+SAS heeft een rijke historie in healthcare analytics, van klinische trials tot population health. De statistische procedures zijn de gouden standaard voor veel medisch onderzoek.
+
+## Klinische Trial Analytics
+
+### CDISC Standaarden
+
+\`\`\`
+CDISC Data Standards:
+├── SDTM (Study Data Tabulation Model)
+│   └── Gestandaardiseerde study data
+├── ADaM (Analysis Data Model)
+│   └── Analysis-ready datasets
+└── Define-XML
+    └── Metadata beschrijving
+\`\`\`
+
+### SDTM Dataset Creatie
+
+\`\`\`sas
+/* Maak SDTM Demographics (DM) dataset */
+data sdtm.dm;
+    set raw.patients;
+
+    /* SDTM variabelen */
+    STUDYID = "STUDY001";
+    DOMAIN = "DM";
+    USUBJID = catx("-", STUDYID, subject_id);
+    SUBJID = subject_id;
+    RFSTDTC = put(enrollment_date, e8601da.);
+    BRTHDTC = put(birth_date, e8601da.);
+    AGE = intck('year', birth_date, enrollment_date);
+    AGEU = "YEARS";
+    SEX = ifc(gender='M', 'M', 'F');
+    RACE = race;
+    ETHNIC = ethnicity;
+run;
+\`\`\`
+
+### Survival Analysis
+
+\`\`\`sas
+/* Kaplan-Meier survival curves */
+proc lifetest data=trial.adtte
+    plots=survival(atrisk);
+    time aval * cnsr(1);
+    strata trt01p;
+run;
+
+/* Cox proportional hazards */
+proc phreg data=trial.adtte;
+    class trt01p (ref="Placebo") sex;
+    model aval * cnsr(1) = trt01p age sex bmi;
+    hazardratio trt01p;
+run;
+\`\`\`
+
+## Population Health Analytics
+
+### Risicostratificatie
+
+\`\`\`sas
+/* Predictief model voor heropname */
+proc hplogistic data=health.patients;
+    class gender region insurance_type;
+    model readmit_30d(event='1') =
+        age gender region
+        comorbidity_count
+        prior_admissions
+        insurance_type
+        / selection=stepwise;
+    score out=health.scored_patients;
+run;
+
+/* Risico categorieën */
+data health.risk_stratified;
+    set health.scored_patients;
+    if p_readmit_30d >= 0.3 then risk_tier = 'High';
+    else if p_readmit_30d >= 0.15 then risk_tier = 'Medium';
+    else risk_tier = 'Low';
+run;
+\`\`\`
+
+### Quality Metrics (HEDIS)
+
+\`\`\`sas
+/* HEDIS: Colorectal Cancer Screening */
+proc sql;
+    create table hedis.col as
+    select
+        member_id,
+        /* Denominator: 50-75 jaar, continuous enrollment */
+        case when age between 50 and 75
+             and continuous_enrollment = 1
+             then 1 else 0 end as denominator,
+        /* Numerator: colonoscopie of FOBT */
+        case when colonoscopy_date is not null
+              or fobt_date is not null
+             then 1 else 0 end as numerator
+    from health.members
+    where measurement_year = 2024;
+quit;
+
+/* Calculate rate */
+proc means data=hedis.col sum;
+    var denominator numerator;
+    output out=hedis.col_rate
+        sum(denominator)=denom
+        sum(numerator)=numer;
+run;
+\`\`\`
+
+## Statistische Analyses
+
+### Mixed Models voor Repeated Measures
+
+\`\`\`sas
+/* Longitudinale analyse van bloeddruk */
+proc mixed data=clinical.bp_measurements;
+    class patient_id visit treatment;
+    model systolic = treatment visit treatment*visit
+                     age baseline_sbp
+        / solution;
+    repeated visit / subject=patient_id type=un;
+    lsmeans treatment*visit / diff;
+run;
+\`\`\`
+
+### Propensity Score Matching
+
+\`\`\`sas
+/* Bereken propensity scores */
+proc logistic data=study.patients;
+    class smoking diabetes hypertension;
+    model treatment(event='1') =
+        age bmi smoking diabetes hypertension;
+    output out=study.ps_scores pred=propensity;
+run;
+
+/* Match treated/control */
+proc psmatch data=study.ps_scores;
+    class treatment;
+    psmodel treatment(treated='1') =
+        age bmi smoking diabetes hypertension;
+    match method=greedy(k=1) caliper=0.2;
+    output out=study.matched matchid=_MatchID;
+run;
+\`\`\`
+
+## Fraudedetectie
+
+### Claims Anomaly Detection
+
+\`\`\`sas
+/* Identificeer outlier providers */
+proc stdize data=claims.provider_summary
+    out=claims.standardized
+    method=std;
+    var claims_per_patient avg_claim_amount denial_rate;
+run;
+
+/* Cluster anomalous patterns */
+proc fastclus data=claims.standardized
+    maxclusters=5 out=claims.clustered;
+    var claims_per_patient avg_claim_amount denial_rate;
+run;
+\`\`\`
+
+## SAS Visual Analytics
+
+### Healthcare Dashboard
+
+\`\`\`
+VA Dashboard Components:
+├── KPI Tiles
+│   ├── Total Patients
+│   ├── Average LOS
+│   └── Readmission Rate
+├── Trend Charts
+│   └── Admissions over time
+├── Geographic Maps
+│   └── Patient distribution
+└── Drill-down Tables
+    └── Department details
+\`\`\`
+
+## Kernbegrippen
+
+- **CDISC**: Clinical Data Interchange Standards Consortium
+- **SDTM**: Study Data Tabulation Model
+- **ADaM**: Analysis Data Model
+- **HEDIS**: Healthcare Effectiveness Data and Information Set
+- **Propensity Score**: Waarschijnlijkheid van behandeling
+    `,
+    sources: [
+      { name: "SAS/STAT Documentation", url: "https://documentation.sas.com/doc/en/statcdc/14.3/statug/titlepage.htm" },
+      { name: "SAS Clinical Standards Toolkit", url: "https://documentation.sas.com/doc/en/pgmmvacdc/v_018/cstug/titlepage.htm" }
+    ]
+  },
+
+  "104.5": {
+    title: "SAS Data Management voor Zorgdata",
+    summary: "Data integratie, ETL en data quality met SAS Data Management tools.",
+    content: `
+## In het kort
+
+SAS biedt uitgebreide data management capabilities voor het integreren en opschonen van zorgdata. Van ETL tot data quality - SAS heeft volwassen tools voor enterprise data management.
+
+## SAS Data Management Tools
+
+### Component Overzicht
+
+\`\`\`
+SAS Data Management:
+├── SAS Data Integration Studio
+│   └── Visual ETL development
+├── SAS Data Quality
+│   └── Profiling, cleansing, matching
+├── SAS Master Data Management
+│   └── Golden record management
+└── SAS Data Loader for Hadoop
+    └── Big data integratie
+\`\`\`
+
+## ETL met SAS
+
+### Data Step ETL
+
+\`\`\`sas
+/* Extract */
+libname epic odbc datasrc="EPIC_CLARITY";
+
+/* Transform */
+data work.patients_clean;
+    set epic.patient (keep=pat_id pat_name birth_date gender);
+
+    /* Standaardiseer gender */
+    if upcase(gender) in ('M', 'MALE', 'MAN') then gender_std = 'M';
+    else if upcase(gender) in ('F', 'FEMALE', 'VROUW') then gender_std = 'F';
+    else gender_std = 'U';
+
+    /* Bereken leeftijd */
+    age = intck('year', birth_date, today());
+
+    /* Parse naam */
+    last_name = scan(pat_name, 1, ',');
+    first_name = scan(pat_name, 2, ',');
+
+    drop gender pat_name;
+    rename gender_std = gender;
+run;
+
+/* Load */
+proc append base=dwh.dim_patient data=work.patients_clean force;
+run;
+\`\`\`
+
+### SAS Data Integration Studio
+
+\`\`\`
+Visual ETL Flow:
+[Source] → [Transform] → [Lookup] → [Target]
+
+Jobs:
+├── Extract_Epic_Daily
+│   └── Scheduled: 06:00
+├── Transform_Clinical
+│   └── Dependencies: Extract_Epic_Daily
+└── Load_DWH
+    └── Dependencies: Transform_Clinical
+\`\`\`
+
+## Data Quality
+
+### Data Profiling
+
+\`\`\`sas
+/* Profile patient data */
+proc dqscheme data=raw.patients
+    out=work.patient_scheme;
+    var bsn gender birth_date postal_code;
+run;
+
+/* Analyze results */
+proc dqanalyze data=raw.patients
+    scheme=work.patient_scheme
+    out=work.profile_results;
+    var _all_;
+run;
+\`\`\`
+
+### Data Cleansing
+
+\`\`\`sas
+/* Standaardiseer adressen */
+proc dqcase data=raw.patients out=work.patients_cased;
+    locale='NLNLD';
+    casetype=proper;
+    var first_name last_name city;
+run;
+
+/* Parse en standaardiseer */
+proc dqparse data=work.patients_cased out=work.patients_parsed;
+    locale='NLNLD';
+    var postal_code / type=postalcode;
+    var phone / type=phone;
+run;
+\`\`\`
+
+### Match/Merge (MDM)
+
+\`\`\`sas
+/* Definieer match regels */
+proc dqmatch data=raw.patients
+    out=work.matched_patients;
+
+    /* Match criteria */
+    criteria
+        gender = exact
+        birth_date = exact
+        last_name = fuzzy(sensitivity=85)
+        first_name = fuzzy(sensitivity=80);
+
+    /* Clustering */
+    cluster entitytype=patient
+        clusterid=cluster_id
+        matchflag=match_flag;
+run;
+
+/* Survivorship - kies beste record */
+proc dqsurvivor data=work.matched_patients
+    out=work.golden_patients;
+    by cluster_id;
+    survivorship rule=mostpopulated(bsn)
+                 rule=mostrecent(address, date_modified);
+run;
+\`\`\`
+
+## Data Governance
+
+### Metadata Management
+
+\`\`\`
+SAS Metadata Server:
+├── Data Definitions
+│   ├── Tables, columns, relationships
+│   └── Business glossary terms
+├── Lineage
+│   └── Source to target mapping
+├── Impact Analysis
+│   └── Change propagation
+└── Security
+    └── Row/column level access
+\`\`\`
+
+### Business Glossary
+
+\`\`\`sas
+/* Annoteer met business termen */
+proc metalib;
+    omrlib "Foundation/SAS Data" (libref=dwh);
+    update_rule=(noadd);
+    report;
+run;
+
+/* Link naar glossary */
+/* Via SAS Information Map Studio */
+\`\`\`
+
+## Change Data Capture
+
+### Incremental Loading
+
+\`\`\`sas
+/* Haal laatst geladen timestamp */
+proc sql noprint;
+    select max(load_timestamp) into :last_load
+    from dwh.patient_audit;
+quit;
+
+/* Extract alleen nieuwe/gewijzigde records */
+data work.patient_changes;
+    set epic.patient;
+    where modified_date > "&last_load"dt;
+run;
+
+/* Merge changes */
+proc sql;
+    /* Update existing */
+    update dwh.dim_patient as t
+    set /* columns */
+    where exists (
+        select 1 from work.patient_changes as s
+        where t.patient_id = s.patient_id
+    );
+
+    /* Insert new */
+    insert into dwh.dim_patient
+    select * from work.patient_changes
+    where patient_id not in (
+        select patient_id from dwh.dim_patient
+    );
+quit;
+\`\`\`
+
+### SCD Type 2
+
+\`\`\`sas
+/* Slowly Changing Dimension Type 2 */
+proc sql;
+    /* Close old records */
+    update dwh.dim_patient
+    set valid_to = datetime(),
+        current_flag = 'N'
+    where patient_id in (select patient_id from work.changes)
+    and current_flag = 'Y';
+
+    /* Insert new versions */
+    insert into dwh.dim_patient
+    select
+        patient_id,
+        /* other columns */
+        datetime() as valid_from,
+        '31DEC9999:23:59:59'dt as valid_to,
+        'Y' as current_flag
+    from work.changes;
+quit;
+\`\`\`
+
+## Kernbegrippen
+
+- **Data Step**: SAS programming voor data manipulatie
+- **PROC DQMATCH**: Data deduplicatie en matching
+- **Change Data Capture**: Incrementele data loading
+- **SCD Type 2**: Historische dimensie tracking
+- **Metadata Server**: Centrale metadata repository
+    `,
+    sources: [
+      { name: "SAS Data Quality", url: "https://documentation.sas.com/doc/en/dqcdc/3.3/dqclref/titlepage.htm" },
+      { name: "SAS Data Integration", url: "https://documentation.sas.com/doc/en/etls/3.2/etlref/titlepage.htm" }
+    ]
+  },
+
+  "104.6": {
+    title: "Machine Learning en AI met SAS Viya",
+    summary: "Machine learning capabilities in SAS Viya met Model Studio en Model Manager.",
+    content: `
+## In het kort
+
+SAS Viya biedt enterprise-grade machine learning met visuele tools (Model Studio) en governance (Model Manager). Voor zorginstellingen betekent dit validated ML met audit trails.
+
+## SAS Viya ML Components
+
+### Platform Overzicht
+
+\`\`\`
+SAS Viya ML:
+├── Model Studio
+│   └── Visual ML development
+├── SAS Studio
+│   └── Code-based development
+├── Model Manager
+│   └── Model deployment & monitoring
+└── Model Repository
+    └── Version control & governance
+\`\`\`
+
+## Model Studio
+
+### Visual Pipeline Builder
+
+\`\`\`
+Pipeline Structure:
+[Data Source] → [Data Preparation] → [Feature Engineering] → [Model Training] → [Assessment]
+
+Nodes Available:
+├── Transformations
+│   ├── Imputation
+│   ├── Binning
+│   └── Standardization
+├── Feature Selection
+│   ├── Variable Selection
+│   └── Principal Components
+├── Models
+│   ├── Decision Tree
+│   ├── Random Forest
+│   ├── Gradient Boosting
+│   ├── Neural Network
+│   └── Logistic Regression
+└── Assessment
+    ├── Model Comparison
+    └── Lift Charts
+\`\`\`
+
+### AutoML in Model Studio
+
+\`\`\`
+AutoML Pipeline:
+1. Selecteer target variabele
+2. Model Studio genereert automatisch:
+   ├── Feature engineering
+   ├── Multiple algorithms
+   └── Hyperparameter tuning
+3. Champion model selectie
+\`\`\`
+
+## SAS Code voor ML
+
+### Gradient Boosting
+
+\`\`\`sas
+/* Healthcare readmission prediction */
+proc gradboost data=mycaslib.patients
+    outmodel=mycaslib.readmit_model;
+
+    target readmit_30d / level=nominal;
+    input age los prior_admits comorbidity_score / level=interval;
+    input gender insurance_type / level=nominal;
+
+    /* Hyperparameters */
+    ntrees=100;
+    maxdepth=5;
+    learningrate=0.1;
+    subsamplerate=0.8;
+
+    /* Cross-validation */
+    partition fraction(validate=0.2 test=0.1);
+
+    /* Output */
+    output out=mycaslib.scored copyvars=(_all_);
+run;
+\`\`\`
+
+### Neural Networks
+
+\`\`\`sas
+/* Deep learning voor clinical outcomes */
+proc nnet data=mycaslib.clinical_data
+    standardize=std;
+
+    target outcome / level=nominal;
+    input age bmi blood_pressure cholesterol / level=interval;
+    input gender smoking_status / level=nominal;
+
+    /* Architecture */
+    hidden 50 / act=tanh;
+    hidden 25 / act=tanh;
+
+    /* Training */
+    optimization algorithm=adam learningrate=0.01;
+    train numtries=5 maxiter=500;
+run;
+\`\`\`
+
+## Model Interpretability
+
+### Variable Importance
+
+\`\`\`sas
+/* Extract feature importance */
+proc gradboost data=mycaslib.patients;
+    target readmit_30d;
+    input age los prior_admits / level=interval;
+    ods output VariableImportance=work.importance;
+run;
+\`\`\`
+
+### Partial Dependence Plots
+
+\`\`\`sas
+/* Begrijp effect van variabelen */
+proc plm restore=mycaslib.readmit_model;
+    effectplot slicefit(x=age sliceby=insurance_type);
+run;
+\`\`\`
+
+## Model Manager
+
+### Model Governance Workflow
+
+\`\`\`
+Development → Testing → Production
+     │           │           │
+     ▼           ▼           ▼
+  Model       Champion    Deployed
+ Repository   Selection   Monitoring
+\`\`\`
+
+### Model Registration
+
+\`\`\`python
+# Python via SAS Viya API
+from sasctl import Session, register_model
+
+with Session("viya.company.com", "user", "pass"):
+    register_model(
+        model=model_object,
+        name="readmission_predictor_v2",
+        project="Healthcare Analytics",
+        version="2.0",
+        score_code=score_code,
+        input_variables=input_vars,
+        output_variables=output_vars
+    )
+\`\`\`
+
+### Model Monitoring
+
+\`\`\`
+Monitoring Capabilities:
+├── Performance Drift
+│   └── Track accuracy over time
+├── Data Drift
+│   └── Input distribution changes
+├── Stability
+│   └── Prediction stability
+└── Alerts
+    └── Threshold breaches
+\`\`\`
+
+## Model Deployment
+
+### REST API Scoring
+
+\`\`\`python
+import requests
+
+# Score new patient
+score_url = "https://viya.company.com/microanalyticScore/modules/readmission_model/steps/score"
+headers = {"Authorization": f"Bearer {token}"}
+
+patient_data = {
+    "inputs": [{
+        "name": "age", "value": 75
+    }, {
+        "name": "los", "value": 5
+    }, {
+        "name": "prior_admits", "value": 2
+    }]
+}
+
+response = requests.post(score_url, headers=headers, json=patient_data)
+prediction = response.json()["outputs"][0]["value"]
+\`\`\`
+
+### Batch Scoring
+
+\`\`\`sas
+/* Score batch in CAS */
+proc astore;
+    score data=mycaslib.new_patients
+          rstore=mycaslib.readmit_model
+          out=mycaslib.scored_patients;
+run;
+\`\`\`
+
+## FDA Validation
+
+### 21 CFR Part 11 Compliance
+
+\`\`\`
+Compliance Features:
+├── Audit Trails
+│   └── All model changes logged
+├── Electronic Signatures
+│   └── Model approval workflow
+├── Access Controls
+│   └── Role-based permissions
+└── Data Integrity
+    └── Version control, immutable history
+\`\`\`
+
+## Kernbegrippen
+
+- **Model Studio**: Visual ML development environment
+- **Model Manager**: Deployment en monitoring
+- **ASTORE**: Analytic store voor scoring
+- **Champion Model**: Best performing model
+- **Model Drift**: Degradatie van model performance
+    `,
+    sources: [
+      { name: "SAS Viya ML Documentation", url: "https://documentation.sas.com/doc/en/capcdc/default/capmlovw/titlepage.htm" },
+      { name: "SAS Model Manager", url: "https://documentation.sas.com/doc/en/mdlmgrcdc/default/mdlmgrug/titlepage.htm" }
+    ]
+  },
+
+  "104.7": {
+    title: "SAS Visual Analytics voor Zorginzichten",
+    summary: "Self-service analytics en dashboards met SAS Visual Analytics.",
+    content: `
+## In het kort
+
+SAS Visual Analytics (VA) biedt krachtige self-service BI capabilities voor zorginstellingen. Het combineert in-memory analytics met interactieve visualisaties.
+
+## SAS Visual Analytics Overview
+
+### Componenten
+
+\`\`\`
+SAS Visual Analytics:
+├── VA Designer
+│   └── Report en dashboard creatie
+├── VA Viewer
+│   └── Consumptie van reports
+├── VA Explorer
+│   └── Self-service data verkenning
+└── VA Mobile
+    └── iOS/Android apps
+\`\`\`
+
+### Architectuur
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    SAS Visual Analytics                      │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │  Designer   │  │   Viewer    │  │  Explorer   │         │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
+│         │                │                 │                 │
+│         └────────────────┼─────────────────┘                 │
+│                          │                                   │
+│                          ▼                                   │
+│         ┌────────────────────────────────┐                  │
+│         │    LASR Analytic Server        │                  │
+│         │    (In-Memory Analytics)        │                  │
+│         └────────────────────────────────┘                  │
+│                          │                                   │
+│                          ▼                                   │
+│         ┌────────────────────────────────┐                  │
+│         │      Data Sources              │                  │
+│         │  (CAS, SAS Datasets, DBs)      │                  │
+│         └────────────────────────────────┘                  │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Healthcare Dashboards
+
+### Executive Dashboard
+
+\`\`\`
+┌────────────────────────────────────────────────────────────┐
+│              Healthcare Executive Dashboard                  │
+├─────────────────────┬──────────────────────────────────────┤
+│  KPI Indicators     │                                       │
+│  ┌─────┐ ┌─────┐   │  Admissions Trend                     │
+│  │ 487 │ │ 4.2 │   │  ────────────────────────────────     │
+│  │Admit│ │ LOS │   │  ╱╲    ╱╲                             │
+│  └─────┘ └─────┘   │ ╱  ╲  ╱  ╲    ╱╲                      │
+│  ┌─────┐ ┌─────┐   │╱    ╲╱    ╲  ╱  ╲                     │
+│  │ 87% │ │ 8.2%│   │           ╲╱                          │
+│  │ Occ │ │Read│   │  Jan  Feb  Mar  Apr  May               │
+│  └─────┘ └─────┘   │                                       │
+├─────────────────────┼──────────────────────────────────────┤
+│  Department         │  Patient Mix                          │
+│  Performance        │  [Pie Chart]                          │
+│  [Bar Chart]        │  ● Emergency 35%                      │
+│  ████ Surgery       │  ● Planned 45%                        │
+│  ███ Cardio         │  ● Day Care 20%                       │
+│  ██ Oncology        │                                       │
+└─────────────────────┴──────────────────────────────────────┘
+\`\`\`
+
+### Operationeel Dashboard
+
+\`\`\`
+┌────────────────────────────────────────────────────────────┐
+│                    Real-time Bed Management                 │
+├────────────────────────────────────────────────────────────┤
+│  Floor 3 - Cardiology                                       │
+│  ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐       │
+│  │ 🟢 │ 🔴 │ 🟢 │ 🟡 │ 🔴 │ 🟢 │ 🟢 │ 🔴 │ 🟡 │ 🟢 │       │
+│  │301 │302 │303 │304 │305 │306 │307 │308 │309 │310 │       │
+│  └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘       │
+│                                                             │
+│  Legend: 🟢 Available  🔴 Occupied  🟡 Pending Discharge    │
+│                                                             │
+│  Occupancy: 70%    Expected Discharges Today: 3             │
+└────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Berekende Items
+
+### Calculated Fields
+
+\`\`\`sas
+/* In VA Designer */
+/* Length of Stay */
+LOS = datdif(admission_date, discharge_date, 'actual');
+
+/* Readmission Flag */
+Readmit_30d = ifn(
+    datdif(prior_discharge, admission_date, 'actual') <= 30,
+    1, 0
+);
+
+/* Risk Score Category */
+Risk_Category = ifc(
+    risk_score >= 0.7, 'High',
+    ifc(risk_score >= 0.4, 'Medium', 'Low')
+);
+\`\`\`
+
+### Aggregations
+
+\`\`\`sas
+/* Custom aggregations */
+/* Rolling 30-day average */
+Rolling_Avg_Admits = rollingavg(admissions, 30);
+
+/* Year-over-year comparison */
+YoY_Change = (current_year_admissions - prior_year_admissions)
+             / prior_year_admissions * 100;
+\`\`\`
+
+## Interactivity
+
+### Actions
+
+\`\`\`
+Available Actions:
+├── Filter
+│   └── Click to filter related visuals
+├── Drill
+│   └── Navigate to detail level
+├── Link
+│   └── Open related report
+└── External URL
+    └── Open external application
+\`\`\`
+
+### Parameters
+
+\`\`\`
+Parameter: Selected_Department
+Type: Character
+Prompt: "Select Department"
+Values: [Dynamic from data]
+
+Usage in Filter:
+WHERE department = &Selected_Department
+\`\`\`
+
+## Report Distribution
+
+### Scheduling
+
+\`\`\`
+Schedule Options:
+├── Frequency
+│   ├── Daily, Weekly, Monthly
+│   └── Event-based (data refresh)
+├── Format
+│   ├── PDF
+│   ├── Excel
+│   └── Image
+└── Distribution
+    ├── Email
+    ├── File system
+    └── SharePoint
+\`\`\`
+
+### Mobile Access
+
+\`\`\`
+SAS Visual Analytics App:
+├── iOS (iPad, iPhone)
+├── Android (Tablet, Phone)
+└── Features
+    ├── Offline access
+    ├── Touch interactions
+    └── Push notifications
+\`\`\`
+
+## Data Security
+
+### Row-Level Security
+
+\`\`\`sas
+/* Data-level security via metadata */
+proc metalib;
+    omrlib "Foundation/Data Sources";
+    select (hospital_data);
+    run;
+
+    /* Apply row-level permission */
+    row permission hospital_data
+        where department in (
+            select department from user_permissions
+            where user_id = &_username
+        );
+run;
+\`\`\`
+
+## Kernbegrippen
+
+- **VA Designer**: Tool voor report creatie
+- **LASR**: In-memory analytic server
+- **Calculated Item**: Berekende velden in reports
+- **Action**: Interactieve navigatie
+- **Parameters**: Dynamische filters
+    `,
+    sources: [
+      { name: "SAS Visual Analytics", url: "https://documentation.sas.com/doc/en/vacdc/default/vaov/titlepage.htm" },
+      { name: "VA Designer Guide", url: "https://documentation.sas.com/doc/en/vacdc/default/vareportdata/titlepage.htm" }
+    ]
+  },
+
+  "104.8": {
+    title: "Migratie naar SAS on Azure: Strategie en Uitvoering",
+    summary: "Migratiestrategieën voor het verplaatsen van SAS workloads naar Azure.",
+    content: `
+## In het kort
+
+Veel zorginstellingen hebben legacy SAS 9.4 implementaties die migratie naar cloud vereisen. Deze module behandelt strategieën voor migratie naar SAS Viya on Azure.
+
+## Migratie Drivers
+
+### Waarom Migreren?
+
+\`\`\`
+Business Drivers:
+├── Schaalbaarheid
+│   └── Elastische compute resources
+├── Kosten
+│   └── Pay-as-you-go vs perpetual licenses
+├── Innovatie
+│   └── Cloud-native features, AI/ML
+├── Integratie
+│   └── Azure ecosysteem
+└── Onderhoud
+    └── Verminder operationele last
+\`\`\`
+
+### Migratie Uitdagingen
+
+\`\`\`
+Challenges:
+├── Legacy Code
+│   └── SAS 9.4 code compatibiliteit
+├── Data Movement
+│   └── Grote datasets naar cloud
+├── Integraties
+│   └── Bestaande ETL, reporting
+├── Skills
+│   └── Team training nodig
+└── Governance
+    └── Compliance in cloud
+\`\`\`
+
+## Migratie Strategieën
+
+### Strategie 1: Lift & Shift
+
+\`\`\`
+On-Premises SAS 9.4 → SAS 9.4 on Azure VMs
+
+Voordelen:
+├── Snelste pad naar cloud
+├── Minimale code changes
+└── Bekende omgeving
+
+Nadelen:
+├── Niet cloud-native
+├── Beperkte schaalvoordelen
+└── Legacy architectuur
+\`\`\`
+
+### Strategie 2: Hybrid Transitie
+
+\`\`\`
+Phase 1: Keep SAS 9.4 on-prem
+         Deploy Viya on Azure
+
+Phase 2: Migrate workloads gradually
+         SAS 9.4 → Viya
+
+Phase 3: Decommission on-prem
+         Full cloud
+\`\`\`
+
+### Strategie 3: Full Modernization
+
+\`\`\`
+On-Premises SAS 9.4 → SAS Viya on Azure (Kubernetes)
+
+Voordelen:
+├── Cloud-native benefits
+├── Modern architecture
+├── Best scalability
+└── Latest features
+
+Nadelen:
+├── Langste migratie
+├── Code refactoring nodig
+└── Hoogste investering
+\`\`\`
+
+## Migratie Planning
+
+### Assessment Fase
+
+\`\`\`
+Inventory:
+├── Code Inventory
+│   ├── Number of programs
+│   ├── Lines of code
+│   └── Complexity analysis
+├── Data Inventory
+│   ├── Dataset sizes
+│   ├── Data sources
+│   └── Refresh frequencies
+├── User Inventory
+│   ├── User types
+│   ├── Access patterns
+│   └── Skills assessment
+└── Integration Inventory
+    ├── Upstream sources
+    ├── Downstream consumers
+    └── APIs/interfaces
+\`\`\`
+
+### Compatibility Assessment
+
+\`\`\`sas
+/* Tool: SAS Migration Assessment */
+proc migrate;
+    analyze programs="C:\\SAS\\Programs"
+            outdata=work.compatibility;
+    report outfile="migration_report.html";
+run;
+
+/* Check results */
+proc freq data=work.compatibility;
+    tables compatibility_status / missing;
+run;
+\`\`\`
+
+## Code Migratie
+
+### Compatibiliteit SAS 9.4 → Viya
+
+\`\`\`
+Compatibel:
+├── Base SAS procedures
+├── Macro language
+├── SQL procedure
+└── Most DATA steps
+
+Requires Changes:
+├── Enterprise Miner → Model Studio
+├── DI Studio → Data Studio
+├── Metadata Server → SAS Viya APIs
+└── Some I/O methods
+\`\`\`
+
+### Code Refactoring
+
+\`\`\`sas
+/* SAS 9.4 Code */
+libname mydata "C:\\Data\\Healthcare";
+proc means data=mydata.patients;
+    var age los;
+run;
+
+/* SAS Viya Code */
+cas mysession;
+caslib mycas datasource=(srctype="path")
+    path="/data/healthcare";
+proc casutil;
+    load data=mycas.patients outcaslib="casuser";
+run;
+proc mdsummary data=casuser.patients;
+    var age los;
+run;
+\`\`\`
+
+## Data Migratie
+
+### Data Movement Strategieën
+
+\`\`\`
+Options:
+├── Bulk Transfer
+│   └── Azure Data Box voor grote volumes
+├── Incremental Sync
+│   └── AzCopy voor ongoing sync
+├── Hybrid Access
+│   └── Shortcuts naar on-prem
+└── Full Migration
+    └── Convert en upload
+\`\`\`
+
+### Data Transfer
+
+\`\`\`bash
+# AzCopy voor data transfer
+azcopy copy "C:\\SASData\\*" \\
+    "https://storagesasviya.blob.core.windows.net/data" \\
+    --recursive
+
+# Estimate transfer time
+# 1 TB @ 100 Mbps ≈ 24 hours
+\`\`\`
+
+## Validation
+
+### Parallel Running
+
+\`\`\`
+Validation Approach:
+├── Run jobs on both platforms
+├── Compare outputs
+│   ├── Row counts
+│   ├── Checksums
+│   └── Sample records
+├── Performance comparison
+└── User acceptance testing
+\`\`\`
+
+### Validation Script
+
+\`\`\`sas
+/* Compare outputs */
+proc compare base=prod.patients
+             compare=viya.patients
+             out=work.diff;
+run;
+
+proc print data=work.diff (obs=10);
+    where _type_ = 'DIF';
+run;
+\`\`\`
+
+## Change Management
+
+### Training Plan
+
+\`\`\`
+Training Tracks:
+├── End Users
+│   └── SAS Studio, Visual Analytics
+├── Developers
+│   └── Viya programming, CAS
+├── Data Engineers
+│   └── Data Studio, ETL
+└── Administrators
+    └── Viya admin, Kubernetes
+\`\`\`
+
+### Rollout Phases
+
+\`\`\`
+Phase 1: Pilot (Week 1-4)
+├── Select pilot team
+├── Migrate pilot workloads
+└── Gather feedback
+
+Phase 2: Expansion (Week 5-12)
+├── Department by department
+├── Training execution
+└── Issue resolution
+
+Phase 3: Full Production (Week 13-16)
+├── Final migration
+├── Decommission old system
+└── Hypercare support
+\`\`\`
+
+## Kernbegrippen
+
+- **Lift & Shift**: Verplaatsen zonder wijzigingen
+- **Hybrid**: Geleidelijke transitie
+- **Code Compatibility**: Mate van herbruikbaarheid
+- **Parallel Running**: Validatie door vergelijking
+- **Hypercare**: Intensieve post-migratie support
+    `,
+    sources: [
+      { name: "SAS Migration Guide", url: "https://documentation.sas.com/doc/en/itopscdc/default/itopswn/p1h8znx0g7e0r0n1h5zz1qrkcvhx.htm" },
+      { name: "SAS to Viya Migration", url: "https://communities.sas.com/t5/SAS-Communities-Library/Migrating-to-SAS-Viya/ta-p/726441" }
+    ]
+  },
+
+  // ==========================================
+  // TRACK 105: PLATFORM VERGELIJKING
+  // ==========================================
+
+  "105.1": {
+    title: "Data Platform Landschap in de Zorg",
+    summary: "Overzicht van het data platform landschap en de positionering van Databricks, Fabric en SAS.",
+    content: `
+## In het kort
+
+Zorginstellingen staan voor een strategische keuze in data platforms. Deze module geeft een overzicht van het landschap en de positionering van de drie hoofdplatforms.
+
+## Het Veranderende Landschap
+
+### Van Legacy naar Modern
+
+\`\`\`
+2010s:                          2020s:
+┌─────────────────┐            ┌─────────────────┐
+│ Traditional DWH │            │   Lakehouse     │
+│ + SAS/SPSS      │    →       │ + Cloud ML      │
+│ + Cognos/BO     │            │ + Self-Service  │
+└─────────────────┘            └─────────────────┘
+
+Drivers:
+├── Data volumes (10x groei)
+├── Real-time requirements
+├── AI/ML adoption
+├── Cloud-first strategie
+└── Skill availability
+\`\`\`
+
+## Platform Positionering
+
+### De Drie Platforms
+
+\`\`\`
+                    Enterprise ←───────────────────→ Modern/Agile
+                         │
+                    ┌────┴────┐
+                    │   SAS   │
+                    │  Viya   │ Legacy strength
+                    └─────────┘ Healthcare expertise
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+   ┌────┴────┐     ┌────┴────┐     ┌────┴────┐
+   │Microsoft│     │         │     │  Data   │
+   │ Fabric  │     │  Hybrid │     │  bricks │
+   └─────────┘     │  Multi- │     └─────────┘
+   MS ecosystem    │ platform│     Open source
+   Unified         │         │     ML-first
+                   └─────────┘
+\`\`\`
+
+### Platform Karakteristieken
+
+| Platform | Kern Identiteit | Sterkte |
+|----------|-----------------|---------|
+| Databricks | Data + AI Company | Open, ML-first |
+| Microsoft Fabric | Unified Analytics | MS Integration |
+| SAS | Analytics Leader | Statistics, Pharma |
+
+## Marktontwikkelingen
+
+### Convergentie Trends
+
+\`\`\`
+Alle platforms bewegen naar:
+├── Lakehouse architectuur
+│   └── Databricks: Delta Lake (origin)
+│   └── Fabric: OneLake (Delta)
+│   └── SAS: Cloud storage support
+├── Cloud-native
+│   └── Kubernetes, serverless
+├── Open formats
+│   └── Delta, Iceberg, Parquet
+└── AI/ML Integration
+    └── LLMs, GenAI features
+\`\`\`
+
+### Healthcare-specifieke Trends
+
+\`\`\`
+Zorg-specifieke requirements:
+├── FHIR/DICOM ondersteuning
+├── Regulatory compliance (FDA, CE)
+├── Clinical validation
+├── Privacy (AVG, HIPAA)
+└── Interoperability
+\`\`\`
+
+## Platform in Nederlandse Zorg
+
+### Huidige Adoptie
+
+\`\`\`
+Nederlandse Zorginstellingen:
+├── SAS
+│   └── Zorgverzekeraars (VGZ, CZ, Menzis)
+│   └── Academische centra (research)
+│   └── Farmaceutische industrie
+├── Databricks
+│   └── UMC's (data science)
+│   └── Grote ziekenhuisgroepen
+│   └── Health tech startups
+└── Microsoft Fabric
+    └── Ziekenhuizen met M365
+    └── VVT-sector
+    └── Huisartsen (via leveranciers)
+\`\`\`
+
+### Typische Scenario's
+
+\`\`\`
+Scenario 1: Academisch Ziekenhuis
+├── Research: SAS (FDA compliance)
+├── Operations: Fabric (M365)
+└── Data Science: Databricks
+
+Scenario 2: Regionaal Ziekenhuis
+├── BI: Power BI / Fabric
+├── EPD Analytics: Databricks
+└── Legacy: Migrate from SAS
+
+Scenario 3: Zorgverzekeraar
+├── Claims: SAS (fraud, risk)
+├── Customer: Fabric (D365)
+└── Advanced: Databricks (ML)
+\`\`\`
+
+## Beslissingsframework
+
+### Evaluatiecriteria
+
+\`\`\`
+├── 1. Business Requirements
+│   └── Use cases, complexity
+├── 2. Technical Fit
+│   └── Data volumes, real-time needs
+├── 3. Skills Availability
+│   └── Team expertise, hiring market
+├── 4. Total Cost of Ownership
+│   └── Licenses, infrastructure, people
+├── 5. Vendor Strategy
+│   └── Cloud provider, existing contracts
+└── 6. Regulatory Requirements
+    └── Compliance, validation
+\`\`\`
+
+### Quick Assessment
+
+\`\`\`
+Kies SAS als:
+├── FDA/clinical trials centraal
+├── Bestaande SAS investering groot
+└── Complexe statistiek requirement
+
+Kies Fabric als:
+├── Microsoft-first strategie
+├── Unified platform gewenst
+└── Power BI als BI-standaard
+
+Kies Databricks als:
+├── Data engineering zwaar
+├── ML/AI als kern competentie
+└── Multi-cloud of open source focus
+\`\`\`
+
+## Kernbegrippen
+
+- **Lakehouse**: Unified data architecture
+- **Multi-platform**: Gebruik van meerdere platforms
+- **TCO**: Total Cost of Ownership
+- **Platform Fit**: Match tussen platform en requirements
+    `,
+    sources: [
+      { name: "Gartner Data Analytics Platforms", url: "https://www.gartner.com/reviews/market/analytics-business-intelligence-platforms" },
+      { name: "Forrester Wave Analytics", url: "https://www.forrester.com/report/the-forrester-wave-enterprise-data-fabric-q2-2023" }
+    ]
+  },
+
+  "105.2": {
+    title: "Architectuurvergelijking: Lakehouse vs SAS",
+    summary: "Technische vergelijking van lakehouse architecturen (Databricks, Fabric) met SAS.",
+    content: `
+## In het kort
+
+De lakehouse architectuur van Databricks en Fabric verschilt fundamenteel van de traditionele SAS architectuur. Deze module vergelijkt de technische benaderingen.
+
+## Architectuurparadigma's
+
+### Lakehouse (Databricks/Fabric)
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                     LAKEHOUSE                                │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              Query/Compute Layer                     │   │
+│  │     (Spark, SQL Engine, Python/R)                   │   │
+│  └────────────────────────┬────────────────────────────┘   │
+│                           │                                  │
+│  ┌────────────────────────▼────────────────────────────┐   │
+│  │           Delta Lake / Table Format                  │   │
+│  │  (ACID transactions, schema, time travel)           │   │
+│  └────────────────────────┬────────────────────────────┘   │
+│                           │                                  │
+│  ┌────────────────────────▼────────────────────────────┐   │
+│  │              Cloud Object Storage                    │   │
+│  │        (ADLS, S3, GCS - Parquet files)              │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### SAS Viya
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                      SAS VIYA                                │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │           Application Layer                          │   │
+│  │  (Visual Analytics, Model Studio, SAS Studio)       │   │
+│  └────────────────────────┬────────────────────────────┘   │
+│                           │                                  │
+│  ┌────────────────────────▼────────────────────────────┐   │
+│  │              CAS (In-Memory Engine)                  │   │
+│  │    (Cloud Analytic Services, distributed)           │   │
+│  └────────────────────────┬────────────────────────────┘   │
+│                           │                                  │
+│  ┌────────────────────────▼────────────────────────────┐   │
+│  │              Data Sources                            │   │
+│  │   (SAS datasets, databases, cloud storage)          │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Gedetailleerde Vergelijking
+
+### Storage Layer
+
+| Aspect | Lakehouse | SAS |
+|--------|-----------|-----|
+| Format | Parquet/Delta (open) | SAS7BDAT (proprietary) |
+| Storage | Cloud object storage | CAS libraries |
+| Cost | €0.02/GB/month | Memory-based |
+| Scaling | Unlimited | CAS cluster size |
+
+### Compute Layer
+
+| Aspect | Databricks | Fabric | SAS Viya |
+|--------|------------|--------|----------|
+| Engine | Spark | Spark/SQL | CAS |
+| Scaling | Auto-scale clusters | Capacity-based | Node pools |
+| Languages | SQL, Python, R, Scala | SQL, Python, Spark | SAS, Python, R |
+| Serverless | Yes | Yes | Limited |
+
+### Data Management
+
+\`\`\`
+Lakehouse:
+├── Schema-on-read + Schema-on-write
+├── Delta Lake transactions
+├── Time travel (versioning)
+└── Open formats (vendor neutral)
+
+SAS:
+├── Strong typing
+├── Metadata-driven
+├── Librefs & CASLIBs
+└── Proprietary formats (mostly)
+\`\`\`
+
+## Performance Vergelijking
+
+### Query Performance
+
+\`\`\`
+Test: 1 TB healthcare data aggregation
+
+Databricks SQL Serverless:
+├── Cold start: 15 seconds
+├── Query time: 45 seconds
+└── Cost: ~€2 per query
+
+Fabric DW:
+├── Cold start: 5 seconds
+├── Query time: 50 seconds
+└── Cost: Capacity-based
+
+SAS Viya CAS:
+├── Load to memory: 2 minutes
+├── Query time: 30 seconds (in-memory)
+└── Cost: Node-hours
+\`\`\`
+
+### ETL Performance
+
+\`\`\`
+Test: Daily ETL 100 GB increment
+
+Databricks:
+├── Auto Loader + DLT
+├── Time: 15 minutes
+└── Cluster: Auto-scale
+
+Fabric:
+├── Data Factory + Spark
+├── Time: 20 minutes
+└── Capacity: F16
+
+SAS:
+├── Data Integration Studio
+├── Time: 25 minutes
+└── Resources: CAS workers
+\`\`\`
+
+## Governance Vergelijking
+
+### Data Governance
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| Catalog | Unity Catalog | Purview | Metadata Server |
+| Lineage | Automatic | Automatic | Manual |
+| Access Control | Fine-grained | Row/Column | Role-based |
+| Classification | Tags | Sensitivity labels | Limited |
+
+### Compliance
+
+\`\`\`
+FDA 21 CFR Part 11:
+├── SAS: Strong (decades of validation)
+├── Databricks: Growing (MLflow)
+├── Fabric: Via Azure compliance
+
+AVG/HIPAA:
+├── All: Supported
+├── SAS: Built-in features
+├── Lakehouse: Requires config
+\`\`\`
+
+## Integration Architecture
+
+### Databricks Integration
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    Databricks                                │
+├─────────────────────────────────────────────────────────────┤
+│  Sources:           │  Outputs:                              │
+│  ├── JDBC/ODBC     │  ├── BI Tools (JDBC)                  │
+│  ├── Cloud Storage │  ├── ML Serving (REST)                │
+│  ├── Kafka/Kinesis │  ├── Reverse ETL                      │
+│  └── REST APIs     │  └── Cloud Storage                    │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### Fabric Integration
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    Microsoft Fabric                          │
+├─────────────────────────────────────────────────────────────┤
+│  Sources:           │  Outputs:                              │
+│  ├── 150+ connectors│  ├── Power BI (native)               │
+│  ├── Dataverse     │  ├── Excel/Teams                      │
+│  ├── OneLake shortcuts│├── ML endpoints                     │
+│  └── Event streams │  └── Purview                          │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Kernbegrippen
+
+- **CAS**: SAS in-memory compute engine
+- **Delta Lake**: Open table format met ACID
+- **OneLake**: Fabric unified storage
+- **Schema-on-read**: Schema bepaald bij query
+- **Proprietary Format**: Vendor-specifiek dataformaat
+    `,
+    sources: [
+      { name: "Databricks Architecture", url: "https://docs.databricks.com/en/lakehouse-architecture/index.html" },
+      { name: "Fabric Architecture", url: "https://learn.microsoft.com/en-us/fabric/get-started/microsoft-fabric-overview" }
+    ]
+  },
+
+  "105.3": {
+    title: "Healthcare Data Capabilities Vergeleken",
+    summary: "Vergelijking van FHIR, DICOM en healthcare-specifieke features per platform.",
+    content: `
+## In het kort
+
+Healthcare heeft specifieke data requirements: FHIR voor klinische data, DICOM voor beelden, en compliance voor regulatory. Deze module vergelijkt hoe elk platform deze adresseert.
+
+## FHIR Ondersteuning
+
+### Native FHIR Capabilities
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| FHIR Server | Via Azure/partners | Azure Health Data Services | Niet native |
+| FHIR Parsing | Libraries (Python) | Native connectors | Custom code |
+| FHIR Analytics | SQL op JSON | Direct Lake | PROC JSON |
+| FHIR Export | Delta Lake | OneLake | SAS datasets |
+
+### FHIR Verwerking
+
+\`\`\`
+Databricks:
+from fhir.resources import Patient
+# Parse FHIR JSON, flatten, write Delta
+
+Fabric:
+Azure FHIR Service → $export → ADLS → OneLake shortcut
+
+SAS:
+proc json parse (fhir.json);
+data work.patients; set json_output; ...
+\`\`\`
+
+## DICOM Ondersteuning
+
+### Imaging Integration
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| DICOM Server | Partners (Arterys) | Azure DICOM Service | Niet native |
+| Metadata | PyDICOM libraries | Native connectors | Limited |
+| Pixel Data | Spark ML pipelines | Via Azure | Not typical |
+| AI/ML | MLflow, deep learning | Azure ML | Model Studio |
+
+### DICOM Workflows
+
+\`\`\`
+Databricks:
+PACS → DICOM files → PyDICOM extraction → Delta Lake → ML
+
+Fabric:
+PACS → Azure DICOM → Metadata export → OneLake
+
+SAS:
+DICOM metadata only (niet core competentie)
+\`\`\`
+
+## Healthcare Analytics
+
+### Clinical Analytics
+
+| Use Case | Databricks | Fabric | SAS |
+|----------|------------|--------|-----|
+| Population Health | ✓ Spark ML | ✓ Power BI | ✓ SAS Health |
+| Quality Metrics | ✓ SQL/Python | ✓ Dataflows | ✓ Procedures |
+| Clinical Research | ✓ MLflow | ✓ Notebooks | ✓✓ Gold standard |
+| Real-time Monitoring | ✓ Streaming | ✓ Real-Time Intelligence | △ Limited |
+
+### Regulatory Compliance
+
+\`\`\`
+FDA 21 CFR Part 11:
+├── SAS: Validated systems, decades track record
+│   └── Clinical Standards Toolkit
+│   └── Audit trails native
+│
+├── Databricks: Growing
+│   └── MLflow tracking
+│   └── Unity Catalog audit
+│   └── Partner solutions
+│
+└── Fabric: Via Azure
+    └── Purview compliance
+    └── Microsoft compliance center
+    └── Less pharma-specific
+
+Winner: SAS (voor FDA-regulated omgevingen)
+\`\`\`
+
+### CDISC Standards
+
+\`\`\`
+CDISC Support:
+├── SAS
+│   └── Native Clinical Standards Toolkit
+│   └── SDTM, ADaM, Define-XML
+│   └── FDA submission packages
+│   └── Industrie standaard
+│
+├── Databricks
+│   └── Partner solutions (Veeva, Medidata)
+│   └── Custom development
+│   └── OMOP via community
+│
+└── Fabric
+    └── Healthcare Data Solutions
+    └── OMOP mapping tools
+    └── Growing ecosystem
+\`\`\`
+
+## Healthcare Data Models
+
+### OMOP CDM Support
+
+| Platform | OMOP Support | Implementation |
+|----------|--------------|----------------|
+| Databricks | Community packages | Delta tables |
+| Fabric | Microsoft templates | Lakehouse |
+| SAS | Custom | SAS datasets |
+
+### Proprietary Models
+
+\`\`\`
+Databricks:
+├── Open - geen proprietary model
+├── Gebruik community standaarden
+└── Partner solutions (Health Catalyst)
+
+Fabric:
+├── Microsoft Healthcare Data Model
+├── Common Data Model integratie
+└── Dynamics 365 healthcare
+
+SAS:
+├── SAS Health Information Framework
+├── Claims data models
+└── Population health models
+\`\`\`
+
+## Security & Privacy
+
+### AVG/HIPAA Features
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| Encryption at rest | ✓ CMK | ✓ CMK | ✓ |
+| Encryption in transit | ✓ TLS 1.2+ | ✓ TLS 1.2+ | ✓ |
+| Column-level masking | ✓ Unity | ✓ Purview | ✓ Metadata |
+| Row-level security | ✓ Dynamic | ✓ Power BI | ✓ |
+| Audit logging | ✓ System tables | ✓ Purview | ✓ |
+| De-identification | Partner/custom | Custom | ✓ Native |
+
+### PHI Handling
+
+\`\`\`
+Best PHI Support:
+1. SAS - native healthcare focus, validation
+2. Fabric - Purview integration, enterprise
+3. Databricks - flexible but requires config
+\`\`\`
+
+## Partner Ecosystemen
+
+### Healthcare Partners
+
+\`\`\`
+Databricks:
+├── Health Catalyst
+├── Innovaccer
+├── Komodo Health
+└── Veracyte
+
+Fabric:
+├── Nuance (DAX Copilot)
+├── Epic (integration)
+├── Teladoc
+└── Philips
+
+SAS:
+├── IQVIA
+├── Medidata
+├── Parexel
+└── PPD
+\`\`\`
+
+## Kernbegrippen
+
+- **FHIR**: Fast Healthcare Interoperability Resources
+- **DICOM**: Digital Imaging and Communications in Medicine
+- **CDISC**: Clinical Data Interchange Standards
+- **OMOP**: Observational Medical Outcomes Partnership
+- **PHI**: Protected Health Information
+    `,
+    sources: [
+      { name: "Azure Health Data Services", url: "https://learn.microsoft.com/en-us/azure/healthcare-apis/" },
+      { name: "OHDSI OMOP", url: "https://www.ohdsi.org/data-standardization/" }
+    ]
+  },
+
+  "105.4": {
+    title: "Analytics en BI: Databricks SQL vs Power BI vs SAS VA",
+    summary: "Vergelijking van analytics en BI capabilities: SQL interfaces, visualisatie en self-service.",
+    content: `
+## In het kort
+
+Business Intelligence is cruciaal voor zorginstellingen. Deze module vergelijkt de analytics en BI capabilities van de drie platforms.
+
+## BI Tools Overview
+
+### Native BI Tools
+
+\`\`\`
+Databricks:
+└── Databricks SQL (queries + dashboards)
+
+Microsoft Fabric:
+└── Power BI (volledig geïntegreerd)
+
+SAS:
+└── SAS Visual Analytics
+\`\`\`
+
+## SQL Capabilities
+
+### SQL Engines
+
+| Feature | Databricks SQL | Fabric DW | SAS SQL |
+|---------|----------------|-----------|---------|
+| ANSI SQL | ✓ Spark SQL | ✓ T-SQL | ✓ PROC SQL |
+| Performance | Photon engine | Direct Lake | CAS |
+| Concurrency | High (serverless) | Capacity-based | Node-based |
+| Cost Model | Per-query | Capacity | License |
+
+### Healthcare SQL Examples
+
+\`\`\`sql
+-- Databricks SQL
+SELECT
+    department,
+    AVG(length_of_stay) as avg_los,
+    COUNT(*) / COUNT(DISTINCT DATE(admission_date)) as daily_avg
+FROM gold.admissions
+WHERE admission_date >= DATE_SUB(CURRENT_DATE(), 30)
+GROUP BY department;
+
+-- Fabric T-SQL
+SELECT
+    department,
+    AVG(DATEDIFF(day, admission_date, discharge_date)) as avg_los,
+    COUNT(*) * 1.0 / COUNT(DISTINCT CAST(admission_date as DATE)) as daily_avg
+FROM gold.admissions
+WHERE admission_date >= DATEADD(day, -30, GETDATE())
+GROUP BY department;
+
+-- SAS SQL
+PROC SQL;
+SELECT
+    department,
+    MEAN(intck('day', admission_date, discharge_date)) as avg_los,
+    COUNT(*) / COUNT(DISTINCT datepart(admission_date)) as daily_avg
+FROM gold.admissions
+WHERE admission_date >= intnx('day', today(), -30)
+GROUP BY department;
+QUIT;
+\`\`\`
+
+## Visualisatie Vergelijking
+
+### Dashboard Capabilities
+
+| Feature | Databricks | Power BI | SAS VA |
+|---------|------------|----------|--------|
+| Chart types | Basic | Extensive | Extensive |
+| Interactivity | Filters, drill | Full | Full |
+| Mobile | Limited | Native apps | Native apps |
+| Embedding | iframes | Native SDK | Web parts |
+| Real-time | ~1 min | DirectQuery | LASR |
+
+### Healthcare Dashboard
+
+\`\`\`
+Functionaliteit vergelijking:
+
+Executive Dashboard:
+├── Databricks: SQL queries + simple charts
+├── Power BI: Rich visuals, KPIs, custom visuals
+├── SAS VA: Statistical visuals, gauges
+
+Operationeel:
+├── Databricks: Basic, needs BI tool
+├── Power BI: Streaming tiles, auto-refresh
+├── SAS VA: In-memory refresh, geo maps
+
+Klinisch:
+├── Databricks: Partner tools needed
+├── Power BI: Custom visuals, R/Python
+├── SAS VA: Statistical controls, forecasting
+\`\`\`
+
+## Self-Service Analytics
+
+### End-User Experience
+
+\`\`\`
+Databricks:
+├── SQL Editor (analysts)
+├── Notebooks (data scientists)
+├── Genie (natural language - preview)
+└── Learning curve: Medium-High
+
+Power BI:
+├── Power BI Desktop (drag-drop)
+├── Power BI Service (web)
+├── Copilot (AI-assisted)
+└── Learning curve: Low-Medium
+
+SAS VA:
+├── VA Explorer (drag-drop)
+├── VA Designer (advanced)
+├── SAS Studio (coding)
+└── Learning curve: Medium
+\`\`\`
+
+### Citizen Data Scientist Support
+
+| Feature | Databricks | Power BI | SAS VA |
+|---------|------------|----------|--------|
+| No-code analytics | Limited | Excellent | Good |
+| AutoML | ✓ | ✓ (basic) | ✓ |
+| Natural language | Genie (preview) | Q&A, Copilot | Limited |
+| Data prep | Moderate | Power Query | Good |
+
+## Integration met Platforms
+
+### BI Tool Connectivity
+
+\`\`\`
+Databricks lakehouse:
+├── Native: Databricks SQL dashboards
+├── Power BI: Partner connector
+├── Tableau: Partner connector
+├── Looker: JDBC
+
+Fabric OneLake:
+├── Native: Power BI Direct Lake
+├── Tableau: JDBC/ODBC
+├── Other: Limited
+
+SAS Viya:
+├── Native: SAS Visual Analytics
+├── Power BI: ODBC connector
+├── Tableau: ODBC connector
+\`\`\`
+
+## Advanced Analytics in BI
+
+### Statistical Features
+
+| Feature | Databricks | Power BI | SAS VA |
+|---------|------------|----------|--------|
+| Forecasting | Basic | Built-in | Advanced |
+| Clustering | Via ML | Built-in | Built-in |
+| What-if | Limited | Parameters | Scenarios |
+| R/Python visuals | Via notebooks | ✓ | ✓ |
+
+### Healthcare Analytics
+
+\`\`\`
+Quality Metrics:
+├── Power BI: Best for operational KPIs
+├── SAS VA: Best for statistical analysis
+├── Databricks: Best for complex calculations
+
+Clinical Research:
+├── SAS VA: Native statistical procedures
+├── Databricks: Custom notebooks
+├── Power BI: Needs R/Python visuals
+\`\`\`
+
+## Collaboration
+
+### Sharing & Collaboration
+
+| Feature | Databricks | Power BI | SAS VA |
+|---------|------------|----------|--------|
+| Sharing | Links, embed | Workspaces, apps | Reports, links |
+| Comments | Limited | ✓ | ✓ |
+| Subscriptions | Alerts | Email, Teams | Email |
+| Versioning | Git | Deployment pipelines | Folders |
+
+## Kernbegrippen
+
+- **Direct Lake**: Power BI mode voor OneLake
+- **Photon**: Databricks query engine
+- **LASR**: SAS in-memory analytic server
+- **Citizen Data Scientist**: Business user die analytics doet
+- **Self-Service BI**: Gebruikers maken eigen reports
+    `,
+    sources: [
+      { name: "Databricks SQL", url: "https://docs.databricks.com/sql/index.html" },
+      { name: "Power BI Documentation", url: "https://learn.microsoft.com/en-us/power-bi/" }
+    ]
+  },
+
+  "105.5": {
+    title: "Machine Learning Platforms Vergeleken",
+    summary: "Vergelijking van ML capabilities: MLflow vs Azure ML vs SAS Model Manager.",
+    content: `
+## In het kort
+
+Machine Learning is steeds belangrijker in de zorg. Deze module vergelijkt de ML platforms en hun geschiktheid voor healthcare use cases.
+
+## ML Platform Overview
+
+### Native ML Tools
+
+\`\`\`
+Databricks:
+├── MLflow (open source, origin)
+├── Feature Store
+├── Model Serving
+└── AutoML
+
+Microsoft Fabric:
+├── Azure ML integration
+├── Synapse ML
+├── MLflow (compatible)
+└── Model deployment
+
+SAS Viya:
+├── Model Studio (visual)
+├── SAS Studio (code)
+├── Model Manager (governance)
+└── Model Repository
+\`\`\`
+
+## ML Development
+
+### Development Experience
+
+| Aspect | Databricks | Fabric/Azure ML | SAS Viya |
+|--------|------------|-----------------|----------|
+| Primary interface | Notebooks | Studio + Notebooks | Model Studio |
+| Languages | Python, R, Scala | Python, R | SAS, Python, R |
+| AutoML | ✓ Extensive | ✓ | ✓ |
+| Feature Store | ✓ Native | ✓ | Limited |
+| Experiment tracking | MLflow | MLflow/Azure ML | Built-in |
+
+### Healthcare ML Development
+
+\`\`\`python
+# Databricks - Readmission prediction
+import mlflow
+from sklearn.ensemble import GradientBoostingClassifier
+
+with mlflow.start_run():
+    model = GradientBoostingClassifier(n_estimators=100)
+    model.fit(X_train, y_train)
+
+    mlflow.log_metric("auc", roc_auc_score(y_test, model.predict_proba(X_test)[:,1]))
+    mlflow.sklearn.log_model(model, "readmission_model")
+\`\`\`
+
+\`\`\`python
+# Azure ML / Fabric
+from azure.ai.ml import MLClient
+from sklearn.ensemble import GradientBoostingClassifier
+
+# Similar sklearn code, different tracking
+mlflow.autolog()
+model = GradientBoostingClassifier()
+model.fit(X_train, y_train)
+\`\`\`
+
+\`\`\`sas
+/* SAS Viya - Model Studio pipeline of code */
+proc gradboost data=mycaslib.patients;
+    target readmit_30d;
+    input age los comorbidities / level=interval;
+    savestate rstore=mycaslib.readmit_model;
+run;
+\`\`\`
+
+## Model Governance
+
+### MLOps Capabilities
+
+| Feature | Databricks | Azure ML | SAS Model Manager |
+|---------|------------|----------|-------------------|
+| Model Registry | MLflow | Azure ML | Native |
+| Versioning | ✓ | ✓ | ✓ |
+| Staging (dev/prod) | ✓ | ✓ | ✓ |
+| A/B Testing | ✓ | ✓ | Limited |
+| Monitoring | ✓ | ✓ | ✓ |
+| Drift detection | ✓ | ✓ | ✓ |
+| Audit trail | ✓ | ✓ | ✓✓ (FDA) |
+
+### Model Validation
+
+\`\`\`
+Validation Requirements:
+
+Clinical/FDA:
+├── SAS: Best - decades of validation experience
+│   └── IQ/OQ/PQ documentation
+│   └── Audit trails native
+│   └── 21 CFR Part 11 compliant
+│
+├── Databricks: Growing
+│   └── MLflow tracking
+│   └── Custom validation frameworks
+│   └── Partner solutions
+│
+└── Azure ML: Good
+    └── Responsible AI dashboard
+    └── Model cards
+    └── Azure compliance
+\`\`\`
+
+## Model Deployment
+
+### Deployment Options
+
+| Option | Databricks | Fabric | SAS |
+|--------|------------|--------|-----|
+| REST API | Model Serving | Azure ML endpoints | MAS |
+| Batch scoring | Jobs | Pipelines | Batch jobs |
+| Edge/embedded | ONNX export | ONNX | SAS Micro Analytic Service |
+| Real-time | Serverless | Managed endpoints | CAS |
+
+### Healthcare Deployment
+
+\`\`\`
+Use Case: Real-time risk scoring
+
+Databricks:
+├── Model Serving endpoint
+├── Latency: ~100ms
+├── Scaling: Auto
+└── Integration: REST API
+
+Fabric/Azure ML:
+├── Managed online endpoint
+├── Latency: ~150ms
+├── Scaling: Auto
+└── Integration: REST API
+
+SAS:
+├── MAS (Micro Analytic Service)
+├── Latency: ~50ms (in-memory)
+├── Scaling: Container-based
+└── Integration: REST API
+\`\`\`
+
+## Specialty: Healthcare ML
+
+### Clinical ML Support
+
+| Feature | Databricks | Azure ML | SAS |
+|---------|------------|----------|-----|
+| Survival analysis | Libraries | Libraries | Native PROC |
+| Clinical trials | Partners | Partners | Native toolkit |
+| Fairness/bias | Fairlearn | RAI Dashboard | Built-in |
+| Explainability | SHAP, LIME | InterpretML | Built-in |
+| FDA validation | Custom | Custom | Native |
+
+### Deep Learning
+
+| Feature | Databricks | Azure ML | SAS |
+|---------|------------|----------|-----|
+| Frameworks | PyTorch, TF | PyTorch, TF | DL procedures |
+| GPU support | ✓ | ✓ | ✓ |
+| Distributed | ✓ Horovod | ✓ | ✓ |
+| Medical imaging | ✓ | ✓ MONAI | Limited |
+
+## Cost Comparison
+
+### ML Workload Costs
+
+\`\`\`
+Training 10 models, 1TB data:
+
+Databricks:
+├── Cluster: 4x Standard_E8s_v5
+├── Time: 4 hours
+├── Cost: ~€150
+
+Azure ML:
+├── Compute: Standard_E8s_v5
+├── Time: 5 hours
+├── Cost: ~€120
+
+SAS Viya:
+├── CAS: 4 workers
+├── Time: 3 hours
+├── Cost: License-based (varies)
+\`\`\`
+
+## Kernbegrippen
+
+- **MLflow**: Open-source ML lifecycle platform
+- **Feature Store**: Centrale opslag voor ML features
+- **Model Registry**: Versioning en staging van modellen
+- **MLOps**: DevOps voor Machine Learning
+- **Model Drift**: Degradatie van model performance over tijd
+    `,
+    sources: [
+      { name: "MLflow Documentation", url: "https://mlflow.org/docs/latest/index.html" },
+      { name: "Azure ML", url: "https://learn.microsoft.com/en-us/azure/machine-learning/" }
+    ]
+  },
+
+  "105.6": {
+    title: "Governance en Compliance Vergelijking",
+    summary: "Vergelijking van data governance, compliance en security features.",
+    content: `
+## In het kort
+
+Governance en compliance zijn kritisch in de zorg. Deze module vergelijkt hoe elk platform data governance, security en regulatory compliance adresseert.
+
+## Governance Frameworks
+
+### Platform Governance Tools
+
+\`\`\`
+Databricks:
+└── Unity Catalog
+    ├── Centralized metastore
+    ├── Fine-grained access control
+    ├── Data lineage
+    └── Audit logging
+
+Microsoft Fabric:
+└── Microsoft Purview
+    ├── Data catalog
+    ├── Sensitivity labels
+    ├── Lineage
+    └── Compliance center
+
+SAS:
+└── SAS Information Governance
+    ├── Metadata Server
+    ├── Business glossary
+    ├── Data quality
+    └── Access management
+\`\`\`
+
+## Access Control
+
+### Authorization Models
+
+| Feature | Unity Catalog | Purview | SAS |
+|---------|---------------|---------|-----|
+| Table-level | ✓ | ✓ | ✓ |
+| Column-level | ✓ | ✓ | ✓ |
+| Row-level | ✓ Dynamic | ✓ Power BI | ✓ |
+| Attribute-based | Limited | ✓ | Limited |
+| Just-in-time | Via AD | PIM | Custom |
+
+### Healthcare Access Patterns
+
+\`\`\`
+Scenario: Afdeling-based toegang
+
+Databricks (Unity Catalog):
+CREATE FUNCTION dept_filter(dept STRING)
+RETURN current_user() LIKE '%' || dept || '%';
+ALTER TABLE patients SET ROW FILTER dept_filter ON (department);
+
+Fabric (Power BI RLS):
+[Department] = LOOKUPVALUE(
+    UserDepartments[Dept],
+    UserDepartments[Email],
+    USERPRINCIPALNAME()
+)
+
+SAS:
+proc metalib;
+    where department in (
+        select dept from user_access where user=&_username
+    );
+run;
+\`\`\`
+
+## Data Lineage
+
+### Lineage Capabilities
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| Auto-capture | ✓ Unity | ✓ Purview | Manual |
+| Cross-platform | Limited | ✓ (Azure) | Limited |
+| Impact analysis | ✓ | ✓ | ✓ |
+| Visual lineage | ✓ | ✓ | ✓ |
+
+### Healthcare Lineage
+
+\`\`\`
+Tracking data from source to report:
+
+Epic EMR → Bronze Table → Silver Table → Gold Table → Dashboard
+    │           │              │              │           │
+    └───────────┴──────────────┴──────────────┴───────────┘
+                         Lineage tracked
+
+Best: Fabric (Purview enterprise lineage)
+Good: Databricks (Unity within workspace)
+Limited: SAS (metadata server, less visual)
+\`\`\`
+
+## Compliance
+
+### Regulatory Compliance
+
+| Regulation | Databricks | Fabric | SAS |
+|------------|------------|--------|-----|
+| AVG/GDPR | ✓ | ✓✓ | ✓ |
+| HIPAA | ✓ BAA | ✓ BAA | ✓ |
+| FDA 21 CFR 11 | Partners | Partners | ✓✓ Native |
+| SOC 2 | ✓ | ✓ | ✓ |
+| ISO 27001 | ✓ | ✓ | ✓ |
+| NEN 7510 | Via config | Via config | Via config |
+
+### FDA Compliance Detail
+
+\`\`\`
+FDA 21 CFR Part 11 Requirements:
+
+Electronic Signatures:
+├── SAS: Native support, validated
+├── Databricks: Custom implementation
+├── Fabric: Via Azure AD + custom
+
+Audit Trails:
+├── SAS: Comprehensive, FDA-proven
+├── Databricks: Unity system tables
+├── Fabric: Purview + custom
+
+System Validation:
+├── SAS: IQ/OQ/PQ templates, decades experience
+├── Databricks: Partner solutions, growing
+├── Fabric: Azure compliance, less pharma-specific
+\`\`\`
+
+## Security
+
+### Security Features
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| Encryption at rest | ✓ CMK | ✓ CMK | ✓ |
+| Encryption in transit | ✓ TLS | ✓ TLS | ✓ |
+| Private networking | Private Link | Private endpoints | VPC |
+| SSO | SAML, SCIM | Azure AD | SAML |
+| MFA | Via IdP | ✓ Native | Via IdP |
+| Secret management | DBricks Secrets | Key Vault | Vault |
+
+### Data Classification
+
+\`\`\`
+Automatic PII/PHI Detection:
+
+Fabric + Purview:
+├── Auto-classification
+├── Sensitivity labels
+├── Data loss prevention
+├── Information protection
+└── Best for enterprise classification
+
+Databricks + Unity:
+├── Tags (manual/auto)
+├── Column masking
+├── Limited auto-detection
+└── Good for data engineering
+
+SAS:
+├── Data quality rules
+├── Manual classification
+├── Metadata-driven
+└── Less automated
+\`\`\`
+
+## Audit & Monitoring
+
+### Audit Capabilities
+
+| Feature | Databricks | Fabric | SAS |
+|---------|------------|--------|-----|
+| Query logging | System tables | Purview | Metadata server |
+| Data access logs | ✓ | ✓ | ✓ |
+| Admin actions | ✓ | ✓ | ✓ |
+| Retention | Configurable | 90 days + archive | Configurable |
+| Export | SQL query | Export to storage | Reports |
+
+### Healthcare Audit Requirements
+
+\`\`\`
+NEN 7513 Logging (Dutch Healthcare):
+
+Who: User identity
+├── All platforms: ✓
+
+What: Data accessed
+├── All platforms: ✓
+
+When: Timestamp
+├── All platforms: ✓
+
+Why: Purpose/ground
+├── SAS: Can be configured
+├── Others: Requires custom implementation
+
+Winner for NEN 7513: Requires custom work on all platforms
+\`\`\`
+
+## Kernbegrippen
+
+- **Unity Catalog**: Databricks governance layer
+- **Purview**: Microsoft data governance platform
+- **Row-Level Security**: Data filtering per user
+- **CMK**: Customer-Managed Keys
+- **21 CFR Part 11**: FDA electronic records regulation
+    `,
+    sources: [
+      { name: "Unity Catalog Security", url: "https://docs.databricks.com/data-governance/unity-catalog/index.html" },
+      { name: "Microsoft Purview Compliance", url: "https://learn.microsoft.com/en-us/purview/purview" }
+    ]
+  },
+
+  "105.7": {
+    title: "TCO en Licensing Modellen",
+    summary: "Total Cost of Ownership vergelijking en licensing modellen van de drie platforms.",
+    content: `
+## In het kort
+
+De kosten van data platforms zijn complex en omvatten meer dan alleen licenties. Deze module vergelijkt de TCO en licensing modellen.
+
+## Licensing Modellen
+
+### Model Overview
+
+\`\`\`
+Databricks:
+├── Consumption-based (DBU)
+├── Per workload type (SQL, ML, etc.)
+├── Commitment discounts available
+└── Cloud infrastructure separate
+
+Microsoft Fabric:
+├── Capacity-based (CU)
+├── All-inclusive (compute + storage)
+├── Per-user voor Power BI
+└── Reservations for discount
+
+SAS:
+├── Named user licenses
+├── Server-based licenses
+├── Annual subscription
+└── Perpetual + maintenance options
+\`\`\`
+
+## Cost Components
+
+### Databricks Costs
+
+\`\`\`
+DBU Rates (Azure, approximate):
+├── Jobs Light: €0.15/DBU
+├── Jobs: €0.30/DBU
+├── SQL Serverless: €0.55/DBU
+├── SQL Pro: €0.35/DBU
+├── ML Runtime: €0.40/DBU
+└── Photon: Premium pricing
+
+Example Monthly:
+├── 10 users, moderate usage
+├── Data engineering: 5000 DBU × €0.30 = €1,500
+├── SQL analytics: 2000 DBU × €0.35 = €700
+├── ML: 1000 DBU × €0.40 = €400
+├── Azure infra: ~€1,000
+├── Total: ~€3,600/month
+\`\`\`
+
+### Microsoft Fabric Costs
+
+\`\`\`
+Capacity Units (approximate):
+├── F2: ~€250/month (dev)
+├── F4: ~€500/month
+├── F8: ~€1,000/month
+├── F16: ~€2,000/month
+├── F32: ~€4,000/month
+├── F64: ~€8,000/month
+
+Power BI licensing:
+├── Pro: €9.40/user/month
+├── Premium Per User: €18.70/user/month
+
+Example Monthly:
+├── 50 users, F16 capacity
+├── Fabric F16: €2,000
+├── Power BI Pro (50): €470
+├── Storage (5TB): ~€100
+├── Total: ~€2,570/month
+\`\`\`
+
+### SAS Costs
+
+\`\`\`
+SAS Licensing (indicative):
+├── SAS Viya: €200-500K/year base
+├── Per named user: €1,000-5,000/year
+├── Server cores: €10,000-50,000/core/year
+├── Maintenance: 20-25% of license/year
+
+Example Annual:
+├── 20 analysts, mid-size
+├── Viya base: €300,000
+├── Users (20): €60,000
+├── Maintenance: €90,000
+├── Infrastructure: €50,000
+├── Total: ~€500,000/year (~€42K/month)
+\`\`\`
+
+## TCO Comparison
+
+### 3-Year TCO Model
+
+\`\`\`
+Scenario: Mid-size ziekenhuis, 50 analytics users
+
+┌─────────────────┬────────────┬────────────┬────────────┐
+│ Component       │ Databricks │   Fabric   │    SAS     │
+├─────────────────┼────────────┼────────────┼────────────┤
+│ Year 1          │            │            │            │
+│ - Licenses      │    €0      │   €28K     │   €400K    │
+│ - Compute       │   €45K     │   €24K     │   incl     │
+│ - Storage       │    €5K     │    €5K     │    €10K    │
+│ - Implementation│   €80K     │   €60K     │   €120K    │
+│ - Training      │   €30K     │   €20K     │    €40K    │
+│ Subtotal Y1     │  €160K     │  €137K     │   €570K    │
+├─────────────────┼────────────┼────────────┼────────────┤
+│ Year 2-3        │            │            │            │
+│ - Annual ops    │   €50K     │   €30K     │    €50K    │
+│ - Compute/lic   │   €90K     │   €56K     │   €800K    │
+│ Subtotal Y2-3   │  €140K     │   €86K     │   €850K    │
+├─────────────────┼────────────┼────────────┼────────────┤
+│ 3-Year Total    │  €440K     │  €309K     │  €1,990K   │
+│ Per user/year   │   €2.9K    │   €2.1K    │   €13.3K   │
+└─────────────────┴────────────┴────────────┴────────────┘
+
+Note: SAS includes premium features/support
+\`\`\`
+
+## Hidden Costs
+
+### Vaak Vergeten Kosten
+
+\`\`\`
+Databricks:
+├── Cloud egress charges
+├── Cluster idle time
+├── Premium support (10-20% extra)
+├── Unity Catalog (premium tier)
+└── Third-party tools
+
+Fabric:
+├── Additional Power BI licenses
+├── Premium capacity for features
+├── Purview licensing (governance)
+├── Azure Monitor (logging)
+└── Disaster recovery capacity
+
+SAS:
+├── Additional modules (separate)
+├── Upgrade/migration costs
+├── Specialized training
+├── Consulting (high rates)
+└── Infrastructure maintenance
+\`\`\`
+
+## Cost Optimization
+
+### Optimization Strategies
+
+\`\`\`
+Databricks:
+├── Use spot instances (60-90% savings)
+├── Auto-termination clusters
+├── Serverless SQL for ad-hoc
+├── Reserved capacity (1-3 year)
+└── Right-size clusters
+
+Fabric:
+├── Pause capacity during off-hours
+├── Use appropriate capacity tier
+├── Optimize DirectQuery vs Import
+├── Reserved capacity discount
+└── Consolidate workspaces
+
+SAS:
+├── Negotiate multi-year deals
+├── Remove unused modules
+├── Optimize user licensing
+├── Cloud vs on-prem analysis
+└── Consider SAS Cloud
+\`\`\`
+
+## ROI Considerations
+
+### Value Drivers
+
+\`\`\`
+Platform value beyond cost:
+
+Databricks:
+├── Data engineering efficiency: +30%
+├── ML time-to-production: -50%
+├── Open/portable: reduced lock-in
+
+Fabric:
+├── M365 productivity gains
+├── Unified platform: -20% tooling
+├── Self-service adoption: +40%
+
+SAS:
+├── Regulatory compliance: priceless
+├── Statistical accuracy: critical
+├── Existing skills: reduced training
+\`\`\`
+
+## Kernbegrippen
+
+- **DBU**: Databricks Unit (consumption metric)
+- **CU**: Capacity Unit (Fabric metric)
+- **TCO**: Total Cost of Ownership
+- **Spot Instances**: Discounted compute
+- **Reserved Capacity**: Commitment discount
+    `,
+    sources: [
+      { name: "Databricks Pricing", url: "https://www.databricks.com/product/pricing" },
+      { name: "Microsoft Fabric Pricing", url: "https://azure.microsoft.com/en-us/pricing/details/microsoft-fabric/" }
+    ]
+  },
+
+  "105.8": {
+    title: "Platform Selectie Framework voor Zorginstellingen",
+    summary: "Praktisch framework voor platform selectie met beslisboom en aanbevelingen.",
+    content: `
+## In het kort
+
+Het kiezen van het juiste data platform is een strategische beslissing. Deze module biedt een praktisch framework voor platform selectie in zorginstellingen.
+
+## Selectie Framework
+
+### Stap 1: Requirements Assessment
+
+\`\`\`
+Dimensies te beoordelen:
+
+1. Business Requirements
+   ├── Use cases (operations, research, clinical)
+   ├── User types (analysts, data scientists, executives)
+   └── Urgency en priorities
+
+2. Technical Requirements
+   ├── Data volumes en groei
+   ├── Real-time needs
+   ├── Integration requirements
+   └── Existing architecture
+
+3. Organizational Factors
+   ├── Skills en expertise
+   ├── Change readiness
+   └── IT maturity
+
+4. Compliance Requirements
+   ├── Regulatory (FDA, NEN, AVG)
+   ├── Audit needs
+   └── Data sovereignty
+
+5. Financial Constraints
+   ├── Budget (CAPEX/OPEX)
+   ├── TCO horizon
+   └── Funding model
+\`\`\`
+
+### Stap 2: Platform Fit Score
+
+\`\`\`
+Score matrix (1-5 per criterium):
+
+                    Databricks  Fabric    SAS
+────────────────────────────────────────────────
+Data Engineering        5         4        3
+ML/AI                   5         4        4
+Self-Service BI         3         5        4
+Statistical Analysis    3         3        5
+Real-time Analytics     4         5        3
+Microsoft Integration   3         5        2
+Regulatory Compliance   3         4        5
+Healthcare Specific     3         4        5
+Cost Efficiency         4         4        2
+Open/Portable           5         3        2
+────────────────────────────────────────────────
+\`\`\`
+
+## Beslisboom
+
+### Primaire Use Case
+
+\`\`\`
+Start: Wat is de primaire driver?
+
+├── "We doen klinische trials / FDA submissions"
+│   └── → SAS (regulatory expertise)
+│
+├── "We willen ML/AI op schaal"
+│   └── → Databricks (ML-first platform)
+│
+├── "We zijn Microsoft-shop, willen unified platform"
+│   └── → Fabric (M365 integratie)
+│
+├── "We hebben bestaande SAS investering"
+│   ├── Moderniseren op Azure?
+│   │   └── → SAS on Azure
+│   └── Migreren naar modern platform?
+│       └── → Databricks of Fabric
+│
+└── "We starten greenfield"
+    └── → Fabric (lowest barrier) of Databricks (most capable)
+\`\`\`
+
+### Organisatie Type
+
+\`\`\`
+Organisatie Type:
+
+Academisch Ziekenhuis / UMC:
+├── Research heavy → SAS + Databricks
+├── Operations → Fabric
+└── Recommendation: Multi-platform
+
+Groot Ziekenhuis (non-academic):
+├── Operational focus → Fabric
+├── Data science ambitions → Databricks
+└── Recommendation: Fabric primary, Databricks for ML
+
+Regionaal Ziekenhuis:
+├── Limited resources → Fabric
+├── M365 existing → Fabric
+└── Recommendation: Fabric
+
+Zorgverzekeraar:
+├── Claims/fraud → SAS
+├── Customer analytics → Fabric
+├── Advanced analytics → Databricks
+└── Recommendation: SAS + Fabric
+
+VVT / Thuiszorg:
+├── Simple needs → Fabric
+├── Budget constrained → Fabric
+└── Recommendation: Fabric
+\`\`\`
+
+## Scenario Aanbevelingen
+
+### Scenario 1: Data-Driven Transformation
+
+\`\`\`
+Situatie:
+- Groot ziekenhuis, M365 gebruiker
+- Wil data-driven worden
+- Beperkte data science resources
+- Budget bewust
+
+Aanbeveling: Microsoft Fabric
+├── Unified platform, lower complexity
+├── Power BI already adopted
+├── Good starting point
+├── Can add Databricks later for ML
+\`\`\`
+
+### Scenario 2: ML/AI Ambitions
+
+\`\`\`
+Situatie:
+- UMC met research focus
+- Significant data science team
+- Complex ML use cases
+- Existing Spark/Python skills
+
+Aanbeveling: Databricks
+├── Best ML/AI platform
+├── Open source ecosystem
+├── Scale for research
+├── Unity Catalog for governance
+\`\`\`
+
+### Scenario 3: Regulatory Heavy
+
+\`\`\`
+Situatie:
+- Farmaceutische partner
+- Clinical trial analytics
+- FDA submission requirements
+- Existing SAS skills
+
+Aanbeveling: SAS Viya on Azure
+├── Regulatory compliance proven
+├── CDISC native support
+├── Leverage existing investment
+├── Cloud benefits on Azure
+\`\`\`
+
+### Scenario 4: Hybrid Approach
+
+\`\`\`
+Situatie:
+- Large healthcare system
+- Diverse requirements
+- Multiple user types
+- Budget available
+
+Aanbeveling: Multi-platform
+├── Fabric: BI, self-service, M365 users
+├── Databricks: Data engineering, ML
+├── SAS: Where regulatory required
+├── Integration via Delta Lake / OneLake
+\`\`\`
+
+## Implementation Roadmap
+
+### Phased Approach
+
+\`\`\`
+Phase 1: Foundation (Month 1-3)
+├── Platform setup
+├── Governance framework
+├── Initial data ingestion
+└── Pilot use case
+
+Phase 2: Expansion (Month 4-6)
+├── Additional use cases
+├── User training
+├── Integration expansion
+└── Performance tuning
+
+Phase 3: Optimization (Month 7-12)
+├── Advanced use cases
+├── ML/AI implementation
+├── Cost optimization
+└── Center of Excellence
+
+Phase 4: Scale (Year 2+)
+├── Enterprise rollout
+├── Multi-platform integration
+├── Innovation initiatives
+└── Continuous improvement
+\`\`\`
+
+## Success Factors
+
+### Critical Success Factors
+
+\`\`\`
+1. Executive Sponsorship
+   └── Budget, priority, change leadership
+
+2. Clear Use Cases
+   └── Start with value, not technology
+
+3. Skills Development
+   └── Training, hiring, partnerships
+
+4. Governance First
+   └── Data quality, security, compliance
+
+5. Iterative Approach
+   └── Pilot, learn, scale
+\`\`\`
+
+## Kernbegrippen
+
+- **Platform Fit**: Match tussen platform en requirements
+- **Multi-platform**: Strategisch gebruik van meerdere platforms
+- **Greenfield**: Nieuwe implementatie zonder legacy
+- **CoE**: Center of Excellence
+- **Phased Implementation**: Gefaseerde uitrol
+    `,
+    sources: [
+      { name: "Gartner Healthcare Analytics", url: "https://www.gartner.com/en/industries/healthcare-providers" },
+      { name: "KLAS Research", url: "https://klasresearch.com" }
+    ]
   }
 }
 

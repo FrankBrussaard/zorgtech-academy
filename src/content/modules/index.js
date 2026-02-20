@@ -111,6 +111,74 @@ export const expertTracks = [
       { id: "101.7", title: "Certificering & Kwalificatie voor Twiin", duration: 12, tags: ["twiin", "certificering", "kwalificatie", "aansluiting", "expert"] },
       { id: "101.8", title: "Twiin Implementatietraject: Van Ontwerp tot Productie", duration: 20, tags: ["twiin", "implementatie", "projectaanpak", "expert"] }
     ]
+  },
+  {
+    id: 102,
+    title: "Databricks in de Zorg",
+    description: "Deep dive in Databricks voor healthcare analytics, data lakehouse en ML/AI in zorginstellingen",
+    icon: "🧱",
+    level: "expert",
+    modules: [
+      { id: "102.1", title: "Databricks Fundamentals voor de Zorg", duration: 18, tags: ["databricks", "lakehouse", "zorg", "data-platform", "expert"] },
+      { id: "102.2", title: "Data Lakehouse Architectuur in Healthcare", duration: 20, tags: ["databricks", "lakehouse", "architectuur", "delta-lake", "expert"] },
+      { id: "102.3", title: "Zorgdata Ingestie: HL7, FHIR en DICOM naar Delta Lake", duration: 22, tags: ["databricks", "hl7", "fhir", "dicom", "ingestie", "expert"] },
+      { id: "102.4", title: "Unity Catalog: Governance en Compliance voor Zorgdata", duration: 18, tags: ["databricks", "unity-catalog", "governance", "avg", "expert"] },
+      { id: "102.5", title: "Healthcare Analytics met Databricks SQL", duration: 16, tags: ["databricks", "sql", "analytics", "dashboards", "expert"] },
+      { id: "102.6", title: "Machine Learning voor Zorgvoorspellingen", duration: 20, tags: ["databricks", "mlflow", "machine-learning", "predictive", "expert"] },
+      { id: "102.7", title: "Real-time Streaming voor Zorgmonitoring", duration: 18, tags: ["databricks", "streaming", "spark", "real-time", "expert"] },
+      { id: "102.8", title: "Databricks Implementatie in Zorginstellingen", duration: 20, tags: ["databricks", "implementatie", "azure", "aws", "expert"] }
+    ]
+  },
+  {
+    id: 103,
+    title: "Microsoft Fabric in de Zorg",
+    description: "Deep dive in Microsoft Fabric voor unified analytics, OneLake en AI in zorginstellingen",
+    icon: "🪡",
+    level: "expert",
+    modules: [
+      { id: "103.1", title: "Microsoft Fabric Fundamentals voor de Zorg", duration: 18, tags: ["fabric", "microsoft", "zorg", "data-platform", "expert"] },
+      { id: "103.2", title: "OneLake en Lakehouse Architectuur", duration: 20, tags: ["fabric", "onelake", "lakehouse", "delta", "expert"] },
+      { id: "103.3", title: "Data Factory voor Zorgdata Integratie", duration: 18, tags: ["fabric", "data-factory", "pipelines", "integratie", "expert"] },
+      { id: "103.4", title: "Healthcare Data Solutions met FHIR en DICOM", duration: 22, tags: ["fabric", "fhir", "dicom", "healthcare-apis", "expert"] },
+      { id: "103.5", title: "Power BI in Fabric voor Zorginzichten", duration: 16, tags: ["fabric", "power-bi", "visualisatie", "dashboards", "expert"] },
+      { id: "103.6", title: "Real-Time Intelligence voor Patiëntmonitoring", duration: 18, tags: ["fabric", "real-time", "eventhouse", "kql", "expert"] },
+      { id: "103.7", title: "Data Governance en Purview Integratie", duration: 18, tags: ["fabric", "purview", "governance", "compliance", "expert"] },
+      { id: "103.8", title: "Fabric Implementatie en Microsoft Cloud for Healthcare", duration: 20, tags: ["fabric", "implementatie", "cloud-healthcare", "expert"] }
+    ]
+  },
+  {
+    id: 104,
+    title: "SAS & SAS on Azure in de Zorg",
+    description: "Deep dive in SAS Viya, SAS on Azure en de migratie naar cloud voor zorginstellingen",
+    icon: "📊",
+    level: "expert",
+    modules: [
+      { id: "104.1", title: "SAS Platform Fundamentals voor de Zorg", duration: 18, tags: ["sas", "viya", "zorg", "data-platform", "expert"] },
+      { id: "104.2", title: "SAS Viya Architectuur en Cloud Opties", duration: 20, tags: ["sas", "viya", "architectuur", "cloud", "expert"] },
+      { id: "104.3", title: "SAS on Azure: Deployment en Integratie", duration: 22, tags: ["sas", "azure", "deployment", "integratie", "expert"] },
+      { id: "104.4", title: "Healthcare Analytics met SAS", duration: 18, tags: ["sas", "analytics", "healthcare", "statistiek", "expert"] },
+      { id: "104.5", title: "SAS Data Management voor Zorgdata", duration: 16, tags: ["sas", "data-management", "etl", "kwaliteit", "expert"] },
+      { id: "104.6", title: "Machine Learning en AI met SAS Viya", duration: 20, tags: ["sas", "machine-learning", "ai", "model-manager", "expert"] },
+      { id: "104.7", title: "SAS Visual Analytics voor Zorginzichten", duration: 18, tags: ["sas", "visual-analytics", "dashboards", "rapportage", "expert"] },
+      { id: "104.8", title: "Migratie naar SAS on Azure: Strategie en Uitvoering", duration: 20, tags: ["sas", "azure", "migratie", "hybrid", "expert"] }
+    ]
+  },
+  {
+    id: 105,
+    title: "Platform Vergelijking: Databricks vs Fabric vs SAS",
+    description: "Strategische vergelijking van data platforms voor zorginstellingen: capabilities, kosten en use cases",
+    icon: "⚖️",
+    level: "expert",
+    modules: [
+      { id: "105.1", title: "Data Platform Landschap in de Zorg", duration: 18, tags: ["vergelijking", "platforms", "zorg", "strategie", "expert"] },
+      { id: "105.2", title: "Architectuurvergelijking: Lakehouse vs SAS", duration: 22, tags: ["vergelijking", "architectuur", "lakehouse", "sas", "expert"] },
+      { id: "105.3", title: "Healthcare Data Capabilities Vergeleken", duration: 20, tags: ["vergelijking", "fhir", "dicom", "healthcare", "expert"] },
+      { id: "105.4", title: "Analytics en BI: Databricks SQL vs Power BI vs SAS VA", duration: 18, tags: ["vergelijking", "analytics", "bi", "visualisatie", "expert"] },
+      { id: "105.5", title: "Machine Learning Platforms Vergeleken", duration: 20, tags: ["vergelijking", "ml", "mlflow", "model-manager", "expert"] },
+      { id: "105.6", title: "Governance en Compliance Vergelijking", duration: 18, tags: ["vergelijking", "governance", "avg", "compliance", "expert"] },
+      { id: "105.7", title: "TCO en Licensing Modellen", duration: 16, tags: ["vergelijking", "tco", "kosten", "licensing", "expert"] },
+      { id: "105.8", title: "Platform Selectie Framework voor Zorginstellingen", duration: 20, tags: ["vergelijking", "selectie", "besluitvorming", "strategie", "expert"] }
+    ]
   }
 ]
 
