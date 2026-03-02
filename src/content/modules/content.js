@@ -10334,6 +10334,1537 @@ Gecoordineerd door RIVM:
       { name: "RIVM", url: "https://www.rivm.nl" },
       { name: "Zo werkt de zorg - Publieke Gezondheidszorg", url: "https://www.zowerktdezorg.nl" }
     ]
+  },
+
+  // Track 106: Huisartsenzorg IT & Digitalisering
+  "106.1": {
+    title: "HIS Systemen & Architectuur",
+    summary: "Diepgaande kennis van Huisarts Informatie Systemen, architectuur en integraties",
+    content: `
+# HIS Systemen & Architectuur
+
+## Wat is een HIS?
+
+Het Huisarts Informatie Systeem (HIS) is het centrale informatiesysteem in de huisartsenpraktijk. Het ondersteunt alle primaire processen: van patiëntregistratie tot declaratie.
+
+## Marktoverzicht HIS-leveranciers
+
+| Leverancier | Systeem | Marktaandeel | Kenmerken |
+|-------------|---------|--------------|-----------|
+| PharmaPartners | Medicom | ~35% | Cloud-native, moderne interface |
+| Chipsoft | Promedico-ASP | ~25% | Integratie met ziekenhuis (HiX) |
+| Calculus | Omnihis | ~15% | Modulair, flexibel |
+| Topicus | VIPLive | ~10% | Innovatief, open platform |
+| CGM | CGM Huisarts | ~10% | Internationaal, robuust |
+
+## Kernfunctionaliteiten
+
+### Patiëntendossier (EPD-functie)
+- Medische voorgeschiedenis
+- Actuele medicatie
+- Allergieën en intoleranties
+- Consultverslagen (SOEP-registratie)
+- Correspondentie en labwaarden
+
+### Agenda en Planning
+- Online afsprakensysteem
+- Spreekuurtypes configuratie
+- Herinneringen en recalls
+- Capaciteitsplanning
+
+### Medicatiemodule
+- Voorschrijven met G-Standaard
+- Interactiecontrole
+- Herhaalreceptuur
+- eRecept naar apotheek
+
+### Declaratie en Financiën
+- Automatische S-code bepaling
+- Vektis declaratiebestanden
+- COD016 verrichtingenlijst
+- Financiële rapportages
+
+## Technische Architectuur
+
+### Deployment modellen
+- **On-premise**: Lokale server in praktijk (verouderd)
+- **Hosted**: Server bij leverancier, remote desktop
+- **Cloud/SaaS**: Volledig web-based, moderne standaard
+
+### Integratie-interfaces
+- **HL7v2**: Berichten met lab/ziekenhuis
+- **HL7 FHIR**: Moderne API-standaard
+- **Edifact**: Declaratieverkeer
+- **OZIS**: Ketenzorg portalen
+
+### Koppelingen
+
+| Type | Doel | Standaard |
+|------|------|-----------|
+| Laboratorium | Aanvragen en uitslagen | HL7v2, LOINC |
+| Apotheek | Recepten | LSP, eRecept |
+| Ziekenhuis | Verwijzingen, brieven | HL7v2, ZorgMail |
+| Ketenzorg | DBC-registratie | OZIS |
+| Patiëntportaal | Inzage, afspraken | FHIR, MedMij |
+
+## Datastandaarden
+
+### ICPC-2 (International Classification of Primary Care)
+- Internationaal classificatiesysteem voor huisartsgeneeskunde
+- Hoofdstukindeling A-Z (orgaansystemen)
+- Episode-georiënteerd registreren
+
+### NHG-tabel 25
+- Nederlandse codelijst voor huisartsen
+- Diagnostische codes en verrichtingen
+- Koppeling met ICPC-2
+
+### G-Standaard
+- Geneesmiddelendatabank van Z-Index
+- Basis voor voorschrijven en interactiecontrole
+- Bevat alle in NL geregistreerde medicatie
+
+## Kernbegrippen
+
+- **HIS**: Huisarts Informatie Systeem
+- **SOEP**: Subjectief, Objectief, Evaluatie, Plan
+- **ICPC-2**: International Classification of Primary Care
+- **G-Standaard**: Geneesmiddelendatabank
+- **S-code**: Segment in huisartsendeclaratie
+    `,
+    sources: [
+      { name: "NHG - ICT in de huisartsenzorg", url: "https://www.nhg.org" },
+      { name: "Nictiz - Standaarden huisartsenzorg", url: "https://www.nictiz.nl" },
+      { name: "Zo werkt de zorg - Huisartsenzorg", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "106.2": {
+    title: "LSP & Huisartsenposten",
+    summary: "Het Landelijk Schakelpunt in de huisartsenzorg en informatieuitwisseling bij HAP's",
+    content: `
+# LSP & Huisartsenposten
+
+## Het Landelijk Schakelpunt (LSP)
+
+### Wat is het LSP?
+Het LSP is de landelijke infrastructuur voor uitwisseling van medische gegevens. Het wordt beheerd door VZVZ (Vereniging van Zorgaanbieders voor Zorgcommunicatie).
+
+### Gegevenstypen in het LSP
+
+| Type | Inhoud | Bron |
+|------|--------|------|
+| Professionele Samenvatting | Actuele medicatie, allergieën, diagnoses | Huisarts |
+| Waarneemgegevens | Recente consulten voor waarneming | Huisarts |
+| Medicatieoverzicht | Alle verstrekte medicatie | Apotheek |
+| Labwaarden | Recente laboratoriumuitslagen | Laboratorium |
+
+### Technische werking
+
+1. **Patiënt geeft toestemming** (opt-in)
+2. **Gegevens worden geïndexeerd** bij VZVZ
+3. **Opvragend zorgverlener** (met UZI-pas) vraagt gegevens op
+4. **LSP routeert** naar bronhouder
+5. **Gegevens worden real-time** opgehaald en getoond
+
+### Toestemmingsregistratie
+- Patiënt geeft toestemming per gegevenssoort
+- Registratie via huisarts of volgjezorg.nl
+- Toestemming is intrekbaar
+- Zorgverlener moet behandelrelatie hebben
+
+## Huisartsenposten (HAP)
+
+### Organisatie
+- Regionale coöperaties van huisartsen
+- Diensten buiten kantooruren
+- Één centraal telefoonnummer per regio
+- Triage door doktersassistenten
+
+### Informatiesystemen HAP
+
+| Component | Functie |
+|-----------|---------|
+| Triagesysteem | NTS-beslisondersteuning |
+| Callcentersoftware | Telefonie, wachtrijen |
+| HAP-HIS | Registratie dienstcontacten |
+| Autorisatie | Toegang tot patiëntgegevens |
+
+### Nederlandse Triage Standaard (NTS)
+- Gestructureerde urgentiebepaling
+- Vraaggestuurde beslisbomen
+- 5 urgentiecategorieën (U0-U5)
+- Koppeling met ambulancezorg (ProQA)
+
+## Gegevensuitwisseling HAP-Huisarts
+
+### Waarneemgegevens via LSP
+Huisartsenpost kan opvragen:
+- Actuele medicatie
+- Recente voorgeschiedenis
+- Allergieën
+- Relevante episoden
+
+### Terugkoppeling naar huisarts
+- Gestructureerde waarneembrief
+- Automatisch in HIS van eigen huisarts
+- Bevat diagnose, behandeling, medicatie
+- Actie-indicatie voor follow-up
+
+## Spoedketen
+
+### 112 vs HAP
+- **112**: Levensbedreigende situaties (A1/A2)
+- **HAP-nummer**: Acute maar niet levensbedreigend
+
+### Overdracht naar SEH
+- Digitale overdracht bij verwijzing
+- Medicatieoverzicht via LSP
+- Verwijsbrief elektronisch
+
+## Regionale samenwerking
+
+### VHN (Vereniging Huisartsenposten Nederland)
+- Koepelorganisatie van HAP's
+- Kwaliteitsstandaarden
+- Landelijke afspraken
+
+### InEen
+- Vereniging van eerstelijnsorganisaties
+- Ketenzorg en anderhalvelijnszorg
+- Digitalisering ondersteuning
+
+## Kernbegrippen
+
+- **LSP**: Landelijk Schakelpunt
+- **VZVZ**: Vereniging van Zorgaanbieders voor Zorgcommunicatie
+- **HAP**: Huisartsenpost
+- **NTS**: Nederlandse Triage Standaard
+- **UZI-pas**: Unieke Zorgverlener Identificatie
+    `,
+    sources: [
+      { name: "VZVZ - Landelijk Schakelpunt", url: "https://www.vzvz.nl" },
+      { name: "InEen - Eerstelijnsorganisaties", url: "https://ineen.nl" },
+      { name: "NHG - Samenwerking huisarts en HAP", url: "https://www.nhg.org" }
+    ]
+  },
+
+  "106.3": {
+    title: "Ketenzorg & Registratie",
+    summary: "Ketenzorg DBC's, informatiesystemen en data-uitwisseling in programmatische zorg",
+    content: `
+# Ketenzorg & Registratie
+
+## Wat is Ketenzorg?
+
+Ketenzorg is georganiseerde multidisciplinaire zorg voor chronische aandoeningen. De huisarts is hoofdbehandelaar en coördineert de zorg.
+
+## Ketenzorgprogramma's
+
+| Keten | Aandoening | Disciplines |
+|-------|------------|-------------|
+| DM2 | Diabetes Mellitus type 2 | Huisarts, POH, diëtist, podotherapeut |
+| COPD | Chronische longziekte | Huisarts, POH, fysiotherapeut, longarts |
+| CVRM | Cardiovasculair risico | Huisarts, POH, cardioloog |
+| Astma | Luchtwegaandoening | Huisarts, POH, longarts |
+| GGZ | Psychische klachten | Huisarts, POH-GGZ, psycholoog |
+
+## Bekostiging Ketenzorg
+
+### Keten-DBC (Diagnose Behandel Combinatie)
+- Integraal tarief per patiënt per jaar
+- Zorggroep declareert bij verzekeraar
+- Onderlinge verdeling via Zorggroep
+
+### Tariefopbouw
+- Consultmodule huisarts
+- Module diagnostiek
+- Module paramedische zorg
+- Overhead zorggroep
+
+### S3-prestatie
+- Specifieke segment voor ketenzorg
+- Los van reguliere huisartsconsulten
+- Voorkomt dubbele bekostiging
+
+## Zorggroepen
+
+### Wat is een Zorggroep?
+- Organisatie van huisartsen voor ketenzorg
+- Contracteert met zorgverzekeraars
+- Coördineert multidisciplinaire zorg
+- Verzorgt declaraties en rapportages
+
+### Taken Zorggroep
+- Contractering en onderhandeling
+- Kwaliteitsbeleid en benchmarking
+- ICT-ondersteuning en portalen
+- Scholing en intervisie
+
+## Ketenzorg Informatiesystemen
+
+### KIS (Keten Informatie Systeem)
+Gespecialiseerd systeem voor:
+- Overzicht ketenpatiënten
+- Protocolgestuurde controles
+- Uitval- en oproepsignalering
+- Kwaliteitsindicatoren
+
+### Integratie met HIS
+
+| Koppeling | Functie |
+|-----------|---------|
+| Patiëntgegevens | Synchronisatie NAW en BSN |
+| Meetwaarden | Lab, bloeddruk, gewicht |
+| Medicatie | Actuele medicatielijst |
+| Verrichtingen | Registratie voor declaratie |
+
+### Portalen voor Ketenzorg
+- **Portavita**: Marktleider ketenzorgportaal
+- **OZIS**: Open standaard voor gegevensuitwisseling
+- **VitalHealth**: Digitale zorgpaden
+
+## Registratie en Indicatoren
+
+### Benchmark Ketenzorg
+- Landelijke vergelijking zorggroepen
+- Proces- en uitkomstindicatoren
+- Publiek beschikbaar via InEen
+
+### Indicatoren DM2 (voorbeeld)
+
+| Indicator | Type | Doel |
+|-----------|------|------|
+| HbA1c gemeten | Proces | >90% |
+| HbA1c <53 mmol/mol | Uitkomst | >50% |
+| Funduscontrole | Proces | >80% |
+| Voetcontrole | Proces | >85% |
+
+### NIVEL Zorgregistraties
+- Landelijke database eerstelijnszorg
+- Wetenschappelijk onderzoek
+- Anonieme gegevensaanlevering
+
+## Kernbegrippen
+
+- **Keten-DBC**: Ketenzorg Diagnose Behandel Combinatie
+- **Zorggroep**: Organisatie van huisartsen voor ketenzorg
+- **KIS**: Keten Informatie Systeem
+- **POH**: Praktijkondersteuner Huisarts
+- **OZIS**: Open Zorg Informatie Stelsel
+    `,
+    sources: [
+      { name: "InEen - Ketenzorg", url: "https://ineen.nl" },
+      { name: "NZa - Bekostiging huisartsenzorg", url: "https://www.nza.nl" },
+      { name: "NIVEL - Zorgregistraties", url: "https://www.nivel.nl" }
+    ]
+  },
+
+  "106.4": {
+    title: "Patiëntportalen & PGO",
+    summary: "Digitale patiënttoegang, Persoonlijke Gezondheidsomgevingen en MedMij",
+    content: `
+# Patiëntportalen & PGO
+
+## Ontwikkeling Patiëntportalen
+
+### Generaties portalen
+
+| Generatie | Periode | Kenmerken |
+|-----------|---------|-----------|
+| 1e generatie | 2010-2015 | Alleen afspraken maken |
+| 2e generatie | 2015-2020 | Inzage dossier, herhaalrecepten |
+| 3e generatie | 2020+ | PGO-koppeling, zelfmetingen |
+
+### Functionaliteiten huidige portalen
+- Online afspraken maken
+- Inzage medisch dossier
+- Herhaalrecepten aanvragen
+- Uitslagen bekijken
+- Berichten met praktijk
+- eConsult
+
+## Persoonlijke Gezondheidsomgeving (PGO)
+
+### Wat is een PGO?
+Een PGO is een app of website waar burgers zelf hun gezondheidsgegevens kunnen verzamelen uit verschillende bronnen.
+
+### Kenmerken PGO
+- Patiënt is eigenaar van de gegevens
+- Verzamelt data uit meerdere bronnen
+- Onafhankelijk van zorgverlener
+- MedMij-gecertificeerd
+
+### MedMij
+
+| Aspect | Beschrijving |
+|--------|--------------|
+| Wat | Afsprakenstelsel voor gegevensuitwisseling |
+| Wie | Beheerd door Stichting MedMij |
+| Hoe | Standaarden en certificering |
+| Doel | Veilige uitwisseling naar PGO's |
+
+### MedMij Gegevensdiensten
+- Basisgegevens Zorg (BgZ)
+- Medicatieoverzicht
+- Laboratoriumuitslagen
+- Huisartswaarneming
+- Vaccinaties
+
+## Technische Architectuur
+
+### MedMij Rollen
+
+| Rol | Functie | Voorbeeld |
+|-----|---------|-----------|
+| Persoon | Gebruiker van PGO | Patiënt |
+| PGO | App/website voor verzamelen | Quli, Drimpy |
+| Dienstverlener | Bron van gegevens | Huisartsenpraktijk |
+| DVP | Dienstverlener Persoon | Maakt koppeling mogelijk |
+| DVZ | Dienstverlener Zorg | Ontsluit zorgsystemen |
+
+### Authenticatie
+- DigiD voor patiëntidentificatie
+- UZI-pas voor zorgverlener (bij toevoegen)
+- OAuth 2.0 voor autorisatie
+- BSN als identificerend kenmerk
+
+### Technische standaarden
+- HL7 FHIR voor gegevensuitwisseling
+- Zibs (Zorginformatiebouwstenen)
+- IHE-profielen voor interoperabiliteit
+
+## Zelfmetingen en Thuismonitoring
+
+### Typen zelfmetingen
+- Bloeddruk
+- Bloedglucose
+- Gewicht
+- Saturatie
+- Hartritme
+
+### Integratie met HIS
+
+| Stap | Proces |
+|------|--------|
+| 1 | Patiënt meet thuis |
+| 2 | Data naar PGO of app |
+| 3 | Overdracht naar HIS (MedMij/FHIR) |
+| 4 | Verwerking door POH/huisarts |
+| 5 | Feedback naar patiënt |
+
+### Uitdagingen
+- Betrouwbaarheid apparatuur
+- Meetfrequentie en alarmen
+- Werkbelasting praktijk
+- Vergoeding thuismonitoring
+
+## Voorbeelden PGO's
+
+| PGO | Kenmerken |
+|-----|-----------|
+| Quli | Brede functionaliteit, veel koppelingen |
+| Drimpy | Gebruiksvriendelijk, focus medicatie |
+| PAZIO | Regio Utrecht, geïntegreerd portaal |
+| Mijn Gezondheidsplatform | UMCU, academisch |
+
+## Kernbegrippen
+
+- **PGO**: Persoonlijke Gezondheidsomgeving
+- **MedMij**: Afsprakenstelsel voor gegevensuitwisseling
+- **Zibs**: Zorginformatiebouwstenen
+- **BgZ**: Basisgegevens Zorg
+- **DVP/DVZ**: Dienstverlener Persoon/Zorg
+    `,
+    sources: [
+      { name: "MedMij", url: "https://www.medmij.nl" },
+      { name: "Nictiz - PGO", url: "https://www.nictiz.nl" },
+      { name: "VZVZ - Patiëntportalen", url: "https://www.vzvz.nl" }
+    ]
+  },
+
+  // Track 107: GGZ Zorgdata & Systemen
+  "107.1": {
+    title: "GGZ EPD Systemen",
+    summary: "Overzicht van EPD-systemen in de GGZ en specifieke functionaliteiten",
+    content: `
+# GGZ EPD Systemen
+
+## GGZ IT-landschap
+
+De GGZ heeft een eigen IT-landschap met gespecialiseerde EPD-systemen die voldoen aan de specifieke eisen van de geestelijke gezondheidszorg.
+
+## Marktoverzicht GGZ EPD's
+
+| Leverancier | Systeem | Marktpositie | Segment |
+|-------------|---------|--------------|---------|
+| Nedap | Ons | Marktleider | GGZ breed |
+| Gerimedica | Ysis | Groot | GGZ, VVT |
+| Chipsoft | HiX | Groot | Academisch, GGZ |
+| User | EPD | Medium | GGZ instellingen |
+| Adapcare | Pluriform | Medium | GGZ, verslavingszorg |
+
+## Kernfunctionaliteiten GGZ EPD
+
+### Dossiervoering
+- Intakeregistratie en anamnese
+- Behandelplannen en doelen
+- Voortgangsnotities (decursus)
+- Risicotaxaties en crisisplannen
+
+### ROM (Routine Outcome Monitoring)
+
+| Vragenlijst | Doel | Afnamemomenten |
+|-------------|------|----------------|
+| OQ-45 | Algemeen functioneren | Begin, tussentijds, einde |
+| BSI | Klachtenintensiteit | Idem |
+| HONOS | Ernst problematiek | Bij start en evaluatie |
+| SQ-48 | Screeningsinstrument | Bij intake |
+
+### Specifieke GGZ-modules
+- **Medicatiebewaking**: Psychofarmaca, interacties
+- **Crisiskaart**: Wilsverklaring en voorkeuren
+- **Dwangregistratie**: Wvggz/Wzd verplicht
+- **Suïcidepreventie**: Signaleringssysteem
+
+## Behandelplan en Doelen
+
+### Structuur behandelplan
+1. Probleeminventarisatie
+2. DSM-5 classificatie
+3. Behandeldoelen (SMART)
+4. Interventies
+5. Evaluatiemomenten
+6. Einddoelen
+
+### Shared Decision Making
+- Gezamenlijke besluitvorming
+- Keuzekaarten en keuzehulpen
+- Digitale ondersteuning
+
+## Ambulant vs Klinisch
+
+### Ambulante GGZ
+- Poliklinische afspraken
+- Behandeltrajecten
+- FACT-teams (outreachend)
+
+### Klinische GGZ
+- Opnameregistratie
+- Verblijfsdagen
+- Observatie en rapportage
+- Overdrachtsmomenten
+
+## Integraties
+
+| Koppeling | Doel |
+|-----------|------|
+| AGB/Vektis | Declaraties |
+| SBG | Benchmarkgegevens |
+| Apotheek | Medicatieverkeer |
+| Huisarts | Verwijzing en terugkoppeling |
+| Laboratorium | Spiegelbepalingen |
+
+## Privacy en Beveiliging
+
+### Extra GGZ-eisen
+- Logging van dossierinzage
+- Scheiding somatiek/psychiatrie bij voorkeur patiënt
+- Specifieke autorisaties (behandelteam)
+- Afschermingsmogelijkheden
+
+### Wvggz Registratie
+- Zorgmachtigingen
+- Crisismaatregel
+- Verplichte zorg registratie
+- Evaluatie en beëindiging
+
+## Kernbegrippen
+
+- **ROM**: Routine Outcome Monitoring
+- **HONOS**: Health of the Nation Outcome Scales
+- **FACT**: Flexible Assertive Community Treatment
+- **Wvggz**: Wet verplichte GGZ
+- **SBG**: Stichting Benchmark GGZ
+    `,
+    sources: [
+      { name: "GGZ Nederland", url: "https://www.ggznederland.nl" },
+      { name: "Akwa GGZ - Kwaliteit", url: "https://www.akwaggz.nl" },
+      { name: "SBG - Benchmark GGZ", url: "https://www.sbggz.nl" }
+    ]
+  },
+
+  "107.2": {
+    title: "Zorgvraagtypering & Bekostiging",
+    summary: "Het nieuwe bekostigingsmodel voor de GGZ met zorgvraagtypering",
+    content: `
+# Zorgvraagtypering & Bekostiging
+
+## Zorgprestatiemodel (ZPM)
+
+Sinds 2022 geldt het Zorgprestatiemodel als bekostigingsmodel voor de GGZ en FZ. Dit vervangt de oude DBC-systematiek.
+
+## Van DBC naar ZPM
+
+| Aspect | DBC (tot 2022) | ZPM (vanaf 2022) |
+|--------|----------------|------------------|
+| Basis | Tijdschrijven in minuten | Consulten en verblijf |
+| Looptijd | Max 365 dagen | Geen vaste looptijd |
+| Heropening | Na 365 dagen nieuw DBC | Doorlopende behandeling |
+| Zorgzwaarte | Via productgroepen | Via zorgvraagtypering |
+
+## Zorgvraagtypering
+
+### Wat is zorgvraagtypering?
+Een instrument om de zorgvraag van de patiënt te classificeren. Het bepaalt welke zorg naar verwachting nodig is.
+
+### Het HoNOS+ Instrument
+
+| Domein | Items |
+|--------|-------|
+| Gedrag | Overactief, zelfverwonding, middelengebruik |
+| Beperkingen | Cognitief, lichamelijk |
+| Symptomen | Hallucinaties, depressie, andere symptomen |
+| Sociaal | Relaties, ADL, wonen, werk |
+
+### Van HoNOS+ naar Zorgvraagtype
+
+HoNOS+ score resulteert in 1 van 15 zorgvraagtypes:
+- Licht: type 1-3
+- Matig: type 4-8
+- Zwaar: type 9-12
+- Zeer zwaar: type 13-15
+
+## Prestaties in ZPM
+
+### Consultprestaties
+
+| Prestatie | Setting | Duur |
+|-----------|---------|------|
+| Consult diagnostiek | Diagnostische fase | Variabel |
+| Consult behandeling | Behandelfase | Variabel |
+| Groepsconsult | Groepsbehandeling | Per sessie |
+
+### Verblijfsprestaties
+
+| Prestatie | Kenmerken |
+|-----------|-----------|
+| Verblijf A | Lichte zorg |
+| Verblijf B | Gemiddelde zorg |
+| Verblijf C | Intensieve zorg |
+| Verblijf D | Extra intensief |
+| Verblijf E | Zeer intensief |
+| Verblijf HIC | High Intensive Care |
+
+### Overige prestaties
+- Electroconvulsietherapie (ECT)
+- Consultatie en medebehandeling
+- Crisis
+
+## Declaratieproces
+
+### Stappen
+
+1. Patiënt start behandeling
+2. Intake en diagnostiek
+3. Zorgvraagtypering via HoNOS+
+4. Behandelconsulten registreren
+5. Maandelijks/periodiek declareren
+6. Zorgverzekeraar betaalt
+
+### Vereisten declaratie
+- BSN patiënt
+- AGB-code zorgverlener
+- Zorgvraagtype
+- Prestatiecode
+- Setting (ambulant/klinisch)
+- Beroep behandelaar
+
+## Verwijzing
+
+### Verwijsmodel GGZ
+
+| Segment | Verwijzer | Behandelaar |
+|---------|-----------|-------------|
+| Basis-GGZ | Huisarts | Psycholoog, POH-GGZ |
+| Gespecialiseerde GGZ | Huisarts | Psychiater, klinisch psycholoog |
+| Hoogspecialistische GGZ | Specialist | Topklinische centra |
+
+### Informatie in verwijzing
+- Reden verwijzing
+- Vermoeden stoornis
+- Voorgeschiedenis
+- Medicatie
+- Urgentie
+
+## Kernbegrippen
+
+- **ZPM**: Zorgprestatiemodel
+- **HoNOS+**: Instrument voor zorgvraagtypering
+- **Zorgvraagtype**: Classificatie zorgzwaarte (1-15)
+- **Setting**: Ambulant, klinisch, of outreachend
+- **Prestatie**: Declareerbare zorgeenheid
+    `,
+    sources: [
+      { name: "NZa - Zorgprestatiemodel", url: "https://www.nza.nl" },
+      { name: "Akwa GGZ - Zorgvraagtypering", url: "https://www.akwaggz.nl" },
+      { name: "Zorgprestatiemodel.nl", url: "https://www.zorgprestatiemodel.nl" }
+    ]
+  },
+
+  "107.3": {
+    title: "ROM & Benchmarking",
+    summary: "Routine Outcome Monitoring en landelijke benchmark in de GGZ",
+    content: `
+# ROM & Benchmarking
+
+## Routine Outcome Monitoring
+
+### Definitie
+ROM is het systematisch meten van behandeluitkomsten met gevalideerde vragenlijsten, op meerdere momenten tijdens de behandeling.
+
+### Doelen ROM
+
+| Doel | Toelichting |
+|------|-------------|
+| Individueel | Behandeling evalueren en bijsturen |
+| Team | Reflectie op behandelresultaten |
+| Organisatie | Kwaliteitsverbetering |
+| Landelijk | Benchmark en transparantie |
+
+## ROM Instrumenten
+
+### Generieke vragenlijsten
+
+| Instrument | Items | Meet |
+|------------|-------|------|
+| OQ-45 | 45 | Symptomen, relaties, sociaal |
+| BSI | 53 | Psychische klachten |
+| MANSA | 16 | Kwaliteit van leven |
+| SQ-48 | 48 | Screening stoornissen |
+
+### Stoornisspecifieke lijsten
+
+| Stoornis | Instrument |
+|----------|------------|
+| Depressie | BDI-II, PHQ-9, IDS |
+| Angst | BAI, GAD-7 |
+| PTSS | PCL-5 |
+| Persoonlijkheid | SIPP-118 |
+| Verslaving | MATE |
+
+### Afnamemomenten
+- **Voormeting (T0)**: Bij start behandeling
+- **Tussenmeting (T1-Tn)**: Elke 3-6 maanden
+- **Nameting**: Bij afsluiting
+- **Follow-up**: 6-12 maanden na afsluiting
+
+## Digitale ROM
+
+### ROM-portalen
+- Embloom
+- Telepsy
+- QuestManager
+- MindDistrict
+
+### Integratie met EPD
+- Automatische uitnodigingen
+- Resultaten in dossier
+- Beslisondersteuning
+- Tijdlijn visualisatie
+
+## Stichting Benchmark GGZ (SBG)
+
+### Taken SBG
+- Verzamelen ROM-data landelijk
+- Analyseren en vergelijken
+- Terugkoppelen naar instellingen
+- Publiceren openbare benchmark
+
+### Gegevensaanlevering
+
+| Element | Vereist |
+|---------|---------|
+| Geanonimiseerde ROM-scores | Ja |
+| Behandelkenmerken | Ja |
+| Diagnose (DSM) | Ja |
+| Start- en einddatum | Ja |
+| Zorgvraagtype | Ja (sinds ZPM) |
+
+## Benchmark Indicatoren
+
+### Delta-T (behandeleffect)
+Verandering in ROM-score:
+- T0 score - T1 score = ruwe verandering
+- Correctie voor beginwaarde
+- Vergelijking met landelijk gemiddelde
+
+### Respons en Remissie
+
+| Term | Definitie |
+|------|-----------|
+| Respons | Klinisch relevante verbetering |
+| Remissie | Score onder klinische grens |
+| Herstel | Respons + remissie |
+| Verslechtering | Klinisch relevante achteruitgang |
+
+### Casemix correctie
+Correctie voor:
+- Ernst bij start
+- Diagnose
+- Comorbiditeit
+- Demografische factoren
+
+## Uitdagingen ROM
+
+### Praktische bezwaren
+- Administratieve belasting
+- Vragenlijstmoeheid patiënten
+- Respons (niet iedereen vult in)
+- Timing van afname
+
+### Methodologische discussies
+- Selectieve non-respons
+- Gaming (strategisch niet afnemen)
+- Validiteit voor alle doelgroepen
+- Vergelijkbaarheid instellingen
+
+## Akwa GGZ
+
+### Taken
+- Kwaliteitsstandaarden GGZ
+- Generieke module Ernstige psychische aandoeningen
+- Doorontwikkeling ROM
+- Patiëntperspectief
+
+### Kwaliteitsstatuut
+- Verplicht voor alle GGZ-aanbieders
+- Informatie over praktijk
+- Wachttijden
+- Behandelaanbod
+
+## Kernbegrippen
+
+- **ROM**: Routine Outcome Monitoring
+- **SBG**: Stichting Benchmark GGZ
+- **Delta-T**: Behandeleffect score
+- **Respons**: Klinisch relevante verbetering
+- **Casemix**: Correctie voor patiëntkenmerken
+    `,
+    sources: [
+      { name: "Akwa GGZ", url: "https://www.akwaggz.nl" },
+      { name: "SBG - Stichting Benchmark GGZ", url: "https://www.sbggz.nl" },
+      { name: "GGZ Nederland - ROM", url: "https://www.ggznederland.nl" }
+    ]
+  },
+
+  "107.4": {
+    title: "Dwang & Drang Registratie",
+    summary: "Registratie van verplichte zorg onder de Wvggz en Wzd",
+    content: `
+# Dwang & Drang Registratie
+
+## Wettelijk Kader
+
+### Wet verplichte GGZ (Wvggz)
+Geldt voor mensen met een psychische stoornis waarbij verplichte zorg nodig is om ernstig nadeel te voorkomen.
+
+### Wet zorg en dwang (Wzd)
+Geldt voor mensen met een psychogeriatrische aandoening (dementie) of verstandelijke beperking.
+
+## Wvggz: Verplichte Zorg
+
+### Vormen van verplichte zorg
+
+| Vorm | Voorbeeld |
+|------|-----------|
+| Gedwongen medicatie | Antipsychotica bij psychose |
+| Beperking bewegingsvrijheid | Gesepareerd verblijf |
+| Onderzoek | Lichamelijk, bagage |
+| Controles | Kamer, post |
+| Beperking communicatie | Telefoon, bezoek |
+| Gedwongen voeding | Bij eetstoornis |
+
+### Zorgmachtiging
+
+| Stap | Actor | Termijn |
+|------|-------|---------|
+| Melding | Burgemeester ontvangt | - |
+| Verkennend onderzoek | Gemeente | 14 dagen |
+| Aanvraag | Officier van Justitie | 3 weken |
+| Medische verklaring | Onafhankelijk psychiater | 14 dagen |
+| Zitting | Rechtbank | - |
+| Beslissing | Rechter | 3 weken na aanvraag |
+
+### Crisismaatregel
+- Acute situatie
+- Beslissing burgemeester
+- Maximaal 3 dagen
+- Kan verlengd worden via zorgmachtiging
+
+## Registratieverplichtingen
+
+### EPD Registratie
+
+| Element | Vastleggen |
+|---------|------------|
+| Juridische titel | Zorgmachtiging, crisismaatregel |
+| Type verplichte zorg | Welke vormen toegepast |
+| Start en eind | Per toepassing |
+| Evaluatie | Minimaal elke 3 maanden |
+| Wilsbekwaamheid | Beoordeling vastleggen |
+
+### Dwangsom
+Argus-registratie:
+- Landelijke database
+- Anonieme gegevens
+- Monitoring ontwikkelingen
+- Onderzoek
+
+## Argus Registratie
+
+### Wat is Argus?
+Landelijk registratiesysteem voor dwang en drang in de GGZ en VVT.
+
+### Registratie-items
+- Afzondering
+- Separatie
+- Fixatie
+- Gedwongen medicatie
+- Gedwongen voeding
+- Beschermende interventies
+
+### Rapportage
+- Jaarlijkse rapportages per instelling
+- Landelijke trends
+- Benchmark met andere instellingen
+
+## Wzd: Onvrijwillige Zorg
+
+### Stappenplan Wzd
+
+| Stap | Actie |
+|------|-------|
+| 1 | Zorgverantwoordelijke zoekt alternatieven |
+| 2 | Multidisciplinair overleg |
+| 3 | Wzd-arts beoordeelt noodzaak |
+| 4 | Opname in zorgplan |
+| 5 | Evaluatie (steeds kortere intervallen) |
+
+### Wzd-functionaris
+- Intern toezicht
+- Klachtbehandeling
+- Advies aan zorgverleners
+
+## Rechten Patiënt
+
+### Wvggz rechten
+- Recht op bijstand patiëntvertrouwenspersoon (PVP)
+- Recht op familielid/naaste vertrouwenspersoon
+- Klachtrecht bij klachtencommissie
+- Recht op eigen plan van aanpak
+
+### Zorgkaart en Crisiskaart
+- Eigen wensen en voorkeuren
+- Wie te waarschuwen
+- Wat helpt in crisis
+- Moet in EPD opgenomen zijn
+
+## IT Ondersteuning
+
+### Functionaliteiten EPD
+
+| Functie | Doel |
+|--------|------|
+| Workflow zorgmachtiging | Procesbewaking |
+| Tijdregistratie | Start/stop verplichte zorg |
+| Signalering termijnen | Evaluatie en verlenging |
+| Rapportage | Argus aanlevering |
+| Autorisatie | Specifieke rollen |
+
+### Koppelingen
+- DVS (Dienst Verplichte Zorg): landelijk register
+- OM/Rechtbank: administratie zorgmachtigingen
+- Inspectie: toezichthouder
+
+## Kernbegrippen
+
+- **Wvggz**: Wet verplichte geestelijke gezondheidszorg
+- **Wzd**: Wet zorg en dwang
+- **Zorgmachtiging**: Rechterlijke machtiging voor verplichte GGZ
+- **Crisismaatregel**: Acute beslissing burgemeester
+- **Argus**: Registratiesysteem dwang en drang
+    `,
+    sources: [
+      { name: "Dwang in de zorg", url: "https://www.dwangindezorg.nl" },
+      { name: "GGZ Nederland - Wvggz", url: "https://www.ggznederland.nl" },
+      { name: "IGJ - Wet verplichte GGZ", url: "https://www.igj.nl" }
+    ]
+  },
+
+  // Track 108: Farmacie & Medicatieketen
+  "108.1": {
+    title: "Apotheeksystemen & G-Standaard",
+    summary: "Apotheek informatiesystemen en de rol van de G-Standaard",
+    content: `
+# Apotheeksystemen & G-Standaard
+
+## Apotheekinformatiesysteem (AIS)
+
+Het AIS is het centrale systeem in de apotheek voor medicatiebeheer, receptverwerking en patiëntenzorg.
+
+## Marktoverzicht AIS
+
+| Leverancier | Systeem | Type apotheek |
+|-------------|---------|---------------|
+| PharmaPartners | Pharmacom | Openbare apotheek |
+| Mosadex | Zamicom | Openbare apotheek |
+| CGM | CGM Apotheek | Openbare apotheek |
+| Centric | Centrasys | Ziekenhuisapotheek |
+| Chipsoft | HiX Farmacie | Ziekenhuisapotheek |
+
+## Kernfunctionaliteiten AIS
+
+### Receptverwerking
+- Ontvangst recepten (papier, elektronisch)
+- Medicatiebewaking
+- Etiketteren
+- Terhandstelling registratie
+
+### Medicatiebewaking
+
+| Controle | Bron |
+|----------|------|
+| Interacties | G-Standaard |
+| Contra-indicaties | G-Standaard + patiëntdossier |
+| Dubbelmedicatie | Patiënthistorie |
+| Dosering | G-Standaard + leeftijd/gewicht |
+| Allergie | Patiëntdossier |
+
+### Patiëntendossier
+- Medicatiehistorie
+- Allergieën en intoleranties
+- Contra-indicaties
+- Afspraken (bijv. voorkeur generiek)
+- Zorgverzekeringsgegevens
+
+## G-Standaard
+
+### Wat is de G-Standaard?
+De G-Standaard is de geneesmiddelendatabank van Z-Index, onderdeel van KNMP. Het bevat alle informatie over in Nederland geregistreerde geneesmiddelen.
+
+### Inhoud G-Standaard
+
+| Tabel | Inhoud |
+|-------|--------|
+| Artikelen | Alle producten met HPK, PRK, GPK |
+| Stofnamen | INN-stofnamen |
+| Indicaties | Registratie-indicaties |
+| Contra-indicaties | CI's met patiëntkenmerken |
+| Interacties | Drug-drug interacties |
+| Doseringsgegevens | Min/max doses per indicatie |
+
+### Coderingen
+
+| Code | Niveau | Voorbeeld |
+|------|--------|-----------|
+| GPK | Generiek product | Paracetamol tablet 500mg |
+| PRK | Voorschrift | Paracetamol tablet 500mg, 30 stuks |
+| HPK | Handelsproduct | Paracetamol CF 500mg tablet |
+| ARTIKELNR | Verpakking | Specifiek EAN |
+
+### Updates G-Standaard
+- Maandelijkse release
+- Tussentijdse spoedupdates
+- Automatische distributie naar AIS
+- Versiebeheer
+
+## Interactiecontrole
+
+### Interactieniveaus
+
+| Code | Ernst | Actie |
+|------|-------|-------|
+| AB | Zeer ernstig | Combinatie vermijden |
+| A | Ernstig | Maatregelen nemen |
+| B | Matig ernstig | Monitoren |
+| C | Gering | Informeren |
+
+### Workflow bij interactie
+1. AIS signaleert interactie
+2. Apotheker beoordeelt relevantie
+3. Actie: overleg voorschrijver of monitoring
+4. Bewaking documenteren
+5. Registratie in patiëntdossier
+
+## Declaratie en Inkoop
+
+### Declaratieproces
+- UZOVI-nummer verzekeraar
+- Preferentiebeleid per verzekeraar
+- Clawback en bijbetalingsregelingen
+- Vektis standaardberichten
+
+### Inkoopmodule
+- Bestellen bij groothandels
+- Voorraadbeheer
+- THT-bewaking
+- Retourregistratie
+
+## Ziekenhuisfarmacie
+
+### Specifieke functionaliteiten
+
+| Functie | Doel |
+|--------|------|
+| Bereidingen | Magistrale receptuur, cytostatica |
+| Unit dose | Per patiënt verpakt |
+| Voedingspompen | TPN bereiding |
+| Medicatieveiligheid | Clinical rules |
+| Antimicrobial stewardship | Antibioticabeleid |
+
+## Kernbegrippen
+
+- **AIS**: Apotheekinformatiesysteem
+- **G-Standaard**: Geneesmiddelendatabank
+- **GPK/PRK/HPK**: Product codeniveaus
+- **Interactiecontrole**: Bewaking geneesmiddelcombinaties
+- **THT**: Te Houden Tot (houdbaarheidsdatum)
+    `,
+    sources: [
+      { name: "KNMP - Apotheek", url: "https://www.knmp.nl" },
+      { name: "Z-Index - G-Standaard", url: "https://www.z-index.nl" },
+      { name: "Zo werkt de zorg - Farmacie", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "108.2": {
+    title: "Medicatieoverdracht & eRecept",
+    summary: "Standaarden voor medicatieoverdracht en elektronisch voorschrijven",
+    content: `
+# Medicatieoverdracht & eRecept
+
+## Medicatieoverdracht
+
+### Problematiek
+Medicatiefouten door gebrekkige overdracht zijn een belangrijke oorzaak van vermijdbare schade in de zorg.
+
+### Richtlijn Medicatieoverdracht
+Veldnorm voor veilige overdracht van medicatiegegevens tussen zorgverleners.
+
+## Medicatieproces
+
+### Stappen in het medicatieproces
+
+| Stap | Actor | Actie |
+|------|-------|-------|
+| Voorschrijven | Arts | Recept maken |
+| Ter hand stellen | Apotheek | Medicatie leveren |
+| Toedienen | Verpleging/patiënt | Medicatie innemen |
+| Bewaken | Apotheek/arts | Effecten monitoren |
+
+### Overgangsmomenten
+- Opname in ziekenhuis
+- Ontslag uit ziekenhuis
+- Overplaatsing
+- Consult bij specialist
+- Wijziging door huisarts
+
+## Elektronisch Recept (eRecept)
+
+### Definitie
+Het eRecept is een gestandaardiseerd elektronisch bericht van voorschrijver naar apotheek.
+
+### eRecept inhoud
+
+| Veld | Inhoud |
+|------|--------|
+| Patiënt | BSN, naam, geboortedatum |
+| Voorschrijver | AGB, naam, specialisme |
+| Medicatie | PRK/HPK code, dosering |
+| Aantal | Stuks of dagen |
+| Instructies | Gebruiksaanwijzing |
+| Herhaling | Aantal herhalingen |
+
+### Technische route
+1. Arts maakt recept in EPD/HIS
+2. Recept naar centrale infrastructuur (LSP)
+3. Patiënt kiest apotheek
+4. Apotheek haalt recept op
+5. Verwerking en terhandstelling
+
+## Actueel Medicatieoverzicht
+
+### Medicatieoverzicht (MO)
+Compleet overzicht van alle medicatie die een patiënt gebruikt.
+
+### Componenten MO
+
+| Component | Beschrijving |
+|-----------|--------------|
+| Medicatieafspraken | Wat is voorgeschreven |
+| Toedienafspraken | Hoe toe te dienen |
+| Medicatiegebruik | Wat patiënt daadwerkelijk gebruikt |
+
+### Bronnen medicatiegegevens
+- Huisarts (HIS)
+- Apotheek (AIS)
+- Ziekenhuis (EVS)
+- Patiënt zelf
+
+## MP9 Standaard
+
+### Wat is MP9?
+Medicatieproces versie 9 is de landelijke informatiestandaard voor medicatiegegevens.
+
+### Bouwstenen MP9
+
+| Bouwsteen | Functie |
+|-----------|---------|
+| Medicatieafspraak (MA) | Voorschrift door arts |
+| Toedienafspraak (TA) | Afspraak over toediening |
+| Medicatietoediening (MTD) | Feitelijke toediening |
+| Medicatiegebruik (MGB) | Gebruik door patiënt |
+| Wisselend doseerschema (WDS) | Variabele dosering |
+
+### Implementatie MP9
+- Gefaseerde invoering
+- Pilots in regio's
+- Conversie bestaande gegevens
+- Parallelle systemen
+
+## Medicatieveiligheid
+
+### High Risk Medicatie
+
+| Categorie | Voorbeelden |
+|-----------|-------------|
+| Antistolling | Coumarines, DOACs |
+| Insulines | Alle typen |
+| Cytostatica | Chemotherapie |
+| Opiaten | Morfine, fentanyl |
+| Methotrexaat | Lage dosis bij RA |
+
+### Veiligheidsmaatregelen
+- Dubbele controle
+- LASA-waarschuwingen (Look Alike Sound Alike)
+- Barcode verificatie
+- Clinical decision support
+
+## Landelijke Infrastructuur
+
+### VZVZ en LSP
+- Centrale index medicatiegegevens
+- Real-time opvragen
+- Toestemming patiënt vereist
+
+### MedMij
+- Medicatieoverzicht naar PGO
+- Patiënt regie over gegevens
+- FHIR-gebaseerd
+
+## Kernbegrippen
+
+- **eRecept**: Elektronisch recept
+- **MO**: Medicatieoverzicht
+- **MP9**: Medicatieproces standaard versie 9
+- **MA/TA/MTD**: Medicatieafspraak/Toedienafspraak/Toediening
+- **LASA**: Look Alike Sound Alike
+    `,
+    sources: [
+      { name: "Nictiz - Medicatieproces", url: "https://www.nictiz.nl" },
+      { name: "KNMP - Medicatieoverdracht", url: "https://www.knmp.nl" },
+      { name: "VZVZ - Medicatiegegevens", url: "https://www.vzvz.nl" }
+    ]
+  },
+
+  "108.3": {
+    title: "Medicatieverificatie & EVS",
+    summary: "Elektronisch voorschrijfsysteem en medicatieverificatie bij opname",
+    content: `
+# Medicatieverificatie & EVS
+
+## Medicatieverificatie
+
+### Definitie
+Medicatieverificatie is het proces van het vaststellen van een volledig en correct medicatieoverzicht bij zorgovergang.
+
+### Wanneer verificatie?
+
+| Moment | Setting |
+|--------|---------|
+| Opname | Ziekenhuis, verpleeghuis |
+| Ontslag | Terug naar huis of andere instelling |
+| Overdracht | Tussen afdelingen, instellingen |
+| Polikliniek | Bij specialistconsult |
+
+## Verificatieproces
+
+### Stappen medicatieverificatie
+
+| Stap | Actie | Door wie |
+|------|-------|---------|
+| 1 | Verzamelen bronnen | Verpleegkundige/apotheker |
+| 2 | Best Possible Medication History | Apotheker |
+| 3 | Vergelijken met thuismedicatie | Apotheker |
+| 4 | Opstellen opnamemedicatie | Arts |
+| 5 | Bespreken met patiënt | Arts/apotheker |
+| 6 | Vastleggen in EVS | Arts |
+
+### Bronnen voor verificatie
+- Medicatieoverzicht apotheek
+- Patiëntgesprek
+- LSP gegevens
+- Meengebrachte medicatie
+- Verwijsbrief huisarts
+
+## Elektronisch Voorschrijfsysteem (EVS)
+
+### Definitie
+Het EVS is het systeem waarmee artsen in het ziekenhuis elektronisch medicatie voorschrijven.
+
+### Functies EVS
+
+| Functie | Beschrijving |
+|---------|--------------|
+| Voorschrijven | Selectie medicatie en dosering |
+| Beslisondersteuning | Alerts en waarschuwingen |
+| Uitzetten | Toedienlijsten voor verpleging |
+| Autorisatie | Wie mag wat voorschrijven |
+| Documentatie | Vastleggen in dossier |
+
+## Beslisondersteuning (CDSS)
+
+### Clinical Decision Support
+
+| Type | Voorbeeld |
+|------|-----------|
+| Allergieën | Alert bij bekende allergie |
+| Interacties | Waarschuwing bij combinatie |
+| Dosering | Maximum overschreden |
+| Nierfunctie | Dosisaanpassing bij lage eGFR |
+| Leeftijd | Geriatrische waarschuwing |
+| Lab | Interactie met labwaarden |
+
+### Alertmoeheid
+- Te veel alerts vermindert effectiviteit
+- Optimalisatie: alleen relevante alerts
+- Hard stops vs soft stops
+- Feedback loop voor verbetering
+
+## Gesloten Distributiesystemen
+
+### Unit Dose
+- Medicatie per patiënt verpakt
+- Per toedienmoment gereed
+- Barcode voor verificatie
+- Vermindert fouten bij toediening
+
+### Medicatiekasten (ADC)
+- Automated Dispensing Cabinets
+- Gecontroleerde toegang op afdeling
+- Voorraadregistratie automatisch
+- Integratie met EVS
+
+## Toedienregistratie
+
+### Barcode Medication Administration (BCMA)
+
+| Stap | Actie |
+|------|-------|
+| 1 | Scan polsbandje patiënt |
+| 2 | Scan medicatie |
+| 3 | Verificatie: juiste patiënt, medicatie, tijd |
+| 4 | Toediening |
+| 5 | Registratie in dossier |
+
+### Closed Loop Medication
+Volledig gesloten keten:
+- Voorschrijven (EVS)
+- Klaarzetten (apotheek)
+- Distribueren (robot/ADC)
+- Toedienen (BCMA)
+- Registreren (automatisch)
+
+## High Risk Processen
+
+### Cytostatica
+
+| Aspect | Maatregel |
+|--------|-----------|
+| Voorschrijven | Alleen geautoriseerde arts |
+| Berekening | Gebaseerd op BSA/gewicht |
+| Bereiding | Isolator, 4-ogen principe |
+| Toediening | Getrainde verpleegkundige |
+
+### Parenteralia
+- TPN (Totale Parenterale Nutriatie)
+- Infuuspompen met drugdatabase
+- Dosislimieten ingebouwd
+- Spuitpompen met ID
+
+## Kernbegrippen
+
+- **EVS**: Elektronisch Voorschrijfsysteem
+- **CDSS**: Clinical Decision Support System
+- **BCMA**: Barcode Medication Administration
+- **Closed Loop**: Gesloten medicatieketen
+- **Unit Dose**: Per patiënt verpakte medicatie
+    `,
+    sources: [
+      { name: "NVZA - Ziekenhuisfarmacie", url: "https://www.nvza.nl" },
+      { name: "KNMP - Medicatieveiligheid", url: "https://www.knmp.nl" },
+      { name: "IGJ - Veilig voorschrijven", url: "https://www.igj.nl" }
+    ]
+  },
+
+  "108.4": {
+    title: "Farmaceutische Ketenzorg",
+    summary: "Samenwerking in de farmaceutische keten en nieuwe zorgvormen",
+    content: `
+# Farmaceutische Ketenzorg
+
+## Farmaceutische Zorg
+
+### Van product naar zorg
+De apotheek ontwikkelt zich van distributeur naar zorgverlener met farmaceutische patiëntenzorg.
+
+### Farmaceutische zorgtaken
+
+| Taak | Beschrijving |
+|------|--------------|
+| Medicatiebeoordeling | Periodieke review medicatie |
+| Begeleidingsgesprekken | Bij start/wijziging medicatie |
+| Therapietrouw | Ondersteuning bij inname |
+| Klinische farmacie | Specialistische diensten |
+
+## Medicatiebeoordeling
+
+### Typen medicatiebeoordelingen
+
+| Type | Wanneer | Door wie |
+|------|---------|----------|
+| MBO | Bij polyfarmacie/signalen | Apotheker |
+| MBO in overleg | Met huisarts | Apotheker + huisarts |
+| Klinische farmaceuut | Klinische setting | Ziekenhuisapotheker |
+
+### Indicaties voor MBO
+- 5 of meer geneesmiddelen chronisch
+- Verminderde nierfunctie
+- Therapieontrouw signalen
+- Vallen/duizeligheid
+- Cognitieve achteruitgang
+
+### STRIP Methode
+
+| Stap | Actie |
+|------|-------|
+| 1 | Farmacotherapeutische anamnese |
+| 2 | Farmacotherapeutische analyse |
+| 3 | Overleg met arts en patiënt |
+| 4 | Farmacotherapeutisch behandelplan |
+| 5 | Follow-up en monitoring |
+
+## Ketenzorg Farmacie
+
+### Chronische aandoeningen
+
+| Aandoening | Farmaceutische rol |
+|------------|-------------------|
+| Diabetes | Inhalatie-instructie, glucose monitoring |
+| Astma/COPD | Inhalatietechniek |
+| Cardiovasculair | Therapietrouw, bloeddruk |
+| Pijnbestrijding | Opioïdenbeleid |
+
+### FTO (Farmacotherapeutisch Overleg)
+- Periodiek overleg huisarts-apotheker
+- Afstemming voorschrijfbeleid
+- Bespreken knelpunten
+- Implementatie richtlijnen
+
+## Thuiszorgfarmacie
+
+### Medicatiedistributie aan huis
+
+| Dienst | Doelgroep |
+|--------|-----------|
+| Baxter systeem | Chronische gebruikers |
+| Weekdoseersysteem | Hulpbehoevende ouderen |
+| Verpleeghuis baxteren | VVT instellingen |
+| Oncologie thuis | Thuisbehandeling chemo |
+
+### Hulpmiddelen
+- Inhalators
+- Injectiematerialen
+- Bloedglucosemeters
+- Stoma materialen
+
+## Digitale Apotheekzorg
+
+### Patiëntportalen apotheek
+- Herhaalrecepten aanvragen
+- Medicatieoverzicht inzien
+- Bezorgafspraken maken
+- Bijwerkingenregistratie
+
+### Apps en monitoring
+
+| Type | Functie |
+|------|---------|
+| Therapietrouw apps | Herinneringen, registratie |
+| Bijwerkingen melden | Lareb |
+| Digitale bijsluiter | Interactief, patiëntvriendelijk |
+| Zelfzorg advies | Klachten en medicatieadvies |
+
+## Geneesmiddelentekorten
+
+### Oorzaken
+- Productiestoringen
+- Grondstoftekorten
+- Economische beslissingen
+- Exportverboden
+
+### Informatiesystemen
+
+| Systeem | Functie |
+|--------|---------|
+| Farmanco | Melden en opvragen tekorten |
+| KNMP dashboard | Actuele tekorten |
+| CBG lijst | Officiële registratie |
+
+### Oplossingsrichtingen
+- Alternatieve producten
+- Magistrale bereiding
+- Import buitenland (artikel 3.17)
+- Rantsoenering
+
+## Innovaties
+
+### Gepersonaliseerde medicatie
+- 3D printen medicatie
+- Farmacogenetica
+- Therapeutic Drug Monitoring
+- Point-of-care diagnostiek
+
+### Slimme verpakkingen
+- Slimme pillendoos met sensoren
+- NFC/RFID tracking
+- Temperatuurloggers
+- Anti-vervalsingsmaatregelen
+
+## Kernbegrippen
+
+- **MBO**: Medicatiebeoordeling
+- **STRIP**: Systematische Tool voor medicatiebeoordeling
+- **FTO**: Farmacotherapeutisch Overleg
+- **Baxteren**: Medicatie in zakjes per innamemoment
+- **Farmanco**: Meldpunt geneesmiddelentekorten
+    `,
+    sources: [
+      { name: "KNMP - Farmaceutische zorg", url: "https://www.knmp.nl" },
+      { name: "NHG - FTO", url: "https://www.nhg.org" },
+      { name: "Zo werkt de zorg - Farmacie", url: "https://www.zowerktdezorg.nl" }
+    ]
   }
 }
 
