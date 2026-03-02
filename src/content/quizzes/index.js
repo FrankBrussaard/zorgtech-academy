@@ -2467,6 +2467,763 @@ export const quizzes = {
         explanation: "Regionale ziekenhuizen met bestaande M365 en Power BI profiteren het meest van unified Fabric platform."
       }
     ]
+  },
+
+  // ============================================
+  // TRACK 7: ZORGDOMEINEN DEEP DIVE
+  // ============================================
+
+  "7.1": {
+    moduleId: "7.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is de functie van een POH-Somatiek in de huisartsenpraktijk?",
+        options: [
+          { id: "a", text: "Spoedtriage aan de telefoon" },
+          { id: "b", text: "Chronische zorg bij diabetes, COPD en hart-vaatziekten" },
+          { id: "c", text: "Psychische klachten behandelen" },
+          { id: "d", text: "Administratie en recepten verwerken" }
+        ],
+        correct: "b",
+        explanation: "De POH-Somatiek is gespecialiseerd in chronische aandoeningen zoals diabetes mellitus, COPD en cardiovasculair risicomanagement."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Uit welke drie segmenten bestaat de bekostiging van huisartsenzorg?",
+        options: [
+          { id: "a", text: "DBC's, Add-ons, Consulten" },
+          { id: "b", text: "Inschrijftarieven, Verrichtingen, Ketenzorg" },
+          { id: "c", text: "Basis, Aanvullend, Specialistisch" },
+          { id: "d", text: "Premie, Eigen risico, Zorgtoeslag" }
+        ],
+        correct: "b",
+        explanation: "Huisartsen ontvangen inkomsten uit segment 1 (inschrijftarieven), segment 2 (verrichtingen/consulten) en segment 3 (ketenzorg en resultaatbeloning)."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Het NHG (Nederlands Huisartsen Genootschap) is de beroepsorganisatie voor huisartsen.",
+        correct: false,
+        explanation: "Het NHG ontwikkelt richtlijnen en standaarden. De LHV (Landelijke Huisartsen Vereniging) is de beroepsorganisatie."
+      }
+    ]
+  },
+
+  "7.2": {
+    moduleId: "7.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welke organisatie bepaalt of iemand toegang krijgt tot de Wlz (Wet langdurige zorg)?",
+        options: [
+          { id: "a", text: "De huisarts" },
+          { id: "b", text: "De zorgverzekeraar" },
+          { id: "c", text: "Het CIZ (Centrum Indicatiestelling Zorg)" },
+          { id: "d", text: "De gemeente" }
+        ],
+        correct: "c",
+        explanation: "Het CIZ stelt vast of iemand recht heeft op Wlz-zorg via een indicatiebesluit met zorgprofiel."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat betekent VPT in de context van de Wlz?",
+        options: [
+          { id: "a", text: "Verplichte Professionele Thuiszorg" },
+          { id: "b", text: "Volledig Pakket Thuis - instelling-equivalente zorg thuis" },
+          { id: "c", text: "Versneld Persoonsgebonden Tarief" },
+          { id: "d", text: "Verzekerde Particuliere Thuishulp" }
+        ],
+        correct: "b",
+        explanation: "VPT (Volledig Pakket Thuis) is een leveringsvorm waarbij de cliënt thuis dezelfde zorg ontvangt als in een instelling."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Wijkverpleging wordt bekostigd via de Wmo.",
+        correct: false,
+        explanation: "Wijkverpleging valt onder de Zorgverzekeringswet (Zvw), niet de Wmo. Huishoudelijke hulp valt wel onder de Wmo."
+      }
+    ]
+  },
+
+  "7.3": {
+    moduleId: "7.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het Zorgprestatiemodel (ZPM)?",
+        options: [
+          { id: "a", text: "Een kwaliteitskeurmerk voor GGZ-instellingen" },
+          { id: "b", text: "Het bekostigingsmodel voor GGZ sinds 2022, gebaseerd op consulten" },
+          { id: "c", text: "Een softwarepakket voor ROM-metingen" },
+          { id: "d", text: "Een wachtlijstsysteem voor GGZ" }
+        ],
+        correct: "b",
+        explanation: "Het ZPM verving per 2022 de DBC-GGZ. Bekostiging is nu gebaseerd op losse consulten per tijdseenheid en beroep."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat zijn de Treeknormen in de GGZ?",
+        options: [
+          { id: "a", text: "Kwaliteitsindicatoren voor behandeluitkomsten" },
+          { id: "b", text: "Maximale wachttijden (aanmelding tot intake, intake tot behandeling)" },
+          { id: "c", text: "Opleidingseisen voor GGZ-behandelaars" },
+          { id: "d", text: "Eisen voor ROM-aanlevering" }
+        ],
+        correct: "b",
+        explanation: "Treeknormen zijn maximale wachttijden: max 4 weken tot intake, max 10 weken van intake tot behandeling."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "POH-GGZ is een praktijkondersteuner die werkt in de huisartsenpraktijk voor psychische klachten.",
+        correct: true,
+        explanation: "De POH-GGZ ondersteunt de huisarts bij lichte tot matige psychische problematiek in de eerste lijn."
+      }
+    ]
+  },
+
+  "7.4": {
+    moduleId: "7.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het preferentiebeleid in de farmacie?",
+        options: [
+          { id: "a", text: "Patiënten mogen zelf hun apotheek kiezen" },
+          { id: "b", text: "Zorgverzekeraars bepalen welk merk generiek middel wordt vergoed" },
+          { id: "c", text: "Artsen bepalen de voorkeursmedicatie" },
+          { id: "d", text: "Apotheken bepalen de inkoopprijs" }
+        ],
+        correct: "b",
+        explanation: "Bij preferentiebeleid wijst de zorgverzekeraar een preferent merk aan bij generieke middelen. Andere merken worden vaak niet of deels vergoed."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke database is verplicht voor alle apotheekinformatiesystemen in Nederland?",
+        options: [
+          { id: "a", text: "SNOMED CT" },
+          { id: "b", text: "ICD-10" },
+          { id: "c", text: "G-Standaard van Z-Index" },
+          { id: "d", text: "LOINC" }
+        ],
+        correct: "c",
+        explanation: "De G-Standaard bevat alle in Nederland geregistreerde geneesmiddelen met interacties, contra-indicaties en doseringen."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "MDS (Medicijndistributiesysteem) is een systeem voor weekdozen bij patiënten met polyfarmacie.",
+        correct: true,
+        explanation: "MDS levert medicatie voorverpakt per toedienmoment (weekdoos/baxter) voor patiënten die moeite hebben met therapietrouw."
+      }
+    ]
+  },
+
+  "7.5": {
+    moduleId: "7.5",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Welke drie wetten vormen samen het 'sociaal domein' sinds 2015?",
+        options: [
+          { id: "a", text: "Zvw, Wlz, Wpg" },
+          { id: "b", text: "Wmo, Jeugdwet, Participatiewet" },
+          { id: "c", text: "WGBO, AVG, Wabvpz" },
+          { id: "d", text: "Wmo, Zvw, Wlz" }
+        ],
+        correct: "b",
+        explanation: "De drie decentralisaties van 2015 omvatten de Wmo 2015, Jeugdwet en Participatiewet, samen het sociaal domein."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is een 'keukentafelgesprek' in de context van de Wmo?",
+        options: [
+          { id: "a", text: "Een informeel overleg tussen zorgaanbieders" },
+          { id: "b", text: "Het intake-gesprek van de gemeente om de ondersteuningsbehoefte te bepalen" },
+          { id: "c", text: "Een verplichte bijeenkomst voor mantelzorgers" },
+          { id: "d", text: "Een gesprek over voeding en gezondheid" }
+        ],
+        correct: "b",
+        explanation: "Bij het keukentafelgesprek bespreekt de Wmo-consulent met de burger wat er aan de hand is en welke ondersteuning nodig is."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "De Jeugdwet regelt alle hulp aan kinderen en jongeren van 0 tot 18 jaar.",
+        correct: true,
+        explanation: "De Jeugdwet omvat jeugdhulp, jeugd-GGZ, jeugdzorgplus, pleegzorg en jeugdbescherming voor 0-18 jarigen."
+      }
+    ]
+  },
+
+  "7.6": {
+    moduleId: "7.6",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat betekent PGB in de gehandicaptenzorg?",
+        options: [
+          { id: "a", text: "Professionele Gehandicaptenzorg Basis" },
+          { id: "b", text: "Persoonsgebonden Budget - eigen regie over zorginkoop" },
+          { id: "c", text: "Permanente Geïntegreerde Begeleiding" },
+          { id: "d", text: "Particuliere Gezondheidsbudgetten" }
+        ],
+        correct: "b",
+        explanation: "Met een PGB ontvangt de cliënt budget om zelf zorg in te kopen. Dit geeft eigen regie en is populair in de gehandicaptenzorg."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke afkorting staat voor mensen met een verstandelijke beperking in zorgprofielen?",
+        options: [
+          { id: "a", text: "LG" },
+          { id: "b", text: "ZG" },
+          { id: "c", text: "VG" },
+          { id: "d", text: "VV" }
+        ],
+        correct: "c",
+        explanation: "VG staat voor Verstandelijk Gehandicapt. LG = Lichamelijk Gehandicapt, ZG = Zintuiglijk Gehandicapt, VV = Verpleging & Verzorging."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "De VGN is de branchevereniging voor gehandicaptenzorg in Nederland.",
+        correct: true,
+        explanation: "VGN (Vereniging Gehandicaptenzorg Nederland) is de branchevereniging die zorgaanbieders in de gehandicaptenzorg vertegenwoordigt."
+      }
+    ]
+  },
+
+  "7.7": {
+    moduleId: "7.7",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is de kerntaak van de GGD?",
+        options: [
+          { id: "a", text: "Curatieve zorg leveren aan patiënten" },
+          { id: "b", text: "Publieke gezondheidszorg: preventie, infectieziektebestrijding, JGZ" },
+          { id: "c", text: "Zorgverzekeringen verkopen" },
+          { id: "d", text: "Ziekenhuizen inspecteren" }
+        ],
+        correct: "b",
+        explanation: "De GGD voert publieke gezondheidstaken uit zoals infectieziektebestrijding, jeugdgezondheidszorg en gezondheidsbevordering."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke wet regelt de meldingsplicht voor infectieziekten?",
+        options: [
+          { id: "a", text: "Zorgverzekeringswet (Zvw)" },
+          { id: "b", text: "Wet publieke gezondheid (Wpg)" },
+          { id: "c", text: "AVG" },
+          { id: "d", text: "Wet BIG" }
+        ],
+        correct: "b",
+        explanation: "De Wet publieke gezondheid (Wpg) regelt onder andere de meldingsplicht voor infectieziekten in groepen A, B en C."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Het Rijksvaccinatieprogramma (RVP) wordt gecoördineerd door het RIVM.",
+        correct: true,
+        explanation: "Het RIVM coördineert het Rijksvaccinatieprogramma waarbij kinderen worden gevaccineerd volgens een vast schema."
+      }
+    ]
+  },
+
+  // ============================================
+  // TRACK 106: HUISARTSENZORG IT & DIGITALISERING
+  // ============================================
+
+  "106.1": {
+    moduleId: "106.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is de SOEP-systematiek in het HIS?",
+        options: [
+          { id: "a", text: "Een declaratiemethode" },
+          { id: "b", text: "Subjectief-Objectief-Evaluatie-Plan registratie" },
+          { id: "c", text: "Een verwijssysteem" },
+          { id: "d", text: "Een agendamodule" }
+        ],
+        correct: "b",
+        explanation: "SOEP is de registratiesystematiek waarbij klacht (S), bevindingen (O), diagnose (E) en behandelplan (P) worden vastgelegd."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Waarvoor wordt ZorgDomein primair gebruikt in de huisartsenpraktijk?",
+        options: [
+          { id: "a", text: "Declaraties naar verzekeraars" },
+          { id: "b", text: "Elektronische verwijzingen naar specialisten en diagnostiek" },
+          { id: "c", text: "Medicatiecontrole" },
+          { id: "d", text: "Personeelsplanning" }
+        ],
+        correct: "b",
+        explanation: "ZorgDomein is het platform voor elektronische verwijzingen, orderberichten voor lab/röntgen en terugrapportages."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "ICPC-2 is de verplichte codering voor diagnoses in de huisartsenzorg.",
+        correct: true,
+        explanation: "ICPC-2 (International Classification of Primary Care) met ~700 codes is verplicht voor huisartsenregistratie."
+      }
+    ]
+  },
+
+  "106.2": {
+    moduleId: "106.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is een zorggroep in de context van ketenzorg?",
+        options: [
+          { id: "a", text: "Een groep patiënten met dezelfde aandoening" },
+          { id: "b", text: "Een organisatie die ketenzorg coördineert en integraal bekostigd wordt" },
+          { id: "c", text: "Een verzekeraarsconcern" },
+          { id: "d", text: "Een groepspraktijk van huisartsen" }
+        ],
+        correct: "b",
+        explanation: "Een zorggroep contracteert met verzekeraars voor integrale bekostiging en coördineert de ketenzorg voor DM2, COPD en CVRM."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is de functie van een KIS (Ketenzorg Informatiesysteem)?",
+        options: [
+          { id: "a", text: "Facturatie van consulten" },
+          { id: "b", text: "Protocolgestuurde registratie en benchmarking van chronische zorg" },
+          { id: "c", text: "Agenda-beheer" },
+          { id: "d", text: "Röntgenbeelden bekijken" }
+        ],
+        correct: "b",
+        explanation: "Het KIS ondersteunt protocolgestuurde registratie, geeft alerts bij afwijkende waarden en maakt benchmarking mogelijk."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Bij integrale bekostiging ontvangt de zorggroep één tarief voor de hele ketenzorg.",
+        correct: true,
+        explanation: "Bij integrale/bundled payment ontvangt de zorggroep één tarief en coördineert zelf de inzet van huisarts, POH, diëtist etc."
+      }
+    ]
+  },
+
+  "106.3": {
+    moduleId: "106.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is NTS in de context van de huisartsenpost?",
+        options: [
+          { id: "a", text: "Nationaal Telefonisch Systeem" },
+          { id: "b", text: "Nederlands Triage Systeem - bepaalt urgentie van spoedvragen" },
+          { id: "c", text: "Nieuwe Thuiszorg Standaard" },
+          { id: "d", text: "Nacht- en Weekend Telefoonservice" }
+        ],
+        correct: "b",
+        explanation: "Het NTS is het triagesysteem waarmee de urgentie (U0-U5) van spoedvragen wordt bepaald op de huisartsenpost."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat betekent urgentie U2 in het NTS?",
+        options: [
+          { id: "a", text: "Reanimatie, direct ambulance" },
+          { id: "b", text: "Levensbedreigend, binnen 15 minuten arts" },
+          { id: "c", text: "Spoed, binnen 1 uur gezien" },
+          { id: "d", text: "Telefonisch advies volstaat" }
+        ],
+        correct: "c",
+        explanation: "U2 = Spoed betekent dat de patiënt binnen 1 uur moet worden gezien. U1 = Levensbedreigend, U0 = Reanimatie."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Het HAD (Huisarts Actueel Dossier) is beschikbaar via het LSP voor huisartsenposten.",
+        correct: true,
+        explanation: "Via het LSP kan de HAP het Huisarts Actueel Dossier opvragen met actuele medicatie, allergieën en relevante episodes."
+      }
+    ]
+  },
+
+  "106.4": {
+    moduleId: "106.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het verschil tussen een e-consult en een videoconsult?",
+        options: [
+          { id: "a", text: "E-consult is gratis, videoconsult is betaald" },
+          { id: "b", text: "E-consult is asynchroon (tekst), videoconsult is synchroon (beeld)" },
+          { id: "c", text: "E-consult is voor specialisten, videoconsult voor huisartsen" },
+          { id: "d", text: "Er is geen verschil" }
+        ],
+        correct: "b",
+        explanation: "Een e-consult is asynchroon (patiënt stelt vraag, arts antwoordt later). Een videoconsult is synchroon real-time contact."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is MedMij?",
+        options: [
+          { id: "a", text: "Een medicatie-app" },
+          { id: "b", text: "Afsprakenstelsel voor veilige uitwisseling van gezondheidsdata met PGO's" },
+          { id: "c", text: "Een videoconferencing tool" },
+          { id: "d", text: "Een zorgverzekeraar" }
+        ],
+        correct: "b",
+        explanation: "MedMij is het afsprakenstelsel waarmee patiënten via een PGO (Persoonlijke Gezondheidsomgeving) hun data kunnen ophalen."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Thuismonitoring van bloeddruk kan automatisch worden gekoppeld aan het HIS via platforms als Luscii.",
+        correct: true,
+        explanation: "Platforms zoals Luscii ontvangen thuismetingen en kunnen alerts genereren en data terugkoppelen naar het HIS."
+      }
+    ]
+  },
+
+  // ============================================
+  // TRACK 107: GGZ ZORGDATA & SYSTEMEN
+  // ============================================
+
+  "107.1": {
+    moduleId: "107.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is ROM in de GGZ?",
+        options: [
+          { id: "a", text: "Registratie Overheid Medicatie" },
+          { id: "b", text: "Routine Outcome Monitoring - meten van behandeleffect" },
+          { id: "c", text: "Regionaal Overleg Managers" },
+          { id: "d", text: "Rapportage Online Module" }
+        ],
+        correct: "b",
+        explanation: "ROM (Routine Outcome Monitoring) meet via vragenlijsten (zoals OQ-45) het effect van behandeling bij intake, tussentijds en afsluiting."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke wet regelt de verplichte GGZ?",
+        options: [
+          { id: "a", text: "BOPZ" },
+          { id: "b", text: "Wvggz (Wet verplichte geestelijke gezondheidszorg)" },
+          { id: "c", text: "WGBO" },
+          { id: "d", text: "Jeugdwet" }
+        ],
+        correct: "b",
+        explanation: "De Wvggz verving per 2020 de BOPZ en regelt verplichte zorg in de GGZ, inclusief registratie-eisen voor het EPD."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "DSM-5 is het classificatiesysteem voor psychiatrische stoornissen.",
+        correct: true,
+        explanation: "De DSM-5 (Diagnostic and Statistical Manual) is het internationale classificatiesysteem voor psychiatrische diagnoses."
+      }
+    ]
+  },
+
+  "107.2": {
+    moduleId: "107.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het belangrijkste verschil tussen DBC-GGZ en het Zorgprestatiemodel?",
+        options: [
+          { id: "a", text: "DBC's zijn goedkoper" },
+          { id: "b", text: "ZPM registreert per consult in plaats van per zorgtraject" },
+          { id: "c", text: "DBC's zijn voor de eerste lijn" },
+          { id: "d", text: "ZPM is alleen voor klinische zorg" }
+        ],
+        correct: "b",
+        explanation: "Het ZPM registreert per consult (duur, beroep, setting) terwijl DBC-GGZ een heel zorgtraject achteraf groepeerde."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat bepaalt het tarief van een consult in het ZPM?",
+        options: [
+          { id: "a", text: "Alleen de diagnose" },
+          { id: "b", text: "Duur, beroep van de behandelaar en setting (ambulant/klinisch)" },
+          { id: "c", text: "Alleen het beroep" },
+          { id: "d", text: "Het aantal sessies" }
+        ],
+        correct: "b",
+        explanation: "Het ZPM-tarief wordt bepaald door consultduur (15/30/45/60 min), beroep (psychiater, psycholoog, etc.) en setting."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Bij het ZPM moet indirecte tijd (verslaglegging, overleg) apart worden geregistreerd.",
+        correct: true,
+        explanation: "Het ZPM onderscheidt directe tijd (contact met patiënt) en indirecte tijd, beide moeten worden geregistreerd."
+      }
+    ]
+  },
+
+  "107.3": {
+    moduleId: "107.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is Koppeltaal?",
+        options: [
+          { id: "a", text: "Een taalcursus voor zorgpersoneel" },
+          { id: "b", text: "Integratie-standaard om eHealth-modules te koppelen aan GGZ-EPD's" },
+          { id: "c", text: "Een communicatie-app" },
+          { id: "d", text: "Een ROM-vragenlijst" }
+        ],
+        correct: "b",
+        explanation: "Koppeltaal is de standaard waarmee eHealth-modules (behandelmodules, vragenlijsten) worden gekoppeld aan het EPD in de GGZ."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Op welke standaard is Koppeltaal 2.0 gebaseerd?",
+        options: [
+          { id: "a", text: "HL7v2" },
+          { id: "b", text: "HL7 CDA" },
+          { id: "c", text: "HL7 FHIR" },
+          { id: "d", text: "EDIFACT" }
+        ],
+        correct: "c",
+        explanation: "Koppeltaal 2.0 is gebaseerd op HL7 FHIR R4 met resources als Task, ActivityDefinition en Subscription."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Via Koppeltaal kunnen ROM-resultaten automatisch worden teruggestuurd naar het EPD.",
+        correct: true,
+        explanation: "Koppeltaal faciliteert de uitwisseling van ROM-resultaten (QuestionnaireResponse) van eHealth-modules naar het EPD."
+      }
+    ]
+  },
+
+  "107.4": {
+    moduleId: "107.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is iJw?",
+        options: [
+          { id: "a", text: "Een app voor jongeren" },
+          { id: "b", text: "De berichtenstandaard voor Jeugdwet-communicatie tussen gemeente en aanbieder" },
+          { id: "c", text: "Een indicatiesysteem" },
+          { id: "d", text: "Een kwaliteitskeurmerk" }
+        ],
+        correct: "b",
+        explanation: "iJw is de standaard voor berichtenverkeer (toewijzing, start/stop zorg, declaraties) tussen gemeenten en jeugdhulpaanbieders."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is het GGK (Gemeentelijk Gegevensknooppunt)?",
+        options: [
+          { id: "a", text: "Een EPD voor gemeenten" },
+          { id: "b", text: "Centraal routeringspunt voor iWmo/iJw berichten" },
+          { id: "c", text: "Een database van inwoners" },
+          { id: "d", text: "Een declaratiesysteem" }
+        ],
+        correct: "b",
+        explanation: "Het GGK routeert iWmo- en iJw-berichten tussen zorgaanbieders en de juiste gemeente."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Elke gemeente in Nederland kan eigen productcodes en tarieven hanteren voor jeugdhulp.",
+        correct: true,
+        explanation: "Dit is een grote uitdaging: met 342 gemeenten zijn er veel verschillende producten, tarieven en administratieve eisen."
+      }
+    ]
+  },
+
+  // ============================================
+  // TRACK 108: FARMACIE & MEDICATIEKETEN
+  // ============================================
+
+  "108.1": {
+    moduleId: "108.1",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is de G-Standaard?",
+        options: [
+          { id: "a", text: "Een kwaliteitskeurmerk voor apotheken" },
+          { id: "b", text: "De database met alle in NL geregistreerde geneesmiddelen, interacties en doseringen" },
+          { id: "c", text: "Een groothandelsnetwerk" },
+          { id: "d", text: "Een declaratiestandaard" }
+        ],
+        correct: "b",
+        explanation: "De G-Standaard van Z-Index bevat alle geneesmiddelen, interacties, contra-indicaties en doseringen en is verplicht voor elk AIS."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke controle voert het AIS NIET standaard uit bij receptverwerking?",
+        options: [
+          { id: "a", text: "Interactiecontrole" },
+          { id: "b", text: "Contra-indicatiecontrole" },
+          { id: "c", text: "DNA-analyse" },
+          { id: "d", text: "Allergiecontrole" }
+        ],
+        correct: "c",
+        explanation: "Standaard medicatiebewaking omvat interactie-, contra-indicatie-, allergie-, dubbelmedicatie- en doseringscontrole. DNA-analyse is geen standaard."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "MDS (Medicijndistributiesysteem) is bedoeld voor patiënten met polyfarmacie die moeite hebben met therapietrouw.",
+        correct: true,
+        explanation: "MDS/weekdozen worden ingezet bij patiënten die meerdere medicijnen gebruiken en hulp nodig hebben bij het op tijd innemen."
+      }
+    ]
+  },
+
+  "108.2": {
+    moduleId: "108.2",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is het Actueel Medicatiedossier (AMD)?",
+        options: [
+          { id: "a", text: "Een papieren medicijnlijst" },
+          { id: "b", text: "Overzicht van actuele medicatie, allergieën en contra-indicaties via het LSP" },
+          { id: "c", text: "Een voorschrijfsysteem" },
+          { id: "d", text: "Een apotheekregister" }
+        ],
+        correct: "b",
+        explanation: "Het AMD bevat actuele medicatie, allergieën en contra-indicaties en is opvraagbaar via het LSP door bevoegde zorgverleners."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wanneer is medicatieverificatie het meest cruciaal?",
+        options: [
+          { id: "a", text: "Bij een griepje" },
+          { id: "b", text: "Bij transities: opname, ontslag, overdracht naar verpleeghuis" },
+          { id: "c", text: "Bij een routine-controle" },
+          { id: "d", text: "Bij het vernieuwen van een recept" }
+        ],
+        correct: "b",
+        explanation: "Bij zorgtransities (opname, ontslag, overdracht) is het risico op medicatiefouten het grootst en is verificatie essentieel."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "Voor toegang tot het medicatiedossier via het LSP is opt-in toestemming van de patiënt vereist.",
+        correct: true,
+        explanation: "Patiënten moeten expliciet toestemming geven voordat hun medicatiegegevens via het LSP kunnen worden gedeeld."
+      }
+    ]
+  },
+
+  "108.3": {
+    moduleId: "108.3",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is MP9?",
+        options: [
+          { id: "a", text: "Een medicatierobot" },
+          { id: "b", text: "De FHIR-gebaseerde standaard voor uitwisseling van medicatiegegevens" },
+          { id: "c", text: "Een apotheekketen" },
+          { id: "d", text: "Een medicatiedoosje" }
+        ],
+        correct: "b",
+        explanation: "MP9 (Medicatieproces 9) is de Nictiz FHIR-standaard voor medicatiegegevensuitwisseling, opvolger van MP6/7 (HL7v3)."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Welke FHIR resource wordt gebruikt voor een voorschrift in MP9?",
+        options: [
+          { id: "a", text: "Observation" },
+          { id: "b", text: "MedicationRequest" },
+          { id: "c", text: "Encounter" },
+          { id: "d", text: "Procedure" }
+        ],
+        correct: "b",
+        explanation: "MedicationRequest is de FHIR resource voor een medicatieafspraak/voorschrift in het MP9 informatiemodel."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "MP9 maakt het mogelijk om per bouwsteen (voorschrift, verstrekking, gebruik) gegevens uit te wisselen.",
+        correct: true,
+        explanation: "MP9 heeft granulaire bouwstenen waardoor specifieke onderdelen (MA, VV, MVE, MGB) apart kunnen worden opgevraagd of gemuteerd."
+      }
+    ]
+  },
+
+  "108.4": {
+    moduleId: "108.4",
+    questions: [
+      {
+        id: "q1",
+        type: "multiple-choice",
+        question: "Wat is CPOE?",
+        options: [
+          { id: "a", text: "Centraal Punt voor Opname Evaluatie" },
+          { id: "b", text: "Computerized Physician Order Entry - elektronisch voorschrijven" },
+          { id: "c", text: "Clinical Pharmacy Online Education" },
+          { id: "d", text: "Certified Pharmacist Order Execution" }
+        ],
+        correct: "b",
+        explanation: "CPOE (Computerized Physician Order Entry) is elektronisch voorschrijven door artsen in het ziekenhuis met ingebouwde medicatiebewaking."
+      },
+      {
+        id: "q2",
+        type: "multiple-choice",
+        question: "Wat is een kenmerk van unit-dose distributie?",
+        options: [
+          { id: "a", text: "Medicatie wordt per week geleverd" },
+          { id: "b", text: "Medicatie wordt per toedienmoment patiëntgebonden verpakt" },
+          { id: "c", text: "Medicatie wordt in bulk geleverd aan de afdeling" },
+          { id: "d", text: "Medicatie wordt door de patiënt zelf beheerd" }
+        ],
+        correct: "b",
+        explanation: "Bij unit-dose distributie wordt medicatie per patiënt per toedienmoment verpakt, vaak door een robot, voor maximale veiligheid."
+      },
+      {
+        id: "q3",
+        type: "true-false",
+        question: "TDM (Therapeutic Drug Monitoring) wordt toegepast bij geneesmiddelen met een smalle therapeutische breedte.",
+        correct: true,
+        explanation: "Bij middelen als vancomycine, aminoglycosiden en immunosuppressiva wordt de bloedconcentratie gemeten om de dosis te optimaliseren."
+      }
+    ]
   }
 }
 

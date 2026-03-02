@@ -29,6 +29,12 @@ Als zorgtechnologie-adviseur moet je begrijpen hoe geldstromen lopen en wie welk
 - **"De overheid betaalt de zorg"** - Nee, zorgverzekeraars betalen de curatieve zorg, gefinancierd door premies.
 - **"Ziekenhuizen zijn van de overheid"** - De meeste zijn private stichtingen zonder winstoogmerk.
 
+## Meer weten?
+
+Voor uitgebreide visualisaties en verdieping over het zorgstelsel is het platform "Zo werkt de zorg" een uitstekende bron. De app en boeken geven helder inzicht in alle aspecten van de Nederlandse zorg.
+
+Zie ook **Track 7: Zorgdomeinen Deep Dive** voor verdieping per zorgsector.
+
 ## Kernbegrippen
 
 - **Zvw**: Zorgverzekeringswet - de verplichte basisverzekering
@@ -37,7 +43,8 @@ Als zorgtechnologie-adviseur moet je begrijpen hoe geldstromen lopen en wie welk
     `,
     sources: [
       { name: "Rijksoverheid - Zorgstelsel", url: "https://www.rijksoverheid.nl/onderwerpen/zorgverzekering" },
-      { name: "Zorginstituut Nederland", url: "https://www.zorginstituutnederland.nl" }
+      { name: "Zorginstituut Nederland", url: "https://www.zorginstituutnederland.nl" },
+      { name: "Zo werkt de zorg", url: "https://www.zowerktdezorg.nl" }
     ]
   },
 
@@ -9845,6 +9852,487 @@ Phase 4: Scale (Year 2+)
     sources: [
       { name: "Gartner Healthcare Analytics", url: "https://www.gartner.com/en/industries/healthcare-providers" },
       { name: "KLAS Research", url: "https://klasresearch.com" }
+    ]
+  },
+
+  // ============================================
+  // TRACK 7: ZORGDOMEINEN DEEP DIVE
+  // ============================================
+
+  "7.1": {
+    title: "Huisartsenzorg: Organisatie & Bekostiging",
+    summary: "De huisarts is de spil van de Nederlandse eerstelijnszorg. Deze module behandelt praktijkvormen, ondersteuners, huisartsenposten en het bekostigingsmodel.",
+    content: `
+## In het kort
+
+De huisartsenzorg is de basis van het Nederlandse zorgstelsel. Ongeveer 13.000 huisartsen zijn de 'poortwachter' en eerste aanspreekpunt voor patiënten. Het bekostigingsmodel combineert inschrijftarieven met verrichtingen en ketenzorg.
+
+## Organisatie van de huisartsenpraktijk
+
+### Praktijkvormen
+
+**Overzicht praktijkvormen in Nederland:**
+
+- **Solopraktijk** (afnemend) - Eén huisarts, eigen praktijk
+- **Duopraktijk** - Twee huisartsen, gedeelde praktijk
+- **Groepspraktijk** - 3+ huisartsen, vaak HOED
+- **Gezondheidscentrum** - Multidisciplinair: huisarts, fysiotherapie, apotheek
+- **HOED** (Huisartsen Onder Eén Dak) - Gedeelde locatie, onafhankelijke praktijken
+
+### Praktijkondersteuners (POH)
+
+De huisarts wordt ondersteund door:
+
+| Functie | Takenpakket |
+|---------|-------------|
+| **POH-Somatiek** | Chronische zorg: diabetes, COPD, hart-vaatziekten |
+| **POH-GGZ** | Psychische klachten, basis-GGZ in de praktijk |
+| **POH-Ouderen** | Kwetsbare ouderen, polyfarmacie |
+| **Doktersassistent** | Triage, administratie, eenvoudige verrichtingen |
+| **Verpleegkundig specialist** | Zelfstandige behandeling binnen protocol |
+
+## Huisartsenposten (HAP)
+
+Voor spoedzorg buiten kantoortijd (ANW: Avond, Nacht, Weekend):
+
+- Ongeveer 120 HAP's in Nederland
+- Regionale samenwerking huisartsen
+- Triage via NTS (Nederlands Triage Systeem)
+- Urgentiecategorieën: U0-U5
+- Integratie met SEH (spoedeisende hulp)
+
+## Bekostigingsmodel
+
+De huisarts ontvangt inkomsten uit drie segmenten:
+
+### Segment 1: Inschrijftarieven
+- Vast bedrag per ingeschreven patiënt per kwartaal
+- Gedifferentieerd naar leeftijd en achterstandswijk
+- Ongeveer 20-50 euro per patiënt per kwartaal
+
+### Segment 2: Verrichtingen (consulten)
+- Consulttarief kort/lang (10-35 euro)
+- Visites (huisbezoek)
+- Specifieke verrichtingen (bijv. spirometrie)
+
+### Segment 3: Ketenzorg & resultaatbeloning
+- Integrale bekostiging chronische zorg (DM2, COPD, VRM)
+- Bundled payment via zorggroepen
+- Prestatie-indicatoren
+
+## Relevante organisaties
+
+- **LHV**: Landelijke Huisartsen Vereniging (beroepsorganisatie)
+- **NHG**: Nederlands Huisartsen Genootschap (richtlijnen, standaarden)
+- **InEen**: Vereniging van zorggroepen en huisartsenposten
+- **VPH**: Vereniging Praktijkhoudende Huisartsen
+
+## Kernbegrippen
+
+- **POH**: Praktijkondersteuner Huisarts
+- **HAP**: Huisartsenpost
+- **NTS**: Nederlands Triage Systeem
+- **Zorggroep**: Organisatie voor ketenzorg
+- **HOED**: Huisartsen Onder Eén Dak
+    `,
+    sources: [
+      { name: "LHV - Landelijke Huisartsen Vereniging", url: "https://www.lhv.nl" },
+      { name: "NHG - Nederlands Huisartsen Genootschap", url: "https://www.nhg.org" },
+      { name: "Zo werkt de zorg - Huisartsenzorg", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "7.2": {
+    title: "Ouderenzorg & VVT: Van Thuiszorg tot Verpleeghuis",
+    summary: "De ouderenzorg omvat een breed spectrum van thuiszorg tot verpleeghuis. Deze module behandelt de organisatie, bekostiging en belangrijke spelers in de VVT-sector.",
+    content: `
+## In het kort
+
+De Verpleging, Verzorging en Thuiszorg (VVT) sector verzorgt miljoenen Nederlanders. Van lichte hulp thuis tot intensieve verpleeghuiszorg - deze module legt uit hoe de sector is georganiseerd en gefinancierd.
+
+## Het spectrum van ouderenzorg
+
+**Van licht naar zwaar:**
+
+| Setting | Financiering | Voorbeeld |
+|---------|--------------|-----------|
+| Hulp thuis | Wmo (gemeente) | Huishoudelijke hulp |
+| Wijkverpleging | Zvw (verzekeraar) | Verpleging aan huis |
+| Verzorgingshuis | Wlz (zorgkantoor) | Wonen met zorg |
+| Verpleeghuis | Wlz (zorgkantoor) | 24-uurs verpleging |
+
+## CIZ-indicatie en zorgprofielen
+
+Het Centrum Indicatiestelling Zorg (CIZ) bepaalt Wlz-toegang:
+
+**Zorgprofielen VV (Verpleging & Verzorging):**
+
+- VV1-VV4: Beschut wonen met toenemende begeleiding/verzorging
+- VV5: Beschermd wonen met intensieve dementiezorg
+- VV6-VV8: Beschermd wonen met intensieve verpleging
+- VV9-VV10: Herstelgerichte behandeling en palliatieve zorg
+
+## Leveringsvormen Wlz
+
+| Leveringsvorm | Omschrijving |
+|--------------|--------------|
+| **ZZP** | Verblijf in instelling, all-in tarief |
+| **VPT** | Volledig Pakket Thuis - zorg als in instelling, maar thuis |
+| **MPT** | Modulair Pakket Thuis - losse modules thuis |
+| **PGB** | Persoonsgebonden budget, eigen regie |
+
+## Belangrijke spelers
+
+### Grote VVT-organisaties
+Stichting Humanitas, Cordaan, Amstelring, Vivium Zorggroep, Surplus Zorg
+
+### Brancheorganisaties
+- **ActiZ**: Branchevereniging zorgondernemers (werkgevers)
+- **V&VN**: Verpleegkundigen & Verzorgenden Nederland
+- **LOC**: Belangenorganisatie cliënten
+
+## Uitdagingen in de sector
+
+- Personeelstekort (vacaturegraad meer dan 10%)
+- Vergrijzing (dubbele vergrijzing)
+- Kwaliteitstoezicht (IGJ)
+- Wachtlijsten Wlz
+- Digitalisering en domotica
+
+## Kernbegrippen
+
+- **VVT**: Verpleging, Verzorging en Thuiszorg
+- **CIZ**: Centrum Indicatiestelling Zorg
+- **Zorgkantoor**: Uitvoerder Wlz per regio
+- **ZZP**: Zorgzwaartepakket
+- **VPT/MPT**: Volledig/Modulair Pakket Thuis
+    `,
+    sources: [
+      { name: "ActiZ - Branchevereniging", url: "https://www.actiz.nl" },
+      { name: "CIZ - Centrum Indicatiestelling Zorg", url: "https://www.ciz.nl" },
+      { name: "Zo werkt de zorg - Ouderenzorg", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "7.3": {
+    title: "GGZ: Organisatie, Bekostiging & Zorgpaden",
+    summary: "De geestelijke gezondheidszorg kent een complexe structuur met basis-GGZ, specialistische GGZ en forensische zorg. Deze module behandelt de organisatie en het zorgprestatiemodel.",
+    content: `
+## In het kort
+
+De GGZ biedt hulp bij psychische klachten en stoornissen. Van gesprekken bij de huisarts tot langdurige klinische behandeling - de sector kent vele lagen en een nieuw bekostigingsmodel: het Zorgprestatiemodel (ZPM).
+
+## Structuur van de GGZ
+
+**Echelonering van licht naar zwaar:**
+
+| Niveau | Doelgroep | Aanbieder |
+|--------|-----------|-----------|
+| POH-GGZ | Lichte klachten | Huisartsenpraktijk |
+| Basis-GGZ | Licht tot matig | Basis-GGZ praktijken |
+| Specialistische GGZ | Matig tot ernstig | GGZ-instellingen |
+| Hoogspecialistisch | Zeer complex | Academische centra |
+
+## Het Zorgprestatiemodel (ZPM)
+
+Sinds 2022 het nieuwe bekostigingsmodel:
+
+### Prestaties
+- **Consulten**: Per 15/30/45/60 minuten, per beroep
+- **Verblijfsprestaties**: Verblijf A t/m G (licht tot intensief)
+- **Overige prestaties**: Acute GGZ, ECT, forensisch toezicht
+
+### Voordelen ZPM
+- Meer transparantie over geleverde zorg
+- Betere vergelijkbaarheid tussen aanbieders
+- Flexibeler dan DBC-traject
+
+## Verwijsroute en wachttijden
+
+**Treeknormen wachttijden:**
+- Aanmelding tot intake: max 4 weken
+- Intake tot behandeling: max 10 weken
+
+## Belangrijke GGZ-instellingen
+
+Parnassia Groep (grootste), GGZ inGeest, GGNet, Lentis, Pro Persona
+
+## Branche en toezicht
+
+- **GGZ Nederland**: Branchevereniging
+- **IGJ**: Inspectie voor kwaliteit
+- **NZa**: Bekostiging en marktwerking
+- **Zorginstituut**: Pakketbeheer
+
+## Kernbegrippen
+
+- **ZPM**: Zorgprestatiemodel
+- **SGGZ**: Specialistische GGZ
+- **POH-GGZ**: Praktijkondersteuner GGZ bij huisarts
+- **Treeknormen**: Maximale wachttijden
+- **ROM**: Routine Outcome Monitoring
+    `,
+    sources: [
+      { name: "GGZ Nederland", url: "https://www.ggznederland.nl" },
+      { name: "NZa - Zorgprestatiemodel", url: "https://www.nza.nl" },
+      { name: "Zo werkt de zorg - GGZ", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "7.4": {
+    title: "Geneesmiddelenzorg & Farmacie",
+    summary: "De farmaceutische zorg omvat de verstrekking, bewaking en advisering rond geneesmiddelen. Deze module behandelt de apotheeksector, medicatiebewaking en preferentiebeleid.",
+    content: `
+## In het kort
+
+De farmacie speelt een cruciale rol in de zorgketen. Apotheken verstrekken jaarlijks meer dan 200 miljoen recepten en zorgen voor medicatiebewaking. Het preferentiebeleid bepaalt welke merken worden vergoed.
+
+## De apotheeksector
+
+**Typen apotheken:**
+- **Openbare apotheek** - Zelfstandig of in keten
+- **Ziekenhuisapotheek** - Klinische farmacie
+- **Poliklinische apotheek** - Dure geneesmiddelen
+- **Online apotheek** - Bezorging aan huis
+
+### Grote apotheekketens
+BENU, Alphega, Mediq, Service Apotheek
+
+## Taken van de apotheek
+
+| Taak | Omschrijving |
+|------|--------------|
+| **Ter hand stellen** | Verstrekken van geneesmiddelen |
+| **Medicatiebewaking** | Controle op interacties, contra-indicaties |
+| **Voorlichting** | Uitleg over gebruik en bijwerkingen |
+| **Magistrale bereiding** | Op maat gemaakte medicatie |
+| **Farmaceutische zorg** | Begeleiding bij therapietrouw |
+
+## Medicatiebewaking
+
+**Controles bij verstrekking:**
+- Dubbelcheck (juiste patiënt, middel, dosis)
+- Interactiecontrole (wisselwerking met andere medicatie)
+- Contra-indicatiecheck (past bij ziektebeeld)
+- Allergiecheck (bekende overgevoeligheden)
+- Doseercheck (juiste dosering voor leeftijd/gewicht)
+
+## Preferentiebeleid
+
+Zorgverzekeraars bepalen welk merk bij generieke middelen wordt vergoed:
+- Arts schrijft werkzame stof voor
+- Apotheek levert preferent merk van verzekeraar
+- Lagere kosten voor verzekeraars
+- Soms wisseling van merken voor patiënt
+
+## Relevante organisaties
+
+- **KNMP**: Koninklijke Nederlandse Maatschappij ter bevordering der Pharmacie
+- **NVZA**: Nederlandse Vereniging van Ziekenhuisapothekers
+- **CBG**: College ter Beoordeling van Geneesmiddelen
+- **Lareb**: Bijwerkingencentrum
+
+## Kernbegrippen
+
+- **Preferentiebeleid**: Verzekeraar bepaalt vergoed merk
+- **Interactie**: Ongewenste wisselwerking tussen middelen
+- **Generiek**: Merkloze variant na patentverloop
+- **TDM**: Therapeutic Drug Monitoring
+- **AIS**: Apotheekinformatiesysteem
+    `,
+    sources: [
+      { name: "KNMP", url: "https://www.knmp.nl" },
+      { name: "Zorginstituut Nederland", url: "https://www.zorginstituutnederland.nl" },
+      { name: "Zo werkt de zorg - Geneesmiddelenzorg", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "7.5": {
+    title: "Sociaal Domein & Wmo",
+    summary: "Het sociaal domein omvat gemeentelijke taken op het gebied van maatschappelijke ondersteuning, jeugdzorg en participatie.",
+    content: `
+## In het kort
+
+Sinds de decentralisaties van 2015 zijn gemeenten verantwoordelijk voor grote delen van de zorg en ondersteuning. De Wmo, Jeugdwet en Participatiewet vormen samen het 'sociaal domein'.
+
+## De drie decentralisaties
+
+| Wet | Domein | Voorbeelden |
+|-----|--------|-------------|
+| **Wmo 2015** | Maatschappelijke ondersteuning | Begeleiding, beschermd wonen |
+| **Jeugdwet** | Jeugdhulp | Jeugd-GGZ, jeugdbescherming |
+| **Participatiewet** | Werk en inkomen | Re-integratie, bijstand |
+
+## Wmo-voorzieningen
+
+| Categorie | Voorbeelden |
+|-----------|-------------|
+| **Huishoudelijke hulp** | Schoonmaken, boodschappen |
+| **Begeleiding** | Dagbesteding, individuele begeleiding |
+| **Hulpmiddelen** | Rolstoel, scootmobiel |
+| **Woningaanpassingen** | Traplift, douchezit |
+| **Beschermd wonen** | Wonen met begeleiding |
+
+## Het keukentafelgesprek
+
+**Uitgangspunten:**
+1. Wat is er aan de hand?
+2. Wat wilt u bereiken?
+3. Wat kunt u zelf?
+4. Wat kan uw netwerk?
+5. Wat heeft u nodig van de gemeente?
+
+## Uitdagingen
+
+- **Tekorten**: Gemeenten kampen met tekorten, vooral Jeugdwet
+- **Wachtlijsten**: Met name specialistische jeugdhulp
+- **Administratie**: Elke gemeente eigen beleid
+- **Schotten**: Afstemming Wmo/Zvw/Wlz complex
+
+## iWmo en iJw standaarden
+
+Voor berichtenverkeer gemeente-aanbieder:
+- **iWmo**: Standaard Wmo-berichten
+- **iJw**: Standaard Jeugdwet-berichten
+- **GGK**: Gemeentelijk Gegevensknooppunt
+
+## Kernbegrippen
+
+- **Wmo**: Wet maatschappelijke ondersteuning
+- **Keukentafelgesprek**: Intake door gemeente
+- **Maatwerkvoorziening**: Individuele voorziening
+- **Eigen bijdrage**: Via CAK
+    `,
+    sources: [
+      { name: "VNG", url: "https://vng.nl" },
+      { name: "Rijksoverheid - Wmo", url: "https://www.rijksoverheid.nl/onderwerpen/wmo-2015" },
+      { name: "Zo werkt de zorg - Sociaal Domein", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "7.6": {
+    title: "Gehandicaptenzorg",
+    summary: "De gehandicaptenzorg biedt ondersteuning aan mensen met een verstandelijke, lichamelijke of zintuiglijke beperking.",
+    content: `
+## In het kort
+
+De gehandicaptenzorg ondersteunt mensen met een blijvende beperking om zo zelfstandig mogelijk te leven. Van lichte ambulante begeleiding tot intensieve woonzorg.
+
+## Doelgroepen
+
+| Type | Omschrijving |
+|------|--------------|
+| **VG** | Verstandelijke beperking (licht/matig/ernstig) |
+| **LG** | Lichamelijke beperking (aangeboren of verworven) |
+| **ZG** | Zintuiglijke beperking (visueel/auditief) |
+| **Meervoudig** | Combinatie van beperkingen |
+
+## Zorgprofielen VG
+
+| Profiel | Omschrijving |
+|---------|--------------|
+| VG1-VG3 | Wonen met begeleiding (toenemend) |
+| VG4-VG5 | Wonen met begeleiding en verzorging |
+| VG6-VG7 | Intensieve begeleiding, gedragsregulering |
+| VG8 | Volledige verzorging en verpleging |
+
+## Persoonsgebonden budget (PGB)
+
+- Eigen regie over zorginkoop
+- Budget via SVB (Sociale Verzekeringsbank)
+- Trekkingsrecht: zelf zorg inkopen
+- Populair in gehandicaptenzorg
+
+## Dagbesteding
+
+- **Ontwikkelingsgericht**: Leren, activiteiten
+- **Arbeidsgericht**: Beschutte werkplek
+- **Belevingsgericht**: Zintuiglijke activatie
+- **Ondersteunend**: Structuur bieden
+
+## Belangrijke organisaties
+
+**Grote zorgaanbieders**: 's Heeren Loo, Amerpoort, Dichterbij, Philadelphia, Koraal Groep
+
+**Branche**: VGN (Vereniging Gehandicaptenzorg Nederland)
+
+## Kernbegrippen
+
+- **VG/LG/ZG**: Verstandelijk/Lichamelijk/Zintuiglijk Gehandicapt
+- **PGB**: Persoonsgebonden Budget
+- **NAH**: Niet-Aangeboren Hersenletsel
+- **Dagbesteding**: Zinvolle daginvulling
+    `,
+    sources: [
+      { name: "VGN", url: "https://www.vgn.nl" },
+      { name: "CIZ", url: "https://www.ciz.nl" },
+      { name: "Zo werkt de zorg - Gehandicaptenzorg", url: "https://www.zowerktdezorg.nl" }
+    ]
+  },
+
+  "7.7": {
+    title: "Publieke Gezondheidszorg & GGD",
+    summary: "De publieke gezondheidszorg richt zich op preventie en volksgezondheid. Deze module behandelt de GGD, infectieziektebestrijding en de Wet publieke gezondheid.",
+    content: `
+## In het kort
+
+De publieke gezondheidszorg beschermt de gezondheid van de bevolking. GGD'en voeren taken uit op het gebied van infectieziektebestrijding, jeugdgezondheidszorg en gezondheidsbevordering.
+
+## Organisatie GGD
+
+- 25 GGD-regio's in Nederland
+- Gemeenschappelijke Regeling (samenwerking gemeenten)
+- RIVM als landelijke partner
+- GGD GHOR Nederland als koepel
+
+## Kerntaken GGD
+
+### Infectieziektebestrijding
+- Meldingsplicht (Wet publieke gezondheid)
+- Bron- en contactonderzoek
+- Vaccinatieprogramma's
+- Outbreakmanagement
+
+### Jeugdgezondheidszorg (JGZ)
+- Consultatiebureau (0-4 jaar)
+- Schoolgezondheid (4-18 jaar)
+- Vaccinaties (RVP)
+- Groei en ontwikkeling volgen
+
+### Gezondheidsbevordering
+- Leefstijlinterventies
+- Lokaal gezondheidsbeleid
+- Preventiecoalities
+
+## Meldingsplichtige ziekten
+
+| Groep | Voorbeelden | Melding |
+|-------|-------------|---------|
+| **A** | Pokken, polio, SARS | Direct |
+| **B1** | Mazelen, tuberculose | 24 uur |
+| **B2** | Legionella | 24 uur |
+| **C** | Hepatitis B, SOA's | 24 uur |
+
+## Rijksvaccinatieprogramma (RVP)
+
+Gecoordineerd door RIVM:
+- DKTP-Hib-HepB (baby's)
+- BMR, MenACWY (peuters)
+- HPV (10 jaar)
+- DTP herhaling (4 jaar)
+
+## Kernbegrippen
+
+- **GGD**: Gemeentelijke Gezondheidsdienst
+- **RIVM**: Rijksinstituut voor Volksgezondheid en Milieu
+- **Wpg**: Wet publieke gezondheid
+- **RVP**: Rijksvaccinatieprogramma
+- **JGZ**: Jeugdgezondheidszorg
+    `,
+    sources: [
+      { name: "GGD GHOR Nederland", url: "https://ggdghor.nl" },
+      { name: "RIVM", url: "https://www.rivm.nl" },
+      { name: "Zo werkt de zorg - Publieke Gezondheidszorg", url: "https://www.zowerktdezorg.nl" }
     ]
   }
 }

@@ -90,6 +90,22 @@ export const basicsTracks = [
       { id: "6.5", title: "Validatie en certificering van AI-systemen", duration: 9, tags: ["validatie", "certificering", "ai"] },
       { id: "6.6", title: "Ethische kaders en responsible AI", duration: 8, tags: ["ethiek", "responsible-ai", "bias"] }
     ]
+  },
+  {
+    id: 7,
+    title: "Zorgdomeinen Deep Dive",
+    description: "Sector-specifieke kennis: huisartsenzorg, ouderenzorg, GGZ, farmacie en meer",
+    icon: "🏛️",
+    level: "basics",
+    modules: [
+      { id: "7.1", title: "Huisartsenzorg: Organisatie & Bekostiging", duration: 12, tags: ["huisarts", "eerstelijn", "poh", "hap", "bekostiging"] },
+      { id: "7.2", title: "Ouderenzorg & VVT: Van Thuiszorg tot Verpleeghuis", duration: 12, tags: ["ouderenzorg", "vvt", "wlz", "thuiszorg", "verpleeghuis"] },
+      { id: "7.3", title: "GGZ: Organisatie, Bekostiging & Zorgpaden", duration: 12, tags: ["ggz", "zpm", "basis-ggz", "specialistisch"] },
+      { id: "7.4", title: "Geneesmiddelenzorg & Farmacie", duration: 10, tags: ["farmacie", "apotheek", "medicatie", "preferentiebeleid"] },
+      { id: "7.5", title: "Sociaal Domein & Wmo", duration: 10, tags: ["wmo", "sociaal-domein", "gemeente", "jeugdwet"] },
+      { id: "7.6", title: "Gehandicaptenzorg", duration: 10, tags: ["gehandicaptenzorg", "wlz", "pgb", "dagbesteding"] },
+      { id: "7.7", title: "Publieke Gezondheidszorg & GGD", duration: 10, tags: ["ggd", "preventie", "wpg", "infectieziekten"] }
+    ]
   }
 ]
 
@@ -178,6 +194,45 @@ export const expertTracks = [
       { id: "105.6", title: "Governance en Compliance Vergelijking", duration: 18, tags: ["vergelijking", "governance", "avg", "compliance", "expert"] },
       { id: "105.7", title: "TCO en Licensing Modellen", duration: 16, tags: ["vergelijking", "tco", "kosten", "licensing", "expert"] },
       { id: "105.8", title: "Platform Selectie Framework voor Zorginstellingen", duration: 20, tags: ["vergelijking", "selectie", "besluitvorming", "strategie", "expert"] }
+    ]
+  },
+  {
+    id: 106,
+    title: "Huisartsenzorg IT & Digitalisering",
+    description: "Deep dive in HIS-systemen, ketenzorg-ICT, huisartsenposten en e-health in de huisartsenpraktijk",
+    icon: "🩺",
+    level: "expert",
+    modules: [
+      { id: "106.1", title: "Huisarts Informatiesystemen (HIS)", duration: 15, tags: ["his", "chipsoft", "pharmapartners", "cgm", "expert"] },
+      { id: "106.2", title: "Ketenzorg & Keten-ICT", duration: 12, tags: ["ketenzorg", "diabetes", "copd", "cvrm", "kis", "expert"] },
+      { id: "106.3", title: "Huisartsenposten: ICT & Triage", duration: 12, tags: ["hap", "nts", "triage", "spoedzorg", "expert"] },
+      { id: "106.4", title: "E-health in de Huisartsenpraktijk", duration: 10, tags: ["ehealth", "videoconsult", "thuismonitoring", "digitaal", "expert"] }
+    ]
+  },
+  {
+    id: 107,
+    title: "GGZ Zorgdata & Systemen",
+    description: "Deep dive in GGZ-EPD's, zorgprestatiemodel IT-implementatie, Koppeltaal en gemeentekoppelingen",
+    icon: "🧠",
+    level: "expert",
+    modules: [
+      { id: "107.1", title: "GGZ-EPD Systemen", duration: 15, tags: ["ggz", "epd", "user", "nexus", "chipsoft", "expert"] },
+      { id: "107.2", title: "Zorgprestatiemodel: IT-Implementatie", duration: 12, tags: ["zpm", "declaratie", "registratie", "ggz", "expert"] },
+      { id: "107.3", title: "Koppeltaal 2.0: eHealth Integratie", duration: 15, tags: ["koppeltaal", "fhir", "ehealth", "rom", "expert"] },
+      { id: "107.4", title: "Jeugd-GGZ & Gemeentekoppelingen", duration: 10, tags: ["jeugdggz", "iwmo", "ijw", "gemeente", "expert"] }
+    ]
+  },
+  {
+    id: 108,
+    title: "Farmacie & Medicatieketen",
+    description: "Deep dive in apotheekinformatiesystemen, medicatieoverdracht, MP9 en ziekenhuisfarmacie",
+    icon: "💊",
+    level: "expert",
+    modules: [
+      { id: "108.1", title: "Apotheekinformatiesystemen (AIS)", duration: 12, tags: ["ais", "pharmacom", "cgm", "medicatiebewaking", "expert"] },
+      { id: "108.2", title: "Medicatieoverdracht & LSP", duration: 15, tags: ["medicatie", "lsp", "allergie", "interactie", "expert"] },
+      { id: "108.3", title: "MP9: FHIR Medicatiestandaard", duration: 15, tags: ["mp9", "fhir", "nictiz", "medicatieproces", "expert"] },
+      { id: "108.4", title: "Ziekenhuisfarmacie & CPOE", duration: 12, tags: ["cpoe", "ziekenhuisapotheek", "voorschrijven", "bereidingen", "expert"] }
     ]
   }
 ]
