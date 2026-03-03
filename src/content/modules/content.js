@@ -11865,6 +11865,4082 @@ De apotheek ontwikkelt zich van distributeur naar zorgverlener met farmaceutisch
       { name: "NHG - FTO", url: "https://www.nhg.org" },
       { name: "Zo werkt de zorg - Farmacie", url: "https://www.zowerktdezorg.nl" }
     ]
+  },
+
+  // Track 8: Zorgdata Standaarden & Modellen
+  "8.1": {
+    title: "Overzicht Zorgdata Standaarden",
+    summary: "Introductie tot de belangrijkste zorgdata standaarden: FHIR, OpenEHR en OMOP",
+    content: `
+# Overzicht Zorgdata Standaarden
+
+## Waarom Standaarden?
+
+Zorgdata standaarden zijn essentieel voor:
+- **Interoperabiliteit**: Systemen kunnen data uitwisselen
+- **Herbruikbaarheid**: Data eenmalig vastleggen, meervoudig gebruiken
+- **Kwaliteit**: Consistente vastlegging van medische informatie
+- **Onderzoek**: Data bruikbaar voor secundair gebruik
+
+## De Drie Grote Standaarden
+
+| Standaard | Focus | Oorsprong | Primair gebruik |
+|-----------|-------|-----------|-----------------|
+| HL7 FHIR | Uitwisseling | HL7 International | API's, integratie |
+| OpenEHR | Vastlegging | OpenEHR Foundation | EPD, klinische data |
+| OMOP CDM | Analyse | OHDSI | Onderzoek, analytics |
+
+## HL7 FHIR
+
+### Kenmerken
+- RESTful API-standaard
+- Resources als basiseenheid
+- JSON en XML formaten
+- Breed geadopteerd door leveranciers
+
+### Sterke punten
+- Moderne web-technologie
+- Grote community en tooling
+- Snelle implementatie mogelijk
+- Flexibel en uitbreidbaar
+
+### Beperkingen
+- Niet ontworpen voor opslag
+- Beperkte klinische modellering
+- Veel variatie in implementaties
+
+## OpenEHR
+
+### Kenmerken
+- Two-level modeling (data en kennis apart)
+- Archetypes voor klinische concepten
+- Query-taal (AQL)
+- Leveranciersonafhankelijk
+
+### Sterke punten
+- Klinisch rijke modellering
+- Toekomstbestendig (modellen aanpasbaar)
+- Clinici betrokken bij ontwerp
+- Volledige medische context
+
+### Beperkingen
+- Steilere leercurve
+- Minder wijdverspreid
+- Complexere implementatie
+
+## OMOP CDM
+
+### Kenmerken
+- Common Data Model voor onderzoek
+- Gestandaardiseerde vocabulaires
+- Wereldwijd netwerk (OHDSI)
+- Focus op observationele data
+
+### Sterke punten
+- Bewezen voor grootschalig onderzoek
+- Gestandaardiseerde analytics tools
+- Internationale vergelijkbaarheid
+- Privacy-vriendelijk (gefedereerd)
+
+### Beperkingen
+- Niet voor primaire zorg
+- Transformatie (ETL) nodig
+- Verlies van detail mogelijk
+
+## Kernbegrippen
+
+- **FHIR**: Fast Healthcare Interoperability Resources
+- **OpenEHR**: Open Electronic Health Record
+- **OMOP**: Observational Medical Outcomes Partnership
+- **CDM**: Common Data Model
+- **OHDSI**: Observational Health Data Sciences and Informatics
+    `,
+    sources: [
+      { name: "HL7 FHIR", url: "https://www.hl7.org/fhir/" },
+      { name: "OpenEHR", url: "https://www.openehr.org" },
+      { name: "OHDSI", url: "https://www.ohdsi.org" }
+    ]
+  },
+
+  "8.2": {
+    title: "Messaging vs Documents vs Models",
+    summary: "Verschillende paradigma's voor zorgdata: berichten, documenten en datamodellen",
+    content: `
+# Messaging vs Documents vs Models
+
+## Drie Paradigma's
+
+In de zorginformatica bestaan drie fundamentele benaderingen voor data-uitwisseling en -opslag.
+
+| Paradigma | Focus | Voorbeeld |
+|-----------|-------|-----------|
+| Messaging | Event-driven uitwisseling | HL7v2, FHIR Messages |
+| Documents | Mensleesbare documenten | CDA, FHIR Documents |
+| Services/Resources | API-gebaseerde toegang | FHIR REST, OpenEHR |
+
+## Messaging Paradigma
+
+### Kenmerken
+- Point-to-point communicatie
+- Trigger events (bijv. opname, ontslag)
+- Gestructureerde berichten
+- Vaak asynchroon
+
+### HL7v2 (Legacy)
+
+| Segment | Betekenis |
+|---------|-----------|
+| MSH | Message Header |
+| PID | Patient Identification |
+| OBR | Observation Request |
+| OBX | Observation Result |
+
+### Wanneer messaging?
+- Lab-uitslagen versturen
+- ADT-berichten (opname/ontslag)
+- Orderberichten
+- Real-time notificaties
+
+## Document Paradigma
+
+### Kenmerken
+- Mensleesbaar document
+- Digitale handtekening mogelijk
+- Context behouden
+- Snapshot in tijd
+
+### CDA (Clinical Document Architecture)
+
+| Sectie | Inhoud |
+|--------|--------|
+| Header | Patiënt, auteur, datum |
+| Body | Gestructureerde secties |
+| Entries | Gecodeerde data |
+
+### Wanneer documenten?
+- Ontslagbrieven
+- Specialistenbrieven
+- Operatieverslagen
+- Juridisch bindende informatie
+
+## Resource/Service Paradigma
+
+### Kenmerken
+- API-gebaseerd (REST)
+- Granulaire resources
+- Query en search
+- CRUD-operaties
+
+### FHIR Resources
+Iedere resource representeert een zorgconcept:
+- Patient, Practitioner, Organization
+- Condition, Observation, Procedure
+- MedicationRequest, Encounter
+
+### Wanneer resources?
+- Applicatie-integratie
+- Mobiele apps
+- Patiëntportalen
+- Real-time data toegang
+
+## Vergelijking
+
+| Aspect | Messaging | Documents | Resources |
+|--------|-----------|-----------|-----------|
+| Granulariteit | Bericht | Document | Resource |
+| Leesbaar | Machine | Mens + Machine | Machine |
+| Timing | Event-driven | Snapshot | On-demand |
+| Context | Impliciet | Volledig | Referenties |
+| Gebruik | Integratie | Communicatie | API's |
+
+## Hybride Benaderingen
+
+### FHIR ondersteunt alles
+- FHIR Messaging (Bundles)
+- FHIR Documents (Compositions)
+- FHIR REST (Resources)
+
+### Praktijk
+Vaak combinatie van paradigma's:
+- Documents voor overdracht
+- Messaging voor events
+- Resources voor apps
+
+## Kernbegrippen
+
+- **Messaging**: Event-gebaseerde berichtuitwisseling
+- **CDA**: Clinical Document Architecture
+- **REST**: Representational State Transfer
+- **CRUD**: Create, Read, Update, Delete
+- **ADT**: Admission, Discharge, Transfer
+    `,
+    sources: [
+      { name: "HL7 FHIR Paradigms", url: "https://www.hl7.org/fhir/" },
+      { name: "HL7 CDA", url: "https://www.hl7.org/implement/standards/product_brief.cfm?product_id=7" },
+      { name: "Nictiz - Standaarden", url: "https://www.nictiz.nl" }
+    ]
+  },
+
+  "8.3": {
+    title: "Terminologieën: SNOMED, LOINC, ICD, ATC",
+    summary: "Overzicht van medische terminologieën en codeerstelsels",
+    content: `
+# Terminologieën: SNOMED, LOINC, ICD, ATC
+
+## Waarom Terminologieën?
+
+Terminologieën zorgen voor:
+- **Eenduidigheid**: Iedereen bedoelt hetzelfde
+- **Doorzoekbaarheid**: Gestructureerd zoeken
+- **Aggregatie**: Data groeperen voor analyse
+- **Interoperabiliteit**: Systemen begrijpen elkaar
+
+## Overzicht Terminologieën
+
+| Terminologie | Domein | Beheerder | Gebruik |
+|--------------|--------|-----------|---------|
+| SNOMED CT | Klinische begrippen | SNOMED Int. | EPD, uitwisseling |
+| LOINC | Lab en observaties | Regenstrief | Labwaarden, vitals |
+| ICD-10 | Diagnoses | WHO | Registratie, DBC |
+| ATC | Geneesmiddelen | WHO | Medicatie classificatie |
+| ICPC-2 | Huisartsgeneeskunde | WONCA | Huisarts registratie |
+
+## SNOMED CT
+
+### Kenmerken
+- Meest uitgebreide klinische terminologie
+- Hiërarchische structuur
+- Concept-gebaseerd met relaties
+- Meertalig (inclusief Nederlands)
+
+### Structuur
+- **Concepts**: Unieke begrippen met ID
+- **Descriptions**: Termen (synoniemen)
+- **Relationships**: Verbanden tussen concepten
+
+### Voorbeeld
+Diabetes mellitus type 2:
+- Concept ID: 44054006
+- Is-a: Diabetes mellitus
+- Finding site: Pancreas
+
+### Gebruik in Nederland
+- Verplicht in Basisgegevensset Zorg (BgZ)
+- NL-editie door Nictiz beheerd
+- Integratie in EPD's
+
+## LOINC
+
+### Kenmerken
+- Laboratorium en klinische observaties
+- Universele codes voor metingen
+- Internationaal gestandaardiseerd
+
+### Structuur (6 assen)
+1. Component (wat gemeten)
+2. Property (type meting)
+3. Time (moment/periode)
+4. System (specimen)
+5. Scale (kwantitatief/kwalitatief)
+6. Method (meetmethode)
+
+### Voorbeeld
+Glucose in bloed:
+- LOINC: 2345-7
+- Glucose, Serum/Plasma, Quantitative
+
+## ICD-10
+
+### Kenmerken
+- Internationale classificatie van ziekten
+- Basis voor registratie en statistiek
+- Verplicht voor DBC-registratie
+
+### Structuur
+- Hoofdstukken (A-Z)
+- Categorieën (3 karakters)
+- Subcategorieën (4-5 karakters)
+
+### ICD-10-CM vs ICD-10-PCS
+- CM: Clinical Modification (diagnoses)
+- PCS: Procedure Coding System (verrichtingen)
+
+## ATC/DDD
+
+### Kenmerken
+- Anatomical Therapeutic Chemical
+- Classificatie geneesmiddelen
+- DDD: Defined Daily Dose
+
+### Structuur (5 niveaus)
+1. Anatomische hoofdgroep (1 letter)
+2. Therapeutische subgroep (2 cijfers)
+3. Farmacologische subgroep (1 letter)
+4. Chemische subgroep (1 letter)
+5. Chemische stof (2 cijfers)
+
+### Voorbeeld
+Metformine: A10BA02
+- A: Alimentair/metabolisme
+- 10: Diabetes middelen
+- B: Bloedglucose verlagend
+- A: Biguaniden
+- 02: Metformine
+
+## Mapping tussen Terminologieën
+
+| Van | Naar | Doel |
+|----|------|------|
+| SNOMED | ICD-10 | DBC-registratie |
+| LOINC | SNOMED | Klinische context |
+| ICPC-2 | SNOMED | Uitwisseling |
+
+## Kernbegrippen
+
+- **SNOMED CT**: Systematized Nomenclature of Medicine Clinical Terms
+- **LOINC**: Logical Observation Identifiers Names and Codes
+- **ICD**: International Classification of Diseases
+- **ATC**: Anatomical Therapeutic Chemical
+- **Concept**: Uniek begrip met identifier
+    `,
+    sources: [
+      { name: "SNOMED International", url: "https://www.snomed.org" },
+      { name: "LOINC", url: "https://loinc.org" },
+      { name: "WHO ICD", url: "https://www.who.int/classifications/icd" },
+      { name: "Nictiz Terminologie", url: "https://www.nictiz.nl" }
+    ]
+  },
+
+  "8.4": {
+    title: "Wanneer welke standaard?",
+    summary: "Besliskader voor de keuze tussen FHIR, OpenEHR en OMOP",
+    content: `
+# Wanneer welke standaard?
+
+## Besliskader
+
+De keuze voor een standaard hangt af van het primaire doel.
+
+| Doel | Aanbevolen standaard |
+|------|---------------------|
+| Applicatie-integratie | FHIR |
+| Klinische vastlegging | OpenEHR |
+| Onderzoek en analytics | OMOP |
+| Berichtuitwisseling | HL7v2/FHIR |
+| Documentuitwisseling | CDA/FHIR Documents |
+
+## Use Case Matrix
+
+| Use Case | FHIR | OpenEHR | OMOP |
+|----------|------|---------|------|
+| EPD-integratie | +++ | ++ | - |
+| Patiëntportaal | +++ | + | - |
+| Klinische modellering | + | +++ | - |
+| Onderzoeksdata | + | + | +++ |
+| Mobiele apps | +++ | + | - |
+| Rapportage | ++ | ++ | +++ |
+| Langetermijn opslag | + | +++ | ++ |
+
+## FHIR Kiezen Wanneer
+
+### Ideale scenario's
+- **API-integraties** tussen systemen
+- **Patiëntgerichte apps** (PGO, portalen)
+- **Snelle implementatie** nodig
+- **Leveranciers** ondersteunen FHIR
+- **MedMij/Twiin** uitwisseling
+
+### Voorbeelden
+- Medicatieoverzicht ophalen
+- Afspraken plannen via app
+- Lab-uitslagen naar PGO
+- Verwijzing versturen
+
+## OpenEHR Kiezen Wanneer
+
+### Ideale scenario's
+- **Nieuw EPD** bouwen of kiezen
+- **Klinische modellering** belangrijk
+- **Toekomstbestendigheid** prioriteit
+- **Clinici** betrekken bij ontwerp
+- **Leveranciersonafhankelijkheid** gewenst
+
+### Voorbeelden
+- Oncologie-registratie
+- Intensive Care documentatie
+- Multidisciplinaire dossiers
+- Specialistische workflows
+
+## OMOP Kiezen Wanneer
+
+### Ideale scenario's
+- **Observationeel onderzoek**
+- **Grootschalige data-analyse**
+- **Internationale vergelijking**
+- **Real-world evidence**
+- **Populatieonderzoek**
+
+### Voorbeelden
+- Effectiviteit medicatie onderzoeken
+- Bijwerkingen monitoren
+- Zorgpaden analyseren
+- Predicitemodellen bouwen
+
+## Combinaties
+
+### FHIR + OpenEHR
+- OpenEHR voor opslag
+- FHIR voor uitwisseling
+- Mapping tussen beiden
+
+### FHIR + OMOP
+- FHIR voor dataverzameling
+- ETL naar OMOP
+- Analytics met OHDSI tools
+
+### Alle drie
+- OpenEHR: Klinische opslag
+- FHIR: Uitwisseling
+- OMOP: Onderzoek
+- Transformaties ertussen
+
+## Beslisboom
+
+1. **Wat is het primaire doel?**
+   - Uitwisseling → FHIR
+   - Opslag → OpenEHR
+   - Onderzoek → OMOP
+
+2. **Wie zijn de gebruikers?**
+   - Ontwikkelaars → FHIR
+   - Clinici → OpenEHR
+   - Onderzoekers → OMOP
+
+3. **Wat is de tijdshorizon?**
+   - Korte termijn → FHIR
+   - Lange termijn → OpenEHR/OMOP
+
+## Kernbegrippen
+
+- **Use case**: Specifiek gebruiksscenario
+- **ETL**: Extract, Transform, Load
+- **Real-world evidence**: Bewijs uit praktijkdata
+- **Vendor lock-in**: Afhankelijkheid van leverancier
+    `,
+    sources: [
+      { name: "Nictiz - Architectuur", url: "https://www.nictiz.nl" },
+      { name: "OpenEHR vs FHIR", url: "https://www.openehr.org" },
+      { name: "OHDSI - Use Cases", url: "https://www.ohdsi.org" }
+    ]
+  },
+
+  "8.5": {
+    title: "Mapping en Transformatie tussen Standaarden",
+    summary: "Technieken voor het mappen en transformeren van data tussen verschillende standaarden",
+    content: `
+# Mapping en Transformatie tussen Standaarden
+
+## Waarom Mapping?
+
+In de praktijk worden meerdere standaarden gebruikt. Mapping is nodig om:
+- Data te combineren uit verschillende bronnen
+- Te voldoen aan verschillende eisen
+- Historische data te migreren
+- Onderzoeksdata te genereren
+
+## Soorten Mapping
+
+| Type | Beschrijving | Voorbeeld |
+|------|--------------|-----------|
+| Terminologie mapping | Code naar code | SNOMED → ICD-10 |
+| Structuur mapping | Model naar model | FHIR → OpenEHR |
+| Semantische mapping | Betekenis behouden | BgZ → OMOP |
+
+## Terminologie Mapping
+
+### SNOMED naar ICD-10
+- Officiele mapping beschikbaar
+- Niet altijd 1-op-1
+- Verlies van specificiteit mogelijk
+
+### Mapping relaties
+
+| Relatie | Betekenis |
+|---------|-----------|
+| Equivalent | Exact gelijk |
+| Broader | ICD breder dan SNOMED |
+| Narrower | ICD specifieker |
+| No match | Geen mapping mogelijk |
+
+### Tools
+- SNOMED Browser met mappings
+- UMLS Metathesaurus
+- Lokale mappingtabellen
+
+## FHIR naar OpenEHR
+
+### Uitdagingen
+- Verschillende granulariteit
+- FHIR: resources, OpenEHR: compositions
+- Contextverlies mogelijk
+
+### Aanpak
+1. Identificeer FHIR resources
+2. Vind corresponderende archetypes
+3. Map velden naar dataelementen
+4. Behoud referenties en context
+
+### Voorbeeld: Patient
+
+| FHIR Patient | OpenEHR |
+|--------------|---------|
+| name | DEMOGRAPHIC/person/name |
+| birthDate | DEMOGRAPHIC/person/birth_data |
+| gender | DEMOGRAPHIC/person/gender |
+| address | DEMOGRAPHIC/person/address |
+
+## FHIR/OpenEHR naar OMOP
+
+### ETL Proces
+1. **Extract**: Haal data uit bronsysteem
+2. **Transform**: Converteer naar OMOP model
+3. **Load**: Laad in OMOP database
+
+### OMOP Tabellen
+
+| FHIR Resource | OMOP Tabel |
+|---------------|------------|
+| Patient | PERSON |
+| Condition | CONDITION_OCCURRENCE |
+| MedicationRequest | DRUG_EXPOSURE |
+| Observation | MEASUREMENT / OBSERVATION |
+| Procedure | PROCEDURE_OCCURRENCE |
+
+### Vocabulary Mapping
+- Broncodes → OMOP Concept IDs
+- Via ATHENA vocabulaire repository
+- Standaard en source concepts
+
+## Mapping Tools
+
+### OHDSI Tools
+
+| Tool | Functie |
+|------|---------|
+| White Rabbit | Brondata scannen |
+| Rabbit-in-a-Hat | Mapping documenteren |
+| Usagi | Vocabulary mapping |
+| ATHENA | Vocabulaire browser |
+
+### FHIR Mapping
+- FHIR Mapping Language
+- StructureMap resource
+- ConceptMap voor terminologie
+
+### OpenEHR
+- Archetype mapping tools
+- Template designers
+- ETL frameworks
+
+## Best Practices
+
+### Documentatie
+- Leg alle mappings vast
+- Beschrijf aannames
+- Versie mappings
+
+### Kwaliteit
+- Valideer transformaties
+- Monitor datakwaliteit
+- Test met realistische data
+
+### Governance
+- Eigenaarschap mappings
+- Review proces
+- Onderhoud planning
+
+## Uitdagingen
+
+| Uitdaging | Oplossing |
+|-----------|-----------|
+| Informatieverlies | Behoud brondata |
+| Ambiguïteit | Duidelijke regels |
+| Updates | Versiebeheer |
+| Performance | Incrementele updates |
+
+## Kernbegrippen
+
+- **ETL**: Extract, Transform, Load
+- **Mapping**: Vertaling tussen standaarden
+- **Vocabulary**: Verzameling codes en termen
+- **Concept**: Unieke betekeniseenheid
+- **Semantic interoperability**: Betekenis behouden
+    `,
+    sources: [
+      { name: "OHDSI - ETL", url: "https://www.ohdsi.org/data-standardization/" },
+      { name: "FHIR Mapping Language", url: "https://www.hl7.org/fhir/mapping-language.html" },
+      { name: "Nictiz - Terminologie", url: "https://www.nictiz.nl" }
+    ]
+  },
+
+  // Track 109: HL7 FHIR Deep Dive
+  "109.1": {
+    title: "FHIR Architectuur & Ontwerpprincipes",
+    summary: "Fundamentele architectuur en ontwerpprincipes van HL7 FHIR",
+    content: `
+# FHIR Architectuur & Ontwerpprincipes
+
+## Wat is FHIR?
+
+FHIR (Fast Healthcare Interoperability Resources) is een standaard van HL7 voor het uitwisselen van zorginformatie via moderne web-technologie.
+
+## Ontwerpprincipes
+
+| Principe | Betekenis |
+|----------|-----------|
+| 80/20 regel | Dekking van 80% use cases out-of-the-box |
+| RESTful | Gebaseerd op HTTP en REST |
+| Human readable | JSON/XML leesbaar voor ontwikkelaars |
+| Extensibility | Uitbreidbaar waar nodig |
+| Composability | Resources combineerbaar |
+
+## FHIR Lagen
+
+### Layer 1: Foundation
+- Datatypes
+- Resources basis
+- Extensies framework
+
+### Layer 2: Implementability
+- RESTful API
+- Search parameters
+- Operations
+
+### Layer 3: Administration
+- Patient, Practitioner, Organization
+- Location, Encounter
+- Administratieve resources
+
+### Layer 4: Clinical
+- Condition, Observation
+- MedicationRequest, Procedure
+- Klinische resources
+
+### Layer 5: Workflow
+- Task, ServiceRequest
+- Communication
+- Workflow resources
+
+## RESTful API
+
+### HTTP Methods
+
+| Method | FHIR Actie | Voorbeeld |
+|--------|------------|-----------|
+| GET | Read | GET /Patient/123 |
+| POST | Create | POST /Patient |
+| PUT | Update | PUT /Patient/123 |
+| DELETE | Delete | DELETE /Patient/123 |
+| PATCH | Partial update | PATCH /Patient/123 |
+
+### Response Codes
+
+| Code | Betekenis |
+|------|-----------|
+| 200 | OK (read/update) |
+| 201 | Created (create) |
+| 204 | No Content (delete) |
+| 400 | Bad Request |
+| 404 | Not Found |
+| 422 | Unprocessable Entity |
+
+## Capability Statement
+
+Elke FHIR server publiceert een CapabilityStatement:
+- Ondersteunde resources
+- Ondersteunde operaties
+- Search parameters
+- Conformance informatie
+
+## Versioning
+
+### FHIR Versies
+
+| Versie | Status | Release |
+|--------|--------|---------|
+| DSTU2 | Legacy | 2015 |
+| STU3 | Legacy | 2017 |
+| R4 | Normative | 2019 |
+| R4B | Patch | 2022 |
+| R5 | Current | 2023 |
+
+### Resource versioning
+- Elke resource heeft een version ID
+- History via _history endpoint
+- ETags voor concurrency
+
+## Kernbegrippen
+
+- **Resource**: Basiseenheid van informatie
+- **RESTful**: Architectuurstijl met HTTP
+- **CapabilityStatement**: Server capabilities
+- **Normative**: Stabiel, backwards compatible
+- **STU**: Standard for Trial Use
+    `,
+    sources: [
+      { name: "HL7 FHIR", url: "https://www.hl7.org/fhir/" },
+      { name: "FHIR Overview", url: "https://www.hl7.org/fhir/overview.html" }
+    ]
+  },
+
+  "109.2": {
+    title: "FHIR Resources & Datatypes",
+    summary: "Diepgaande kennis van FHIR resources, datatypes en referenties",
+    content: `
+# FHIR Resources & Datatypes
+
+## Resource Structuur
+
+Elke FHIR resource heeft een vaste structuur:
+
+| Element | Beschrijving |
+|---------|--------------|
+| resourceType | Type resource (bijv. Patient) |
+| id | Logische identifier |
+| meta | Metadata (version, lastUpdated) |
+| text | Narrative (mensleesbaar) |
+| extension | Uitbreidingen |
+| [elements] | Resource-specifieke data |
+
+## Belangrijke Resources
+
+### Administrative
+
+| Resource | Doel |
+|----------|------|
+| Patient | Patiëntgegevens |
+| Practitioner | Zorgverlener |
+| Organization | Zorginstelling |
+| Location | Locatie |
+| Encounter | Zorgcontact |
+
+### Clinical
+
+| Resource | Doel |
+|----------|------|
+| Condition | Diagnose/probleem |
+| Observation | Meting/bevinding |
+| Procedure | Verrichting |
+| AllergyIntolerance | Allergie |
+| DiagnosticReport | Onderzoeksrapport |
+
+### Medication
+
+| Resource | Doel |
+|----------|------|
+| Medication | Medicatieproduct |
+| MedicationRequest | Voorschrift |
+| MedicationDispense | Verstrekking |
+| MedicationAdministration | Toediening |
+| MedicationStatement | Gebruik |
+
+## Datatypes
+
+### Primitive Types
+
+| Type | Voorbeeld |
+|------|-----------|
+| string | "Jan Jansen" |
+| boolean | true |
+| integer | 42 |
+| decimal | 3.14 |
+| date | "2024-01-15" |
+| dateTime | "2024-01-15T10:30:00Z" |
+| uri | "http://example.org" |
+
+### Complex Types
+
+| Type | Bevat |
+|------|-------|
+| HumanName | family, given, prefix |
+| Address | line, city, postalCode |
+| ContactPoint | system, value, use |
+| Identifier | system, value |
+| CodeableConcept | coding, text |
+| Quantity | value, unit, system |
+| Period | start, end |
+| Reference | reference, type, display |
+
+## References
+
+### Literal Reference
+- Verwijzing naar andere resource
+- URL format: "Patient/123"
+- Absolute of relatief
+
+### Logical Reference
+- Identifier-based
+- Geen directe link
+- identifier element
+
+### Contained Resources
+- Resource binnen resource
+- Lokale referentie (#id)
+- Geen eigen lifecycle
+
+## CodeableConcept
+
+Gestructureerde codering:
+
+| Veld | Beschrijving |
+|------|--------------|
+| coding | Array van codes |
+| coding.system | Codestelsel URI |
+| coding.code | De code |
+| coding.display | Leesbare tekst |
+| text | Vrije tekst alternatief |
+
+## Extensions
+
+### Structuur
+
+| Veld | Beschrijving |
+|------|--------------|
+| url | Unieke identifier |
+| value[x] | Waarde (type in naam) |
+
+### Modifier Extensions
+- Veranderen betekenis element
+- Moeten begrepen worden
+- isModifier = true
+
+## Kernbegrippen
+
+- **Resource**: Atomaire eenheid van data
+- **Datatype**: Type van element
+- **Reference**: Verwijzing naar resource
+- **CodeableConcept**: Gecodeerde waarde
+- **Extension**: Uitbreiding van standaard
+    `,
+    sources: [
+      { name: "FHIR Datatypes", url: "https://www.hl7.org/fhir/datatypes.html" },
+      { name: "FHIR Resources", url: "https://www.hl7.org/fhir/resourcelist.html" }
+    ]
+  },
+
+  "109.3": {
+    title: "FHIR Profielen & Extensions",
+    summary: "Aanpassen van FHIR met profielen, extensions en implementation guides",
+    content: `
+# FHIR Profielen & Extensions
+
+## Waarom Profielen?
+
+FHIR is bewust flexibel. Profielen maken het:
+- Specifieker voor een use case
+- Interoperabel binnen een context
+- Valideerbaar
+- Documenteerbaar
+
+## StructureDefinition
+
+Een profiel wordt gedefinieerd in een StructureDefinition:
+
+| Element | Beschrijving |
+|---------|--------------|
+| url | Canonical URL (identifier) |
+| name | Computernaam |
+| title | Mensleesbare naam |
+| status | draft, active, retired |
+| kind | resource, datatype, logical |
+| type | Base resource type |
+| baseDefinition | Parent profiel |
+| derivation | specialization, constraint |
+
+## Constraints
+
+### Cardinality
+
+| Constraint | Betekenis |
+|------------|-----------|
+| 1..1 | Verplicht, exact 1 |
+| 0..1 | Optioneel, max 1 |
+| 1..* | Verplicht, meerdere |
+| 0..* | Optioneel, meerdere |
+| 0..0 | Niet toegestaan |
+
+### Must Support
+- Element moet ondersteund worden
+- Betekenis context-afhankelijk
+- Belangrijk voor interoperabiliteit
+
+### Fixed Values
+- Element heeft vaste waarde
+- Altijd aanwezig met die waarde
+
+### Bindings
+- Verplicht codestelsel
+- Strength: required, extensible, preferred
+
+## Extensions
+
+### Wanneer extensions?
+- Informatie niet in standaard FHIR
+- Lokale of nationale vereisten
+- Domein-specifieke data
+
+### Structuur
+
+| Element | Beschrijving |
+|---------|--------------|
+| url | Unieke identifier |
+| value[x] | Waarde met type |
+
+### Complex Extensions
+- Meerdere sub-extensions
+- Geneste structuur
+
+### Extension Registry
+- HL7 extensie registry
+- Nationale extensies
+- Hergebruik bevorderen
+
+## Slicing
+
+Slicing splits een herhalend element in specifieke "slices":
+- Discriminator bepaalt hoe te slicen
+- Elke slice heeft eigen constraints
+- Voorbeeld: identifier met BSN slice
+
+## Implementation Guides
+
+### Wat is een IG?
+- Verzameling profielen voor use case
+- Documentatie en voorbeelden
+- Validatie resources
+
+### IG Componenten
+
+| Component | Beschrijving |
+|-----------|--------------|
+| Profiles | StructureDefinitions |
+| Extensions | ExtensionDefinitions |
+| ValueSets | Toegestane codes |
+| CodeSystems | Codestelsel definities |
+| Examples | Voorbeeldinstances |
+| Narrative | Documentatie |
+
+### Nederlandse IGs
+- nl-core (basisprofielen)
+- MedMij IGs
+- Nictiz informatiestandaarden
+
+## Validatie
+
+### Validatie niveaus
+
+| Niveau | Check |
+|--------|-------|
+| Syntax | Valide JSON/XML |
+| Structure | Resource structuur |
+| Cardinality | Min/max elementen |
+| Terminology | Codes in ValueSets |
+| Invariants | Business rules |
+
+### Validatie tools
+- Official FHIR Validator
+- Simplifier.net
+- Firely Terminal
+
+## Kernbegrippen
+
+- **Profile**: Constraints op base resource
+- **Extension**: Toevoeging aan standaard
+- **Slicing**: Opdelen herhalend element
+- **Implementation Guide**: Verzameling profielen
+- **Must Support**: Verplichte ondersteuning
+    `,
+    sources: [
+      { name: "FHIR Profiling", url: "https://www.hl7.org/fhir/profiling.html" },
+      { name: "Simplifier.net", url: "https://simplifier.net" },
+      { name: "Nictiz FHIR", url: "https://www.nictiz.nl" }
+    ]
+  },
+
+  "109.4": {
+    title: "FHIR API's: REST, Search & Operations",
+    summary: "FHIR REST API, search parameters en custom operations",
+    content: `
+# FHIR API's: REST, Search & Operations
+
+## REST Interacties
+
+### Instance Level
+
+| Interactie | HTTP | URL |
+|------------|------|-----|
+| read | GET | /[type]/[id] |
+| vread | GET | /[type]/[id]/_history/[vid] |
+| update | PUT | /[type]/[id] |
+| patch | PATCH | /[type]/[id] |
+| delete | DELETE | /[type]/[id] |
+| history | GET | /[type]/[id]/_history |
+
+### Type Level
+
+| Interactie | HTTP | URL |
+|------------|------|-----|
+| create | POST | /[type] |
+| search | GET | /[type]?params |
+| history | GET | /[type]/_history |
+
+### System Level
+
+| Interactie | HTTP | URL |
+|------------|------|-----|
+| capabilities | GET | /metadata |
+| batch/transaction | POST | / |
+| history | GET | /_history |
+| search | GET | /?params |
+
+## Search
+
+### Basis syntax
+GET /Patient?name=jansen&birthdate=1980-01-01
+
+### Search Parameter Types
+
+| Type | Voorbeeld |
+|------|-----------|
+| string | name=jansen |
+| token | identifier=123 |
+| reference | subject=Patient/123 |
+| date | birthdate=1980-01-01 |
+| number | value-quantity=5.4 |
+| quantity | value-quantity=5.4||mg |
+| uri | url=http://example.org |
+| composite | code-value-quantity |
+
+### Modifiers
+
+| Modifier | Voorbeeld | Betekenis |
+|----------|-----------|-----------|
+| :exact | name:exact=Jansen | Exact match |
+| :contains | name:contains=ans | Bevat |
+| :not | status:not=active | Niet gelijk |
+| :missing | birthdate:missing=true | Ontbreekt |
+| :below | code:below=123 | Hierarchisch |
+
+### Prefixes (date/number)
+
+| Prefix | Betekenis |
+|--------|-----------|
+| eq | Gelijk (default) |
+| ne | Niet gelijk |
+| lt | Kleiner dan |
+| le | Kleiner of gelijk |
+| gt | Groter dan |
+| ge | Groter of gelijk |
+
+### Chaining
+Zoeken via referenties:
+- patient.name=jansen
+- subject:Patient.birthdate=1980
+
+### Reverse Chaining
+Zoeken vanuit gerefereerde resource:
+- _has:Observation:subject:code=1234
+
+### Include en Revinclude
+- _include=Observation:subject
+- _revinclude=Observation:subject
+
+## Operations
+
+### Syntax
+- POST /[type]/$[operation]
+- POST /[type]/[id]/$[operation]
+- GET /[type]/$[operation]?params
+
+### Standaard Operations
+
+| Operation | Doel |
+|-----------|------|
+| $validate | Resource valideren |
+| $meta | Metadata operaties |
+| $everything | Alles van patient |
+| $expand | ValueSet expanderen |
+| $lookup | Code opzoeken |
+| $translate | Code vertalen |
+
+### Custom Operations
+- Gedefinieerd in OperationDefinition
+- In of out parameters
+- Synchrone of asynchrone uitvoering
+
+## Batch en Transaction
+
+### Batch
+- Meerdere requests in één call
+- Onafhankelijke verwerking
+- Elke entry eigen status
+
+### Transaction
+- ACID transactie
+- Alles of niets
+- Referenties binnen bundle
+
+### Bundle structuur
+
+| Element | Beschrijving |
+|---------|--------------|
+| type | batch of transaction |
+| entry | Array van requests |
+| entry.request | HTTP details |
+| entry.resource | Payload |
+
+## Paging
+
+- _count: aantal resultaten
+- _offset: startpositie
+- Link headers voor navigatie
+- next, previous, self links
+
+## Kernbegrippen
+
+- **Search parameter**: Zoekcriterium
+- **Chaining**: Zoeken via referenties
+- **Include**: Gerelateerde resources ophalen
+- **Operation**: Custom FHIR functie
+- **Bundle**: Container voor resources
+    `,
+    sources: [
+      { name: "FHIR RESTful API", url: "https://www.hl7.org/fhir/http.html" },
+      { name: "FHIR Search", url: "https://www.hl7.org/fhir/search.html" },
+      { name: "FHIR Operations", url: "https://www.hl7.org/fhir/operations.html" }
+    ]
+  },
+
+  "109.5": {
+    title: "FHIR Servers & Implementatie",
+    summary: "FHIR server implementaties, frameworks en deployment opties",
+    content: `
+# FHIR Servers & Implementatie
+
+## FHIR Server Opties
+
+| Server | Taal | Licentie | Kenmerken |
+|--------|------|----------|-----------|
+| HAPI FHIR | Java | Apache 2 | Meest gebruikt, volledig |
+| Firely Server | .NET | Commercial | Enterprise features |
+| IBM FHIR | Java | Apache 2 | Cloud-ready |
+| Microsoft FHIR | .NET | MIT | Azure geïntegreerd |
+| LinuxForHealth | Python | Apache 2 | Lightweight |
+
+## HAPI FHIR
+
+### Kenmerken
+- Open source, Java-gebaseerd
+- Volledige FHIR R4/R5 ondersteuning
+- JPA backend (database agnostisch)
+- Uitbreidbaar met interceptors
+
+### Architectuur
+
+| Component | Functie |
+|-----------|---------|
+| HAPI Core | FHIR parsing en modellen |
+| JPA Server | Persistence laag |
+| REST Server | HTTP endpoints |
+| Validation | Resource validatie |
+
+### Deployment
+- Standalone JAR
+- WAR in container
+- Docker image
+- Kubernetes helm chart
+
+## Firely Server
+
+### Kenmerken
+- .NET gebaseerd
+- Enterprise ondersteuning
+- Nederlandse oorsprong
+- Nictiz samenwerking
+
+### Features
+
+| Feature | Beschrijving |
+|---------|--------------|
+| Vonk | Core server engine |
+| Plugins | Uitbreidbaar |
+| Forge | Profiel editor |
+| Simplifier | Profile registry |
+
+## Azure API for FHIR
+
+### Kenmerken
+- Managed service
+- Azure Active Directory
+- HIPAA compliant
+- Autoscaling
+
+### Componenten
+
+| Service | Functie |
+|---------|---------|
+| FHIR Server | Kernfunctionaliteit |
+| DICOM Service | Beelddata |
+| MedTech | Device data |
+| De-identification | Privacy |
+
+## Implementatie Architectuur
+
+### Standalone
+- FHIR server als centrale hub
+- Directe integraties
+- Geschikt voor kleinere omgevingen
+
+### Facade Pattern
+- FHIR API over bestaande systemen
+- Geen data migratie
+- Real-time transformatie
+
+### Repository Pattern
+- FHIR als data store
+- Copy van brondata
+- Eigen persistence
+
+## Performance Optimalisatie
+
+| Aspect | Aanpak |
+|--------|--------|
+| Indexing | Search parameters indexeren |
+| Caching | Response caching |
+| Pagination | Resultaten beperken |
+| Includes | Selectief gebruiken |
+| Async | Bulk operaties asynchroon |
+
+## Security
+
+### Authenticatie
+- OAuth 2.0
+- SMART on FHIR
+- Client credentials
+- Authorization code
+
+### Autorisatie
+- Scope-based access
+- Resource-level permissions
+- ABAC (Attribute Based)
+
+## Kernbegrippen
+
+- **HAPI**: HL7 API (Java framework)
+- **Facade**: API over bestaand systeem
+- **Interceptor**: Hook voor processing
+- **Persistence**: Data opslag laag
+- **SMART**: Substitutable Medical Apps
+    `,
+    sources: [
+      { name: "HAPI FHIR", url: "https://hapifhir.io" },
+      { name: "Firely Server", url: "https://fire.ly/products/firely-server/" },
+      { name: "Azure FHIR", url: "https://docs.microsoft.com/azure/healthcare-apis/" }
+    ]
+  },
+
+  "109.6": {
+    title: "Nederlandse FHIR Profielen & Nictiz",
+    summary: "Nederlandse FHIR implementatie, nl-core profielen en Nictiz standaarden",
+    content: `
+# Nederlandse FHIR Profielen & Nictiz
+
+## Nictiz en FHIR
+
+Nictiz is het Nederlandse kenniscentrum voor digitale informatie-uitwisseling in de zorg en beheert de nationale FHIR profielen.
+
+## nl-core Profielen
+
+### Doel
+- Nederlandse implementatie van FHIR
+- Gebaseerd op Zorginformatiebouwstenen (zibs)
+- Basis voor alle Nederlandse uitwisseling
+
+### Structuur
+
+| Laag | Beschrijving |
+|------|--------------|
+| International | HL7 FHIR core |
+| nl-core | Nederlandse basisprofielen |
+| Use case | Specifieke toepassing |
+| Leverancier | Implementatie |
+
+### Belangrijke nl-core profielen
+
+| Profiel | Basis resource | Zib |
+|---------|---------------|-----|
+| nl-core-Patient | Patient | Patient |
+| nl-core-HealthProfessional | Practitioner | Zorgverlener |
+| nl-core-HealthcareProvider | Organization | Zorgaanbieder |
+| nl-core-Problem | Condition | Probleem |
+| nl-core-MedicationUse2 | MedicationStatement | MedicatieGebruik2 |
+
+## Zorginformatiebouwstenen (zibs)
+
+### Wat zijn zibs?
+- Klinische concepten gemodelleerd
+- Leveranciersonafhankelijk
+- Basis voor FHIR profielen
+
+### Zib structuur
+
+| Element | Beschrijving |
+|---------|--------------|
+| Concept | Klinisch begrip |
+| Definitie | Uitleg |
+| DCM | Data elementen |
+| ValueSets | Toegestane waarden |
+| Use cases | Toepassingen |
+
+### Voorbeelden
+- Patient (identificatie, naam, adres)
+- Bloeddruk (systolisch, diastolisch)
+- AllergieIntolerantie (stof, reactie)
+
+## Informatiestandaarden
+
+### MedMij Informatiestandaarden
+
+| Standaard | Doel |
+|-----------|------|
+| BgZ | Basisgegevensset Zorg |
+| Medicatie | Medicatieoverzicht |
+| PDF/A | Documenten |
+| Vaccinaties | Vaccinatiegegevens |
+| Lab | Laboratoriumresultaten |
+
+### Keten Informatiestandaarden
+
+| Standaard | Domein |
+|-----------|--------|
+| eOverdracht | Verpleegkundige overdracht |
+| Geboortezorg | Perinataal |
+| BgLZ | Langdurige zorg |
+| Beeldbeschikbaarheid | Radiologie |
+
+## MedMij Afsprakenstelsel
+
+### Componenten
+
+| Component | Functie |
+|-----------|---------|
+| PGO | Persoonlijke Gezondheidsomgeving |
+| DVP | Dienstverlener Persoon |
+| DVZ | Dienstverlener Zorg |
+| Gegevensdienst | FHIR API |
+
+### Technische eisen
+- FHIR R4
+- nl-core profielen
+- OAuth 2.0/OpenID Connect
+- DigiD authenticatie
+
+## Simplifier.net
+
+### Functionaliteit
+- FHIR profiel registry
+- Validatie service
+- Documentatie
+- Versiebeheer
+
+### Nederlandse packages
+- nictiz.fhir.nl.r4.nl-core
+- nictiz.fhir.nl.r4.bgz
+- nictiz.fhir.nl.r4.medicatieproces
+
+## Kernbegrippen
+
+- **Zib**: Zorginformatiebouwsteen
+- **nl-core**: Nederlandse FHIR profielen
+- **BgZ**: Basisgegevensset Zorg
+- **MedMij**: PGO afsprakenstelsel
+- **Nictiz**: Nationaal kenniscentrum
+    `,
+    sources: [
+      { name: "Nictiz", url: "https://www.nictiz.nl" },
+      { name: "Simplifier nl-core", url: "https://simplifier.net/nictiz-r4-nl-core" },
+      { name: "MedMij", url: "https://www.medmij.nl" }
+    ]
+  },
+
+  "109.7": {
+    title: "SMART on FHIR & CDS Hooks",
+    summary: "SMART app launch, OAuth scopes en Clinical Decision Support Hooks",
+    content: `
+# SMART on FHIR & CDS Hooks
+
+## SMART on FHIR
+
+### Wat is SMART?
+SMART (Substitutable Medical Applications, Reusable Technologies) is een framework voor apps die integreren met EPD's via FHIR.
+
+### Kernconcepten
+
+| Concept | Beschrijving |
+|---------|--------------|
+| App Launch | App starten vanuit EPD |
+| Authorization | OAuth 2.0 flow |
+| Context | Patient, encounter info |
+| Scopes | Toegangsrechten |
+
+## Launch Flows
+
+### EHR Launch
+1. Gebruiker start app vanuit EPD
+2. EPD stuurt launch context
+3. App vraagt authorization
+4. App ontvangt access token
+5. App kan FHIR API gebruiken
+
+### Standalone Launch
+1. App start buiten EPD
+2. Gebruiker selecteert server
+3. Authorization flow
+4. App vraagt patient context
+
+## OAuth Scopes
+
+### Patient Scopes
+
+| Scope | Toegang |
+|-------|---------|
+| patient/Patient.read | Lees patient data |
+| patient/Observation.read | Lees observaties |
+| patient/MedicationRequest.* | Alle medicatie acties |
+
+### User Scopes
+
+| Scope | Toegang |
+|-------|---------|
+| user/Patient.read | Alle patiënten lezen |
+| user/*.write | Alles schrijven |
+
+### System Scopes
+- Backend services
+- Geen gebruikerscontext
+- Machine-to-machine
+
+## Launch Context
+
+### Context parameters
+
+| Parameter | Waarde |
+|-----------|--------|
+| patient | Patient ID |
+| encounter | Encounter ID |
+| practitioner | Practitioner ID |
+| fhirContext | Extra context |
+
+## CDS Hooks
+
+### Wat is CDS Hooks?
+Clinical Decision Support Hooks is een standaard voor het integreren van beslisondersteuning in klinische workflows.
+
+### Hooks
+
+| Hook | Trigger |
+|------|---------|
+| patient-view | Patient geopend |
+| order-select | Order geselecteerd |
+| order-sign | Order ondertekend |
+| appointment-book | Afspraak gepland |
+| encounter-start | Consult gestart |
+
+### Architectuur
+
+| Component | Functie |
+|-----------|---------|
+| CDS Client | EPD/EHR |
+| CDS Service | Beslislogica |
+| Hook | Trigger moment |
+| Card | Response UI |
+
+### CDS Cards
+
+| Veld | Beschrijving |
+|------|--------------|
+| summary | Korte tekst |
+| indicator | info, warning, critical |
+| detail | Uitgebreide info |
+| suggestions | Aanbevolen acties |
+| links | Externe bronnen |
+
+### Prefetch
+- Data meesturen met request
+- Vermijdt extra API calls
+- Gedefinieerd in discovery
+
+## Implementatie
+
+### SMART App Development
+
+| Stap | Actie |
+|------|-------|
+| 1 | Registreer app bij EPD |
+| 2 | Implementeer OAuth flow |
+| 3 | Parse launch context |
+| 4 | Gebruik FHIR API |
+
+### CDS Service Development
+
+| Stap | Actie |
+|------|-------|
+| 1 | Implementeer discovery endpoint |
+| 2 | Definieer hooks |
+| 3 | Implementeer hook endpoints |
+| 4 | Return CDS cards |
+
+## Kernbegrippen
+
+- **SMART**: App integratie framework
+- **Launch context**: Patient/encounter info
+- **Scope**: OAuth toegangsrecht
+- **CDS Hooks**: Beslisondersteuning
+- **Card**: CDS response element
+    `,
+    sources: [
+      { name: "SMART on FHIR", url: "https://docs.smarthealthit.org" },
+      { name: "CDS Hooks", url: "https://cds-hooks.org" },
+      { name: "HL7 SMART App Launch", url: "https://www.hl7.org/fhir/smart-app-launch/" }
+    ]
+  },
+
+  "109.8": {
+    title: "FHIR voor Bulk Data & Analytics",
+    summary: "FHIR Bulk Data Access, Flat FHIR en analytics toepassingen",
+    content: `
+# FHIR voor Bulk Data & Analytics
+
+## Bulk Data Access
+
+### Waarom Bulk Data?
+- Reguliere REST te langzaam voor grote datasets
+- Analytics vereist complete datasets
+- Population health use cases
+- Data export voor onderzoek
+
+### FHIR Bulk Data Specification
+
+| Aspect | Beschrijving |
+|--------|--------------|
+| Format | NDJSON (Newline Delimited JSON) |
+| Transport | Async via Polling |
+| Auth | SMART Backend Services |
+| Scope | system/*.read |
+
+## Bulk Export Operaties
+
+### System Export
+- GET /$export
+- Alle data van server
+
+### Group Export
+- GET /Group/[id]/$export
+- Specifieke populatie
+
+### Patient Export
+- GET /Patient/$export
+- Alle patiënten
+
+### Parameters
+
+| Parameter | Beschrijving |
+|-----------|--------------|
+| _outputFormat | ndjson, parquet |
+| _since | Sinds datum |
+| _type | Resource types |
+| _typeFilter | FHIR search |
+
+## Async Pattern
+
+### Flow
+
+| Stap | Request | Response |
+|------|---------|----------|
+| 1. Kick-off | POST /$export | 202 + Content-Location |
+| 2. Poll | GET [location] | 202 (processing) of 200 |
+| 3. Download | GET [file-url] | NDJSON data |
+
+### Status Response (200)
+
+| Veld | Beschrijving |
+|------|--------------|
+| transactionTime | Export timestamp |
+| request | Originele request |
+| output | Array van files |
+| error | Foutbestanden |
+
+## Flat FHIR
+
+### Probleem
+- FHIR is hiërarchisch/genest
+- Analytics tools verwachten tabulair
+- Transformatie nodig
+
+### Oplossingen
+
+| Aanpak | Beschrijving |
+|--------|--------------|
+| SQL on FHIR | FHIR ViewDefinitions |
+| FHIR to Parquet | Columnar format |
+| Custom ETL | Eigen transformatie |
+
+### SQL on FHIR
+
+- ViewDefinition resource
+- Declaratieve mapping
+- FHIRPath expressions
+- Output: tabulaire views
+
+## Analytics Architectuur
+
+### Data Pipeline
+
+| Fase | Tools |
+|------|-------|
+| Extract | Bulk Data API |
+| Transform | Spark, dbt |
+| Load | Data Lake/Warehouse |
+| Analyze | SQL, BI tools |
+
+### Platforms
+
+| Platform | FHIR Support |
+|----------|--------------|
+| Databricks | FHIR connectors |
+| Azure Synapse | FHIR flattening |
+| Google BigQuery | FHIR views |
+| AWS HealthLake | Native FHIR |
+
+## Use Cases
+
+### Population Health
+- Cohort identificatie
+- Quality measures
+- Risk stratificatie
+
+### Research
+- Retrospectieve studies
+- Real-world evidence
+- OMOP conversie
+
+### Operations
+- Capacity planning
+- Resource utilization
+- Cost analysis
+
+## FHIR to OMOP
+
+### Conversie strategie
+1. Bulk export uit FHIR
+2. Vocabulary mapping
+3. ETL naar OMOP CDM
+4. Data quality checks
+
+### Mapping
+
+| FHIR Resource | OMOP Table |
+|---------------|------------|
+| Patient | PERSON |
+| Condition | CONDITION_OCCURRENCE |
+| MedicationRequest | DRUG_EXPOSURE |
+| Observation | MEASUREMENT |
+| Procedure | PROCEDURE_OCCURRENCE |
+
+## Kernbegrippen
+
+- **NDJSON**: Newline Delimited JSON
+- **Bulk Export**: Grote datasets exporteren
+- **Flat FHIR**: Tabulaire FHIR data
+- **ViewDefinition**: SQL on FHIR mapping
+- **Parquet**: Columnar data format
+    `,
+    sources: [
+      { name: "FHIR Bulk Data", url: "https://hl7.org/fhir/uv/bulkdata/" },
+      { name: "SQL on FHIR", url: "https://build.fhir.org/ig/FHIR/sql-on-fhir-v2/" },
+      { name: "SMART Backend Services", url: "https://www.hl7.org/fhir/smart-app-launch/backend-services.html" }
+    ]
+  },
+
+  // Track 110: OpenEHR Deep Dive
+  "110.1": {
+    title: "OpenEHR Architectuur & Filosofie",
+    summary: "Fundamentele principes en architectuur van OpenEHR",
+    content: `
+# OpenEHR Architectuur & Filosofie
+
+## Wat is OpenEHR?
+
+OpenEHR is een open standaard voor het opslaan, ophalen en uitwisselen van elektronische gezondheidsdossiers (EHR).
+
+## Kernfilosofie
+
+### Two-Level Modeling
+
+| Niveau | Beschrijving |
+|--------|--------------|
+| Reference Model | Technisch datamodel |
+| Archetypes | Klinische definities |
+
+### Scheiding van zorgen
+- **Techniek**: Stabiel reference model
+- **Kliniek**: Evoluerende archetypes
+- **Lokaal**: Templates voor use cases
+
+## Ontwerpprincipes
+
+| Principe | Betekenis |
+|----------|-----------|
+| Future-proof | Data blijft interpreteerbaar |
+| Vendor-neutral | Geen leveranciersafhankelijkheid |
+| Clinician-led | Clinici modelleren |
+| Computable | Machine-leesbaar |
+
+## OpenEHR Componenten
+
+### Reference Model (RM)
+- Stabiele kern
+- Geneste structuren
+- Compositions als container
+- Entries voor klinische data
+
+### Archetype Model (AM)
+- Constraint-definitie
+- ADL (Archetype Definition Language)
+- Herbruikbaar
+
+### Template Model
+- Combinatie van archetypes
+- Lokale aanpassingen
+- Basis voor UI
+
+## Structuur Hiërarchie
+
+### Top-level containers
+
+| Type | Beschrijving |
+|------|--------------|
+| EHR | Compleet dossier |
+| Composition | Klinisch document |
+| Section | Organisatie |
+| Entry | Klinische statement |
+| Cluster | Herbruikbare groep |
+| Element | Atomaire waarde |
+
+### Entry types
+
+| Entry | Gebruik |
+|-------|---------|
+| OBSERVATION | Metingen, bevindingen |
+| EVALUATION | Diagnoses, assessments |
+| INSTRUCTION | Orders, voorschriften |
+| ACTION | Uitgevoerde acties |
+| ADMIN_ENTRY | Administratief |
+
+## Versioning
+
+### Complete versioning
+- Elke wijziging = nieuwe versie
+- Audit trail ingebouwd
+- Attestations (ondertekening)
+
+### Version lifecycle
+
+| Status | Betekenis |
+|--------|-----------|
+| complete | Definitief |
+| incomplete | In bewerking |
+| deleted | Verwijderd (behouden) |
+
+## Governance
+
+### OpenEHR Foundation
+- Beheert standaard
+- Community-driven
+- Internationale samenwerking
+
+### Clinical Knowledge Manager (CKM)
+- Centrale archetype repository
+- Review proces
+- Internationale archetypes
+
+## Kernbegrippen
+
+- **Two-level modeling**: Scheiding techniek en kliniek
+- **Reference Model**: Technisch datamodel
+- **Archetype**: Klinisch concept definitie
+- **Template**: Lokale samenstelling
+- **Composition**: Klinisch document
+    `,
+    sources: [
+      { name: "OpenEHR", url: "https://www.openehr.org" },
+      { name: "OpenEHR Specifications", url: "https://specifications.openehr.org" }
+    ]
+  },
+
+  "110.2": {
+    title: "Reference Model & Datatypes",
+    summary: "OpenEHR Reference Model structuur en datatypes",
+    content: `
+# Reference Model & Datatypes
+
+## Reference Model Overzicht
+
+Het Reference Model definieert de technische structuur voor alle OpenEHR data.
+
+## RM Packages
+
+| Package | Inhoud |
+|---------|--------|
+| common | Basis types, versioning |
+| data_structures | Clusters, items |
+| data_types | Alle datatypes |
+| composition | Document structuur |
+| ehr | EHR container |
+| demographic | Personen, organisaties |
+
+## Composition Structuur
+
+### COMPOSITION
+
+| Element | Beschrijving |
+|---------|--------------|
+| uid | Unieke identifier |
+| archetype_details | Archetype info |
+| category | event, persistent |
+| context | Setting, participanten |
+| content | Secties en entries |
+
+### EVENT_CONTEXT
+
+| Element | Beschrijving |
+|---------|--------------|
+| start_time | Starttijd |
+| end_time | Eindtijd |
+| location | Locatie |
+| setting | Zorgcontext |
+| participations | Deelnemers |
+
+## Entry Types
+
+### OBSERVATION
+
+| Element | Beschrijving |
+|---------|--------------|
+| data | Geobserveerde data |
+| state | Context van observatie |
+| protocol | Methode/apparaat |
+
+### EVALUATION
+
+| Element | Beschrijving |
+|---------|--------------|
+| data | Evaluatie inhoud |
+| protocol | Methode |
+
+### INSTRUCTION
+
+| Element | Beschrijving |
+|---------|--------------|
+| narrative | Vrije tekst |
+| activities | Geplande activiteiten |
+| expiry_time | Geldigheid |
+
+### ACTION
+
+| Element | Beschrijving |
+|---------|--------------|
+| time | Uitvoertijd |
+| description | Wat gedaan |
+| ism_transition | Status |
+
+## Datatypes
+
+### Primitive types
+
+| Type | Voorbeeld |
+|------|-----------|
+| DV_BOOLEAN | true/false |
+| DV_TEXT | Vrije tekst |
+| DV_CODED_TEXT | Gecodeerde tekst |
+| DV_IDENTIFIER | Identifier |
+
+### Quantity types
+
+| Type | Voorbeeld |
+|------|-----------|
+| DV_QUANTITY | 120 mmHg |
+| DV_COUNT | 42 |
+| DV_PROPORTION | 0.5 (ratio) |
+| DV_ORDINAL | Likert schaal |
+
+### Date/time types
+
+| Type | Voorbeeld |
+|------|-----------|
+| DV_DATE | 2024-01-15 |
+| DV_TIME | 10:30:00 |
+| DV_DATE_TIME | 2024-01-15T10:30:00 |
+| DV_DURATION | P3D (3 dagen) |
+
+### Interval types
+
+| Type | Voorbeeld |
+|------|-----------|
+| DV_INTERVAL<DV_DATE> | Periode |
+| DV_INTERVAL<DV_QUANTITY> | Bereik |
+
+## DV_CODED_TEXT
+
+Gestructureerde codering:
+
+| Element | Beschrijving |
+|---------|--------------|
+| value | Leesbare tekst |
+| defining_code | CODE_PHRASE |
+| terminology_id | SNOMED, LOINC |
+| code_string | De code |
+
+## Clusters en Items
+
+### CLUSTER
+- Herbruikbare groepering
+- Geneste elementen
+- Basis voor archetypen
+
+### ELEMENT
+- Atomaire waarde
+- value: DV_* type
+- null_flavour: ontbrekende waarden
+
+## Kernbegrippen
+
+- **Reference Model**: Technische datastructuur
+- **Composition**: Klinisch document
+- **Entry**: Klinische statement
+- **DV_CODED_TEXT**: Gecodeerde waarde
+- **CLUSTER**: Herbruikbare groep
+    `,
+    sources: [
+      { name: "OpenEHR RM", url: "https://specifications.openehr.org/releases/RM/latest" },
+      { name: "OpenEHR Datatypes", url: "https://specifications.openehr.org/releases/RM/latest/data_types.html" }
+    ]
+  },
+
+  "110.3": {
+    title: "Archetypes: Ontwerp & Beheer",
+    summary: "Archetype design, ADL syntax en Clinical Knowledge Manager",
+    content: `
+# Archetypes: Ontwerp & Beheer
+
+## Wat zijn Archetypes?
+
+Archetypes zijn formele definities van klinische concepten. Ze definiëren welke data vastgelegd kan worden en met welke constraints.
+
+## Archetype Structuur
+
+| Sectie | Inhoud |
+|--------|--------|
+| header | Identifier, meta |
+| specialize | Parent archetype |
+| language | Vertalingen |
+| description | Documentatie |
+| definition | Data structuur |
+| rules | Business rules |
+| terminology | Codes en bindings |
+| annotations | Extra info |
+
+## Archetype Identifier
+
+Format: openEHR-EHR-[class].[concept].v[version]
+
+| Deel | Voorbeeld |
+|------|-----------|
+| namespace | openEHR-EHR |
+| class | OBSERVATION |
+| concept | blood_pressure |
+| version | v2 |
+
+Voorbeeld: openEHR-EHR-OBSERVATION.blood_pressure.v2
+
+## ADL Syntax
+
+### Definition Block
+
+| Element | Syntax |
+|---------|--------|
+| Cardinality | occurrences matches {0..1} |
+| Mandatory | occurrences matches {1..1} |
+| Multiple | occurrences matches {0..*} |
+| Type constraint | DV_QUANTITY[id5] |
+
+### Terminology Block
+
+| Element | Functie |
+|---------|---------|
+| term_definitions | Termen per taal |
+| constraint_definitions | Constraint termen |
+| term_bindings | Binding naar SNOMED/LOINC |
+| value_sets | Toegestane waarden |
+
+## Specialisatie
+
+### Wat is specialisatie?
+- Archetype erft van parent
+- Voegt constraints toe
+- Kan niet verruimen
+
+### Voorbeeld
+- blood_pressure.v2 (general)
+- blood_pressure-sitting.v1 (specialised)
+
+## Clinical Knowledge Manager (CKM)
+
+### Functionaliteit
+
+| Feature | Beschrijving |
+|---------|--------------|
+| Repository | Archetype opslag |
+| Review | Peer review proces |
+| Translation | Meertalig beheer |
+| Governance | Versiebeheer |
+
+### Review Process
+
+| Fase | Actie |
+|------|-------|
+| Draft | Initieel ontwerp |
+| Team review | Interne review |
+| Published | Beschikbaar voor gebruik |
+| Deprecated | Niet meer aanbevolen |
+
+### Internationale CKM
+- openEHR International
+- Nationale CKM's (NL, UK, AU)
+- Project-specifieke CKM's
+
+## Archetype Ontwerp Principes
+
+### Granulariteit
+
+| Niveau | Voorbeeld |
+|--------|-----------|
+| Coarse | Volledige anamnese |
+| Medium | Bloeddrukmeting |
+| Fine | Enkel symptoom |
+
+### Herbruikbaarheid
+- Maximaliseer hergebruik
+- Slot/fill mechanisme
+- Cluster archetypes
+
+### Naming conventions
+- Engels als basis
+- Underscore scheiding
+- Beschrijvende namen
+
+## Tools
+
+### Archetype Designer
+
+| Tool | Leverancier |
+|------|-------------|
+| Archetype Designer | Better |
+| LinkEHR | Universitat Politècnica de València |
+| Ocean Archetype Editor | Ocean Informatics |
+| ADL Designer | openEHR |
+
+## Kernbegrippen
+
+- **Archetype**: Klinisch concept definitie
+- **ADL**: Archetype Definition Language
+- **CKM**: Clinical Knowledge Manager
+- **Specialisation**: Archetype overerving
+- **Slot**: Placeholder voor andere archetypes
+    `,
+    sources: [
+      { name: "OpenEHR CKM", url: "https://ckm.openehr.org" },
+      { name: "ADL Specification", url: "https://specifications.openehr.org/releases/AM/latest" }
+    ]
+  },
+
+  "110.4": {
+    title: "Templates & Operational Templates",
+    summary: "OpenEHR templates, OPT generatie en formulierontwerp",
+    content: `
+# Templates & Operational Templates
+
+## Wat zijn Templates?
+
+Templates combineren archetypes tot use-case specifieke datasets. Ze vormen de basis voor formulieren en API's.
+
+## Template vs Archetype
+
+| Aspect | Archetype | Template |
+|--------|-----------|----------|
+| Scope | Universeel concept | Lokale use case |
+| Beheer | Internationaal | Lokaal/project |
+| Hergebruik | Hoog | Laag |
+| Constraints | Basis | Aanvullend |
+
+## Template Structuur
+
+### Componenten
+
+| Component | Beschrijving |
+|-----------|--------------|
+| Root archetype | Hoofd composition |
+| Filled slots | Ingevulde archetypes |
+| Constraints | Extra beperkingen |
+| Removed elements | Weggelaten velden |
+
+### Template header
+
+| Element | Waarde |
+|---------|--------|
+| template_id | Unieke identifier |
+| name | Leesbare naam |
+| archetype_id | Root archetype |
+| build_uid | Versie ID |
+
+## Slot Filling
+
+### Slot definitie (archetype)
+Slot definieert welke archetypes toegestaan:
+- include: Toegestane archetypes
+- exclude: Uitgesloten archetypes
+
+### Fill (template)
+Template vult slot met specifiek archetype:
+- Kiest uit toegestane opties
+- Voegt constraints toe
+
+## Operational Template (OPT)
+
+### Wat is een OPT?
+- Gecompileerde template
+- Alle archetypes inline
+- Klaar voor implementatie
+
+### OPT Format
+- XML (OPT 1.4)
+- JSON (OPT 2.0)
+- Bevat volledige definitie
+
+### OPT Gebruik
+
+| Toepassing | Beschrijving |
+|------------|--------------|
+| Formulieren | UI generatie |
+| Validatie | Data validatie |
+| Query | AQL generatie |
+| API | Schema voor REST |
+
+## Template Ontwerp
+
+### Best Practices
+
+| Practice | Toelichting |
+|----------|-------------|
+| Minimaal | Alleen noodzakelijke velden |
+| Validatie | Voeg constraints toe |
+| Naamgeving | Duidelijke namen |
+| Documentatie | Annotaties toevoegen |
+
+### Constraints in Templates
+
+| Type | Voorbeeld |
+|------|-----------|
+| Remove element | Veld niet tonen |
+| Make mandatory | 0..1 → 1..1 |
+| Restrict values | ValueSet beperken |
+| Fix value | Constante waarde |
+
+## Form Generatie
+
+### Van OPT naar Formulier
+
+| Stap | Tool |
+|------|------|
+| OPT laden | Form builder |
+| Layout | Drag-drop |
+| Styling | CSS/themes |
+| Validatie | Automatisch |
+| Preview | Live test |
+
+### Form Builders
+
+| Tool | Kenmerken |
+|------|-----------|
+| Better Form Builder | Enterprise |
+| EHRbase Web Template | Open source |
+| Medblocks UI | React components |
+
+## Web Template
+
+### Modern alternatief
+- JSON formaat
+- Lighter dan OPT
+- Web-friendly
+
+### Structuur
+
+| Element | Beschrijving |
+|---------|--------------|
+| tree | Hiërarchie |
+| inputs | Velden met types |
+| annotations | Metadata |
+| constraints | Validatieregels |
+
+## Kernbegrippen
+
+- **Template**: Lokale samenstelling archetypes
+- **OPT**: Operational Template
+- **Slot**: Placeholder in archetype
+- **Fill**: Slot vullen met archetype
+- **Web Template**: Modern JSON formaat
+    `,
+    sources: [
+      { name: "OpenEHR Templates", url: "https://specifications.openehr.org/releases/AM/latest/OPT2.html" },
+      { name: "Better Template Designer", url: "https://tools.openehr.org" }
+    ]
+  },
+
+  "110.5": {
+    title: "AQL: Archetype Query Language",
+    summary: "Querying OpenEHR data met Archetype Query Language",
+    content: `
+# AQL: Archetype Query Language
+
+## Wat is AQL?
+
+AQL is een query-taal specifiek voor OpenEHR data. Het combineert SQL-achtige syntax met archetype-aware querying.
+
+## AQL Kenmerken
+
+| Kenmerk | Beschrijving |
+|---------|--------------|
+| Archetype-aware | Query op archetype paden |
+| SQL-like | Bekende syntax |
+| Portable | Onafhankelijk van storage |
+| Semantic | Query op betekenis |
+
+## Basis Syntax
+
+### SELECT-FROM-WHERE
+
+| Clause | Functie |
+|--------|---------|
+| SELECT | Welke data ophalen |
+| FROM | Welke compositions |
+| WHERE | Filters |
+| ORDER BY | Sortering |
+| LIMIT | Maximaal aantal |
+
+## FROM Clause
+
+### EHR en Compositions
+
+| Variabele | Betekenis |
+|-----------|-----------|
+| e | EHR |
+| c | COMPOSITION |
+| o | OBSERVATION |
+| a | ACTION |
+
+### Voorbeeld
+FROM EHR e CONTAINS COMPOSITION c[openEHR-EHR-COMPOSITION.encounter.v1]
+
+## CONTAINS Keyword
+
+### Nesting
+
+| Pattern | Betekenis |
+|---------|-----------|
+| EHR CONTAINS COMPOSITION | Compositions in EHR |
+| COMPOSITION CONTAINS OBSERVATION | Observations in Composition |
+| AND | Beide aanwezig |
+| OR | Een van beide |
+
+## SELECT Clause
+
+### Archetype Paden
+
+| Pad | Beschrijving |
+|----|--------------|
+| c/name/value | Composition naam |
+| o/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value | Specifieke waarde |
+
+### Functies
+
+| Functie | Resultaat |
+|---------|-----------|
+| COUNT() | Aantal |
+| MAX() | Maximum |
+| MIN() | Minimum |
+| AVG() | Gemiddelde |
+
+## WHERE Clause
+
+### Operators
+
+| Operator | Voorbeeld |
+|----------|-----------|
+| = | value = 120 |
+| != | status != 'active' |
+| > < >= <= | value > 100 |
+| LIKE | name LIKE '%jan%' |
+| MATCHES | code MATCHES {'at0001','at0002'} |
+| EXISTS | EXISTS o/data |
+
+### Datum functies
+
+| Functie | Voorbeeld |
+|---------|-----------|
+| Now() | Huidige tijd |
+| Current_date() | Vandaag |
+
+## Voorbeelden
+
+### Alle bloeddrukmetingen
+SELECT o/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude as systolic
+FROM EHR e
+CONTAINS OBSERVATION o[openEHR-EHR-OBSERVATION.blood_pressure.v2]
+
+### Metingen laatste maand
+WHERE o/data[at0001]/events[at0006]/time > (Current_date() - 30d)
+
+### Specifieke patient
+WHERE e/ehr_id/value = 'abc-123'
+
+## AQL Tools
+
+### Query Builders
+
+| Tool | Type |
+|------|------|
+| Better AQL | Visual builder |
+| EHRbase Console | Command line |
+| Archetype Designer | Integrated |
+
+### Testing
+
+| Stap | Actie |
+|------|-------|
+| 1 | Bouw query |
+| 2 | Valideer syntax |
+| 3 | Test met sample data |
+| 4 | Optimaliseer performance |
+
+## Performance
+
+### Tips
+
+| Tip | Effect |
+|-----|--------|
+| Specifieke paths | Minder data ophalen |
+| Indexes | CDR configuratie |
+| LIMIT | Beperk resultaten |
+| Archetype filters | Minder compositions |
+
+## Kernbegrippen
+
+- **AQL**: Archetype Query Language
+- **CONTAINS**: Navigatie door structuur
+- **Archetype path**: Pad naar element
+- **at-code**: Archetype term code
+- **MATCHES**: Set vergelijking
+    `,
+    sources: [
+      { name: "OpenEHR AQL", url: "https://specifications.openehr.org/releases/QUERY/latest/AQL.html" },
+      { name: "AQL Examples", url: "https://www.openehr.org/downloads/AQL" }
+    ]
+  },
+
+  "110.6": {
+    title: "OpenEHR Platforms & CDR's",
+    summary: "Clinical Data Repositories en OpenEHR platform implementaties",
+    content: `
+# OpenEHR Platforms & CDR's
+
+## Wat is een CDR?
+
+Een Clinical Data Repository is de database die OpenEHR data opslaat en ontsluit.
+
+## CDR Functionaliteiten
+
+| Functie | Beschrijving |
+|---------|--------------|
+| Storage | Composition opslag |
+| Versioning | Volledige historie |
+| Query | AQL ondersteuning |
+| Validation | Template validatie |
+| API | REST interfaces |
+
+## OpenEHR Platforms
+
+### EHRbase
+
+| Aspect | Details |
+|--------|---------|
+| Licentie | Apache 2.0 |
+| Technologie | Java, PostgreSQL |
+| API | REST, openEHR REST |
+| Status | Productie-ready |
+
+### Better Platform
+
+| Aspect | Details |
+|--------|---------|
+| Licentie | Commercial |
+| Technologie | Java |
+| Features | Form builder, Studio |
+| Status | Enterprise |
+
+### Ocean Health Systems
+
+| Aspect | Details |
+|--------|---------|
+| Licentie | Commercial |
+| Technologie | .NET |
+| Focus | Australië, UK |
+| Status | Enterprise |
+
+### Nedap Healthcare
+
+| Aspect | Details |
+|--------|---------|
+| Licentie | Commercial |
+| Focus | Nederlandse zorg |
+| Product | Ons EPD |
+
+## EHRbase Architectuur
+
+### Componenten
+
+| Component | Functie |
+|-----------|---------|
+| REST API | HTTP interface |
+| AQL Engine | Query processing |
+| Validation | OPT validatie |
+| Storage | PostgreSQL |
+
+### API Endpoints
+
+| Endpoint | Functie |
+|----------|---------|
+| /ehr | EHR management |
+| /composition | CRUD compositions |
+| /template | OPT upload |
+| /query | AQL uitvoeren |
+| /definition | Stored queries |
+
+## REST API Standaard
+
+### OpenEHR REST Spec
+
+| Resource | Methods |
+|----------|---------|
+| EHR | GET, POST |
+| COMPOSITION | GET, POST, PUT, DELETE |
+| CONTRIBUTION | GET, POST |
+| QUERY | GET, POST |
+
+### Voorbeelden
+- POST /ehr - Maak EHR
+- GET /composition/{uid} - Haal composition
+- POST /query - Voer AQL uit
+
+## Deployment
+
+### On-premise
+
+| Aspect | Overwegingen |
+|--------|--------------|
+| Infrastructuur | Eigen servers |
+| Beheer | IT afdeling |
+| Data | Interne opslag |
+| Compliance | Volledige controle |
+
+### Cloud
+
+| Provider | Opties |
+|----------|--------|
+| AWS | EC2, RDS |
+| Azure | VMs, PostgreSQL |
+| GCP | Compute, Cloud SQL |
+
+### Container
+
+| Tool | Gebruik |
+|------|---------|
+| Docker | Development |
+| Kubernetes | Productie |
+| Helm | Deployment |
+
+## Integratie Patronen
+
+### Facade
+- OpenEHR als API laag
+- Bestaande systemen erachter
+
+### Repository
+- OpenEHR als centrale opslag
+- Systemen schrijven naar CDR
+
+### Hybrid
+- Combinatie van beide
+- Per domein bepaald
+
+## Kernbegrippen
+
+- **CDR**: Clinical Data Repository
+- **EHRbase**: Open source OpenEHR server
+- **Contribution**: Commit van wijzigingen
+- **Stored query**: Opgeslagen AQL
+- **OpenEHR REST**: Standaard API spec
+    `,
+    sources: [
+      { name: "EHRbase", url: "https://ehrbase.org" },
+      { name: "Better Platform", url: "https://better.care/platform" },
+      { name: "OpenEHR REST API", url: "https://specifications.openehr.org/releases/ITS-REST/latest" }
+    ]
+  },
+
+  "110.7": {
+    title: "Klinisch Modelleren met OpenEHR",
+    summary: "Proces en best practices voor klinisch modelleren",
+    content: `
+# Klinisch Modelleren met OpenEHR
+
+## Wat is Klinisch Modelleren?
+
+Het formeel vastleggen van klinische concepten in archetypes, gedreven door clinici en ondersteund door informatici.
+
+## Modelleringproces
+
+### Stappen
+
+| Stap | Activiteit |
+|------|------------|
+| 1 | Requirements verzamelen |
+| 2 | Bestaande archetypes zoeken |
+| 3 | Gap analyse |
+| 4 | Nieuwe archetypes ontwerpen |
+| 5 | Review met clinici |
+| 6 | Templates samenstellen |
+| 7 | Validatie en test |
+
+## Rollen
+
+| Rol | Verantwoordelijkheid |
+|-----|---------------------|
+| Clinicus | Klinische kennis |
+| Modelleur | Technische vertaling |
+| Reviewer | Kwaliteitscontrole |
+| Governance | Standaardisatie |
+
+## Requirements Verzamelen
+
+### Input bronnen
+
+| Bron | Type |
+|------|------|
+| Formulieren | Huidige praktijk |
+| Protocollen | Standaard zorg |
+| Interviews | Klinische kennis |
+| Richtlijnen | Best practices |
+
+### Output
+- Lijst van concepten
+- Data elementen
+- Relaties
+- Constraints
+
+## Archetype Hergebruik
+
+### CKM Zoeken
+
+| Strategie | Methode |
+|-----------|---------|
+| Keyword | Zoek op term |
+| Browse | Per domein |
+| Similar | Vergelijkbare archetypes |
+
+### Evaluatie
+
+| Criterium | Vraag |
+|-----------|-------|
+| Completeness | Alle elementen aanwezig? |
+| Constraints | Passend voor use case? |
+| Status | Published of draft? |
+| Translations | Nederlandse versie? |
+
+## Nieuw Archetype Ontwerpen
+
+### Design Principes
+
+| Principe | Uitleg |
+|----------|--------|
+| Maximal dataset | Alles wat relevant kan zijn |
+| Clinical focus | Niet technisch gedreven |
+| Reusable | Breed inzetbaar |
+| Future-proof | Extensies mogelijk |
+
+### Naamgeving
+
+| Element | Conventie |
+|---------|-----------|
+| Archetype ID | snake_case, Engels |
+| Termen | Klinisch duidelijk |
+| Beschrijvingen | Uitgebreid |
+
+## Review Proces
+
+### Review Types
+
+| Type | Focus |
+|------|-------|
+| Technical | ADL correctheid |
+| Clinical | Klinische juistheid |
+| Editorial | Taal en stijl |
+| Translation | Vertalingkwaliteit |
+
+### Review Cycli
+
+| Fase | Actie |
+|------|-------|
+| Draft | Initieel ontwerp |
+| Team review | Eerste feedback |
+| Public review | Bredere community |
+| Published | Definitief |
+
+## Template Design
+
+### Samenstelling
+
+| Stap | Actie |
+|------|-------|
+| 1 | Selecteer root archetype |
+| 2 | Vul slots |
+| 3 | Verwijder onnodige elementen |
+| 4 | Voeg constraints toe |
+| 5 | Definieer defaults |
+
+### Lokale aanpassingen
+- ValueSets beperken
+- Velden verplicht maken
+- Elementen verbergen
+
+## Governance
+
+### Nationaal beheer
+- Centrale CKM
+- Review commissie
+- Versiebeheer
+
+### Project governance
+- Lokale aanpassingen
+- Template beheer
+- Change management
+
+## Kernbegrippen
+
+- **Klinisch modelleren**: Formaliseren van klinische concepten
+- **Gap analyse**: Ontbrekende archetypes identificeren
+- **Review**: Kwaliteitscontrole proces
+- **Maximal dataset**: Complete set mogelijke data
+- **Governance**: Beheer en besluitvorming
+    `,
+    sources: [
+      { name: "OpenEHR Clinical Modeling", url: "https://www.openehr.org/programs/clinicalmodels" },
+      { name: "CKM", url: "https://ckm.openehr.org" }
+    ]
+  },
+
+  "110.8": {
+    title: "OpenEHR & FHIR Integratie",
+    summary: "Combineren van OpenEHR en FHIR voor opslag en uitwisseling",
+    content: `
+# OpenEHR & FHIR Integratie
+
+## Waarom Combineren?
+
+| OpenEHR | FHIR |
+|---------|------|
+| Optimaal voor opslag | Optimaal voor uitwisseling |
+| Rijke klinische modellen | Brede adoptie |
+| Toekomstbestendig | API-standaard |
+
+## Integratiescenario's
+
+### OpenEHR als Backend
+
+| Flow | Beschrijving |
+|------|--------------|
+| FHIR in | Data via FHIR API |
+| Transform | Naar OpenEHR formaat |
+| Store | In CDR |
+| FHIR out | Ophalen via FHIR |
+
+### Parallelle Systemen
+
+| Systeem | Rol |
+|---------|-----|
+| OpenEHR | Primaire opslag |
+| FHIR | Externe integratie |
+| Sync | Bi-directioneel |
+
+## Mapping Strategieën
+
+### Archetype naar FHIR Profile
+
+| OpenEHR | FHIR |
+|---------|------|
+| OBSERVATION | Observation |
+| EVALUATION | Condition, DiagnosticReport |
+| INSTRUCTION | ServiceRequest, MedicationRequest |
+| ACTION | Procedure |
+
+### Element Mapping
+
+| OpenEHR Element | FHIR Element |
+|-----------------|--------------|
+| DV_CODED_TEXT | CodeableConcept |
+| DV_QUANTITY | Quantity |
+| DV_DATE_TIME | dateTime |
+| PARTY_IDENTIFIED | Reference |
+
+## Mapping Tools
+
+### OpenEHR-FHIR Transformatie
+
+| Tool | Type |
+|------|------|
+| FHIR Bridge | EHRbase plugin |
+| ETL scripts | Custom |
+| Integration Engine | Mirth, Rhapsody |
+
+### FHIR Bridge
+
+| Feature | Beschrijving |
+|---------|--------------|
+| Profiles | Nederlandse profielen |
+| Bidirectioneel | Beide richtingen |
+| Configureerbaar | Mapping regels |
+
+## Architectuur Patronen
+
+### Pattern 1: FHIR Facade
+
+| Component | Functie |
+|-----------|---------|
+| FHIR API | Externe interface |
+| Translator | Mapping laag |
+| CDR | OpenEHR opslag |
+
+### Pattern 2: Dual Write
+
+| Stap | Actie |
+|------|-------|
+| 1 | Data binnenkomt |
+| 2 | Schrijf naar OpenEHR |
+| 3 | Schrijf naar FHIR |
+| 4 | Sync controle |
+
+### Pattern 3: Event-Driven
+
+| Event | Actie |
+|-------|-------|
+| Create | Publiceer event |
+| Subscriber | Transformeer en store |
+| Kafka/RabbitMQ | Message broker |
+
+## Uitdagingen
+
+| Uitdaging | Oplossing |
+|-----------|-----------|
+| Semantische mismatch | Expliciete mappings |
+| Granulariteit | Aggregatie/decompositie |
+| Terminologie | Gezamenlijke bindings |
+| Updates | Versioning strategie |
+
+## Use Cases
+
+### Patiëntportaal
+- OpenEHR: Klinische opslag
+- FHIR: MedMij/PGO interface
+
+### Onderzoek
+- OpenEHR: Rijke data
+- FHIR Bulk: Export
+
+### Regionale uitwisseling
+- OpenEHR: Ziekenhuis EPD
+- FHIR: Twiin/LSP
+
+## Praktijkvoorbeelden
+
+### Better Platform
+- Native OpenEHR
+- FHIR facade
+- Nederlandse profielen
+
+### EHRbase
+- FHIR Bridge plugin
+- Open source
+- Configureerbare mapping
+
+## Kernbegrippen
+
+- **Facade**: API laag over andere storage
+- **Dual write**: Naar beide systemen schrijven
+- **FHIR Bridge**: OpenEHR-FHIR translator
+- **Mapping**: Vertaling tussen modellen
+- **Event-driven**: Asynchrone sync
+    `,
+    sources: [
+      { name: "EHRbase FHIR Bridge", url: "https://github.com/ehrbase/fhir-bridge" },
+      { name: "OpenEHR FHIR", url: "https://www.openehr.org/programs/fhir" }
+    ]
+  },
+
+  // Track 111: OMOP & OHDSI Deep Dive
+  "111.1": {
+    title: "OMOP Common Data Model Fundamentals",
+    summary: "Basisprincipes van het OMOP Common Data Model",
+    content: `
+# OMOP Common Data Model Fundamentals
+
+## Wat is OMOP CDM?
+
+OMOP (Observational Medical Outcomes Partnership) Common Data Model is een gestandaardiseerd datamodel voor observationeel gezondheidsonderzoek.
+
+## OHDSI Community
+
+| Aspect | Beschrijving |
+|--------|--------------|
+| Naam | Observational Health Data Sciences and Informatics |
+| Focus | Open science, collaborative research |
+| Deelnemers | 400+ organisaties wereldwijd |
+| Output | Tools, studies, standaarden |
+
+## Ontwerpprincipes
+
+| Principe | Uitleg |
+|----------|--------|
+| Person-centric | Alles gekoppeld aan persoon |
+| Standardized | Uniforme vocabulaires |
+| Observation period | Tijdsgebonden data |
+| Analytical focus | Niet voor primaire zorg |
+
+## CDM Tabel Categorieën
+
+### Clinical Data
+
+| Tabel | Inhoud |
+|-------|--------|
+| CONDITION_OCCURRENCE | Diagnoses |
+| DRUG_EXPOSURE | Medicatie |
+| PROCEDURE_OCCURRENCE | Verrichtingen |
+| MEASUREMENT | Labwaarden, vitals |
+| OBSERVATION | Overige bevindingen |
+| DEVICE_EXPOSURE | Hulpmiddelen |
+
+### Health System
+
+| Tabel | Inhoud |
+|-------|--------|
+| PERSON | Demografische gegevens |
+| OBSERVATION_PERIOD | Periode van data |
+| VISIT_OCCURRENCE | Zorgcontacten |
+| CARE_SITE | Zorglocaties |
+| PROVIDER | Zorgverleners |
+
+### Health Economics
+
+| Tabel | Inhoud |
+|-------|--------|
+| PAYER_PLAN_PERIOD | Verzekering |
+| COST | Kosten |
+
+### Metadata
+
+| Tabel | Inhoud |
+|-------|--------|
+| CDM_SOURCE | Databron info |
+| METADATA | Extra metadata |
+
+## PERSON Tabel
+
+| Kolom | Beschrijving |
+|-------|--------------|
+| person_id | Unieke identifier |
+| gender_concept_id | Geslacht (concept) |
+| year_of_birth | Geboortejaar |
+| race_concept_id | Etniciteit |
+| location_id | Adres link |
+
+## CONDITION_OCCURRENCE
+
+| Kolom | Beschrijving |
+|-------|--------------|
+| condition_occurrence_id | Unieke ID |
+| person_id | Link naar persoon |
+| condition_concept_id | Gestandaardiseerde code |
+| condition_start_date | Startdatum |
+| condition_type_concept_id | Bron van diagnose |
+| condition_source_value | Originele code |
+
+## Concept IDs
+
+### Standaardisatie
+- Elke waarde heeft een concept_id
+- Concepts uit standaard vocabulaires
+- Mapping van bron naar standaard
+
+### Voorbeeld
+- ICD-10 code E11.9 (source)
+- SNOMED 44054006 (standard concept)
+- concept_id: 201826
+
+## Observation Period
+
+| Aspect | Betekenis |
+|--------|-----------|
+| Start | Eerste zichtbare data |
+| End | Laatste zichtbare data |
+| Coverage | Periode van compleetheid |
+
+## Kernbegrippen
+
+- **CDM**: Common Data Model
+- **OHDSI**: Open health data community
+- **Concept**: Gestandaardiseerde term met ID
+- **Observation Period**: Periode van data coverage
+- **Source value**: Originele waarde uit bron
+    `,
+    sources: [
+      { name: "OHDSI", url: "https://www.ohdsi.org" },
+      { name: "OMOP CDM", url: "https://ohdsi.github.io/CommonDataModel/" }
+    ]
+  },
+
+  "111.2": {
+    title: "OMOP Vocabularies & Concept Mapping",
+    summary: "OMOP vocabulaire systeem en mapping van broncodes naar standaard concepts",
+    content: `
+# OMOP Vocabularies & Concept Mapping
+
+## OMOP Vocabularies
+
+Het OMOP vocabulaire systeem uniformeert medische codes uit verschillende bronnen.
+
+## Vocabulary Structuur
+
+| Tabel | Inhoud |
+|-------|--------|
+| CONCEPT | Alle concepts |
+| VOCABULARY | Vocabulaire metadata |
+| DOMAIN | Domeinen |
+| CONCEPT_RELATIONSHIP | Relaties |
+| CONCEPT_ANCESTOR | Hiërarchie |
+| CONCEPT_SYNONYM | Synoniemen |
+
+## CONCEPT Tabel
+
+| Kolom | Beschrijving |
+|-------|--------------|
+| concept_id | Unieke identifier |
+| concept_name | Leesbare naam |
+| domain_id | Domein (Condition, Drug, etc.) |
+| vocabulary_id | Bron vocabulaire |
+| concept_class_id | Type concept |
+| standard_concept | S=standaard, C=classificatie |
+| concept_code | Originele code |
+
+## Standaard Vocabulaires
+
+### Clinical
+
+| Vocabulaire | Domein |
+|-------------|--------|
+| SNOMED | Conditions, Procedures |
+| LOINC | Measurements |
+| RxNorm | Drugs (US) |
+| RxNorm Extension | Drugs (Internationaal) |
+| UCUM | Units |
+
+### Source Vocabulaires
+
+| Vocabulaire | Gebruik |
+|-------------|---------|
+| ICD10CM | Diagnoses |
+| ICD10PCS | Procedures |
+| ATC | Medicatie classificatie |
+| NDC | Drug products |
+| CPT4 | Procedures (US) |
+
+## Mapping Proces
+
+### Source to Standard
+
+| Stap | Actie |
+|------|-------|
+| 1 | Identificeer broncode |
+| 2 | Zoek in CONCEPT_RELATIONSHIP |
+| 3 | Vind relationship_id = 'Maps to' |
+| 4 | Gebruik target als standard_concept |
+
+### Mapping Types
+
+| Type | Beschrijving |
+|------|--------------|
+| Maps to | Standaard mapping |
+| Maps to value | Voor waarde mapping |
+| Is a | Hiërarchische relatie |
+
+## Athena
+
+### Wat is Athena?
+Online vocabulaire repository en download tool.
+
+### Functionaliteit
+
+| Feature | Beschrijving |
+|---------|--------------|
+| Search | Zoek concepts |
+| Download | Vocabulaires downloaden |
+| Browse | Hiërarchie bekijken |
+| Relationships | Relaties verkennen |
+
+### Licenties
+Sommige vocabulaires vereisen licentie:
+- SNOMED: Nationaal lidmaatschap
+- CPT: AMA licentie
+- RxNorm: UMLS account
+
+## Concept Mapping Tools
+
+### Usagi
+
+| Feature | Beschrijving |
+|---------|--------------|
+| Doel | Broncodes mappen |
+| Input | CSV met broncodes |
+| Suggesties | Automatische matching |
+| Review | Handmatige controle |
+
+### Usagi Workflow
+
+| Stap | Actie |
+|------|-------|
+| 1 | Import broncodes |
+| 2 | Auto-match |
+| 3 | Review suggesties |
+| 4 | Handmatige mapping |
+| 5 | Export mapping tabel |
+
+## Hiërarchie
+
+### CONCEPT_ANCESTOR
+
+| Kolom | Beschrijving |
+|-------|--------------|
+| ancestor_concept_id | Hoger concept |
+| descendant_concept_id | Lager concept |
+| min_levels_of_separation | Minimale afstand |
+| max_levels_of_separation | Maximale afstand |
+
+### Gebruik
+- Cohort inclusie criteria
+- Aggregatie voor analyse
+- Rollup rapportages
+
+## Best Practices
+
+### Mapping
+
+| Practice | Uitleg |
+|----------|--------|
+| Prefer standard | Altijd naar standaard |
+| Document decisions | Vastleggen keuzes |
+| Regular updates | Vocabulaires updaten |
+| Quality checks | Unmapped controleren |
+
+## Kernbegrippen
+
+- **Vocabulary**: Codestelsel met concepts
+- **Standard concept**: Geprefereerde term
+- **Source concept**: Originele broncode
+- **Athena**: OMOP vocabulaire repository
+- **Usagi**: Mapping tool
+    `,
+    sources: [
+      { name: "ATHENA", url: "https://athena.ohdsi.org" },
+      { name: "Usagi", url: "https://github.com/OHDSI/Usagi" },
+      { name: "OHDSI Vocabularies", url: "https://ohdsi.github.io/TheBookOfOhdsi/StandardizedVocabularies.html" }
+    ]
+  },
+
+  "111.3": {
+    title: "ETL naar OMOP: Strategie & Tools",
+    summary: "Extract-Transform-Load proces voor OMOP conversie",
+    content: `
+# ETL naar OMOP: Strategie & Tools
+
+## ETL Overzicht
+
+ETL (Extract, Transform, Load) converteert brondata naar OMOP CDM formaat.
+
+## ETL Fasen
+
+| Fase | Activiteit |
+|------|------------|
+| Extract | Data uit bronsystemen |
+| Transform | Conversie naar OMOP |
+| Load | Laden in CDM database |
+
+## OHDSI ETL Tools
+
+### White Rabbit
+
+| Functie | Beschrijving |
+|---------|--------------|
+| Doel | Brondata profilering |
+| Output | Scan rapport |
+| Input | Database of CSV |
+
+### Scan Rapport
+
+| Informatie | Details |
+|------------|---------|
+| Tabellen | Aantal, namen |
+| Kolommen | Types, vulling |
+| Waarden | Frequenties |
+| Kwaliteit | Missing, invalid |
+
+### Rabbit-in-a-Hat
+
+| Functie | Beschrijving |
+|---------|--------------|
+| Doel | ETL mapping documentatie |
+| Input | White Rabbit scan |
+| Output | Mapping document |
+
+### Mapping Document
+
+| Sectie | Inhoud |
+|--------|--------|
+| Source tables | Brontabellen |
+| Target tables | CDM tabellen |
+| Field mappings | Kolom naar kolom |
+| Logic | Transformatie regels |
+
+## ETL Architectuur
+
+### Directe ETL
+
+| Component | Tool |
+|-----------|------|
+| Orchestratie | Airflow, Luigi |
+| Transformatie | SQL, Python |
+| Scheduling | Cron, Cloud scheduler |
+
+### ELT Variant
+
+| Stap | Actie |
+|------|-------|
+| Extract | Data naar staging |
+| Load | Naar OMOP schema |
+| Transform | In-database SQL |
+
+## Transformatie Patterns
+
+### Person Mapping
+
+| Bron | OMOP |
+|------|------|
+| patient_id | person_id |
+| sex | gender_concept_id |
+| birth_date | year_of_birth, etc |
+| address | location_id |
+
+### Condition Mapping
+
+| Bron | OMOP |
+|------|------|
+| diagnosis_code (ICD-10) | condition_source_value |
+| - | condition_concept_id (via mapping) |
+| diagnosis_date | condition_start_date |
+| encounter_id | visit_occurrence_id |
+
+### Drug Mapping
+
+| Bron | OMOP |
+|------|------|
+| medication_code | drug_source_value |
+| - | drug_concept_id (via RxNorm) |
+| start_date | drug_exposure_start_date |
+| quantity | quantity |
+| days_supply | days_supply |
+
+## Vocabulaire Mapping
+
+### Mapping Tabellen
+
+| Tabel | Gebruik |
+|-------|---------|
+| SOURCE_TO_CONCEPT_MAP | Lokale mappings |
+| CONCEPT_RELATIONSHIP | Standaard mappings |
+
+### SOURCE_TO_CONCEPT_MAP
+
+| Kolom | Beschrijving |
+|-------|--------------|
+| source_code | Broncode |
+| source_vocabulary_id | Bron vocabulaire |
+| target_concept_id | OMOP concept |
+| target_vocabulary_id | Target vocabulaire |
+
+## Data Quality
+
+### Pre-ETL Checks
+
+| Check | Doel |
+|-------|------|
+| Completeness | Alle data aanwezig |
+| Validity | Correcte formaten |
+| Consistency | Geen conflicten |
+
+### Post-ETL Checks
+
+| Check | Tool |
+|-------|------|
+| Row counts | ETL validatie |
+| ACHILLES | Data karakterisatie |
+| DQD | Data Quality Dashboard |
+
+## Best Practices
+
+| Practice | Uitleg |
+|----------|--------|
+| Incremental | Alleen delta laden |
+| Idempotent | Herhaalbaar |
+| Audit trail | Logging |
+| Rollback | Mogelijkheid terugdraaien |
+
+## Kernbegrippen
+
+- **ETL**: Extract, Transform, Load
+- **White Rabbit**: Brondata profiler
+- **Rabbit-in-a-Hat**: Mapping documentatie
+- **SOURCE_TO_CONCEPT_MAP**: Lokale mappings
+- **Staging**: Tussenopslag
+    `,
+    sources: [
+      { name: "White Rabbit", url: "https://github.com/OHDSI/WhiteRabbit" },
+      { name: "OHDSI ETL", url: "https://ohdsi.github.io/TheBookOfOhdsi/ExtractTransformLoad.html" }
+    ]
+  },
+
+  "111.4": {
+    title: "OHDSI Tools: ATLAS & Cohort Definitie",
+    summary: "ATLAS platform en cohort definitie voor onderzoek",
+    content: `
+# OHDSI Tools: ATLAS & Cohort Definitie
+
+## ATLAS Overzicht
+
+ATLAS is het centrale analytics platform van OHDSI voor data exploratie en onderzoek.
+
+## ATLAS Modules
+
+| Module | Functie |
+|--------|---------|
+| Data Sources | Database connecties |
+| Vocabulary Search | Concept zoeken |
+| Concept Sets | Concept groepen |
+| Cohort Definitions | Populatie definitie |
+| Characterizations | Data beschrijving |
+| Cohort Pathways | Zorgpaden analyse |
+| Incidence Rates | Incidentie berekening |
+| Estimation | Effect schatting |
+| Prediction | Predictive modeling |
+
+## Cohort Definitie
+
+### Wat is een Cohort?
+Een cohort is een set personen die voldoen aan specifieke criteria gedurende een bepaalde tijd.
+
+### Cohort Structuur
+
+| Element | Beschrijving |
+|---------|--------------|
+| Entry events | Hoe komt iemand in cohort |
+| Inclusion criteria | Extra voorwaarden |
+| Exit criteria | Wanneer eruit |
+| Censoring | Observatie einde |
+
+### Entry Events
+
+| Type | Voorbeeld |
+|------|-----------|
+| Condition | Diagnose diabetes |
+| Drug | Start metformine |
+| Procedure | Heupvervanging |
+| Measurement | Verhoogde glucose |
+| Visit | Ziekenhuisopname |
+
+## Concept Sets
+
+### Definitie
+Verzameling van concepts die samen een klinisch begrip representeren.
+
+### Opbouw
+
+| Actie | Beschrijving |
+|-------|--------------|
+| Add concepts | Selecteer concepts |
+| Include descendants | Voeg kinderen toe |
+| Exclude | Sluit specifieke uit |
+| Map to standard | Automatisch |
+
+### Voorbeeld: Diabetes
+
+| Concept | ID |
+|---------|-----|
+| Type 2 diabetes mellitus | 201826 |
+| + all descendants | auto |
+| - Gestational diabetes | exclude |
+
+## Inclusion Criteria
+
+### Temporal Logic
+
+| Criterium | Betekenis |
+|-----------|-----------|
+| Within X days before | In periode voor |
+| Within X days after | In periode na |
+| Having between X and Y | Aantal occurrences |
+| First occurrence | Eerste keer |
+
+### Attribute Criteria
+
+| Attribuut | Voorbeeld |
+|-----------|-----------|
+| Age | Tussen 40 en 65 |
+| Gender | Vrouw |
+| Visit type | Inpatient |
+
+## Cohort Generation
+
+### Proces
+
+| Stap | Actie |
+|------|-------|
+| 1 | Definieer cohort in ATLAS |
+| 2 | Genereer SQL |
+| 3 | Executeer tegen database |
+| 4 | Resultaat in COHORT tabel |
+
+### COHORT Tabel
+
+| Kolom | Beschrijving |
+|-------|--------------|
+| cohort_definition_id | ID van definitie |
+| subject_id | Person ID |
+| cohort_start_date | Entry datum |
+| cohort_end_date | Exit datum |
+
+## Characterizations
+
+### Features
+
+| Type | Beschrijving |
+|------|--------------|
+| Demographics | Leeftijd, geslacht |
+| Conditions | Comorbiditeiten |
+| Drugs | Medicatiegebruik |
+| Measurements | Lab waarden |
+| Procedures | Verrichtingen |
+
+### Output
+- Prevalentie per feature
+- Vergelijking cohorten
+- Stratificatie
+
+## Best Practices
+
+| Practice | Uitleg |
+|----------|--------|
+| Clear entry | Eenduidige start |
+| Washout | Nieuwe events |
+| Adequate follow-up | Voldoende observatie |
+| Validate | Klinische review |
+
+## Kernbegrippen
+
+- **ATLAS**: OHDSI analytics platform
+- **Cohort**: Populatie met criteria
+- **Concept Set**: Groep van concepts
+- **Entry Event**: Cohort inclusie moment
+- **Characterization**: Cohort beschrijving
+    `,
+    sources: [
+      { name: "ATLAS", url: "https://github.com/OHDSI/Atlas" },
+      { name: "OHDSI Cohorts", url: "https://ohdsi.github.io/TheBookOfOhdsi/Cohorts.html" }
+    ]
+  },
+
+  "111.5": {
+    title: "Observationeel Onderzoek met OHDSI",
+    summary: "Population-level effect estimation en patient-level prediction",
+    content: `
+# Observationeel Onderzoek met OHDSI
+
+## Typen Onderzoek
+
+| Type | Vraag |
+|------|-------|
+| Characterization | Wie zijn de patiënten? |
+| Population-level estimation | Wat is het effect? |
+| Patient-level prediction | Wie krijgt uitkomst? |
+
+## Population-Level Estimation (PLE)
+
+### Vraagstelling
+Wat is het causale effect van behandeling A vs B op uitkomst Y?
+
+### Study Designs
+
+| Design | Beschrijving |
+|--------|--------------|
+| Cohort | Vergelijk behandelgroepen |
+| Self-controlled | Persoon als eigen controle |
+| Case-control | Vanuit uitkomst terugredeneren |
+
+### Cohort Study
+
+| Element | Definitie |
+|---------|-----------|
+| Target cohort | Behandeling A |
+| Comparator cohort | Behandeling B |
+| Outcome | Te meten uitkomst |
+| Time-at-risk | Risicoperiode |
+
+## Confounding
+
+### Probleem
+Observationele data is niet gerandomiseerd, waardoor bias kan ontstaan.
+
+### Oplossingen
+
+| Methode | Aanpak |
+|---------|--------|
+| Propensity Score | Kans op behandeling |
+| PS Matching | Vergelijkbare patiënten |
+| PS Stratification | Groepen maken |
+| PS Weighting | IPTW |
+
+### Propensity Score
+
+| Stap | Actie |
+|------|-------|
+| 1 | Definieer covariates |
+| 2 | Fit model (logistic) |
+| 3 | Bereken PS per persoon |
+| 4 | Match/Stratify/Weight |
+| 5 | Analyseer |
+
+## Patient-Level Prediction (PLP)
+
+### Vraagstelling
+Welke patiënten hebben verhoogd risico op uitkomst Y?
+
+### Prediction Framework
+
+| Element | Beschrijving |
+|---------|--------------|
+| Target population | Wie predicteren |
+| Outcome | Wat voorspellen |
+| Time-at-risk | Wanneer |
+| Features | Predictoren |
+| Model | Algoritme |
+
+### Algoritmes
+
+| Model | Type |
+|-------|------|
+| Logistic Regression | Lineair |
+| LASSO | Regularized |
+| Random Forest | Tree-based |
+| Gradient Boosting | Ensemble |
+| Neural Network | Deep learning |
+
+## OHDSI Study Packages
+
+### Wat is een Study Package?
+R package met complete studie definitie en analyse code.
+
+### Componenten
+
+| Component | Inhoud |
+|-----------|--------|
+| Cohorts | JSON definities |
+| Analysis | R scripts |
+| Settings | Parameters |
+| Results | Output structuur |
+
+### Reproducibility
+- Zelfde code op verschillende databases
+- Federated execution
+- Resultaten aggregatie
+
+## Network Studies
+
+### Federated Model
+
+| Stap | Locatie |
+|------|---------|
+| Study design | Centraal |
+| Data | Lokaal |
+| Analysis | Lokaal |
+| Results | Geaggregeerd |
+
+### Voordelen
+- Data verlaat instelling niet
+- Grotere populaties
+- Internationale vergelijking
+
+## Evidence Quality
+
+### Diagnostics
+
+| Diagnostic | Doel |
+|------------|------|
+| PS distribution | Balance check |
+| Covariate balance | Confounding control |
+| Negative controls | Bias detection |
+| Empirical calibration | Effect correction |
+
+### Negative Controls
+- Uitkomsten zonder verwacht effect
+- Detecteert systematische bias
+- Calibreert resultaten
+
+## Kernbegrippen
+
+- **PLE**: Population-Level Estimation
+- **PLP**: Patient-Level Prediction
+- **Propensity Score**: Kans op behandeling
+- **Confounding**: Verstorende variabelen
+- **Federated**: Gedistribueerde analyse
+    `,
+    sources: [
+      { name: "OHDSI Methods", url: "https://ohdsi.github.io/TheBookOfOhdsi/PopulationLevelEstimation.html" },
+      { name: "PatientLevelPrediction", url: "https://ohdsi.github.io/PatientLevelPrediction/" }
+    ]
+  },
+
+  "111.6": {
+    title: "Data Quality & ACHILLES",
+    summary: "Data kwaliteit bewaking met ACHILLES en Data Quality Dashboard",
+    content: `
+# Data Quality & ACHILLES
+
+## Data Quality in OMOP
+
+Kwaliteit van OMOP data is cruciaal voor betrouwbaar onderzoek.
+
+## ACHILLES
+
+### Wat is ACHILLES?
+Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems.
+
+### Functionaliteit
+
+| Feature | Beschrijving |
+|---------|--------------|
+| Characterization | Database beschrijving |
+| Quality checks | Automatische controles |
+| Visualization | Dashboard |
+| Benchmarking | Vergelijking |
+
+### ACHILLES Analyses
+
+| Categorie | Voorbeelden |
+|-----------|-------------|
+| Person | Leeftijdsverdeling, geslacht |
+| Observation Period | Duur, overlap |
+| Conditions | Prevalentie, trends |
+| Drugs | Gebruik, combinaties |
+| Measurements | Waardes, missing |
+
+## ACHILLES Heel
+
+### Quality Rules
+
+| Categorie | Type checks |
+|-----------|-------------|
+| Completeness | Missing values |
+| Conformance | Value formats |
+| Plausibility | Logische checks |
+
+### Rule Severities
+
+| Level | Betekenis |
+|-------|-----------|
+| ERROR | Kritiek probleem |
+| WARNING | Aandachtspunt |
+| NOTIFICATION | Informatief |
+
+## Data Quality Dashboard (DQD)
+
+### Structuur
+
+| Component | Functie |
+|-----------|---------|
+| Checks | Individuele controles |
+| Results | Pass/fail status |
+| Visualization | Overzicht |
+| Reports | Documentatie |
+
+### Check Categorieën
+
+| Categorie | Beschrijving |
+|-----------|--------------|
+| Completeness | Aanwezigheid data |
+| Conformance | Format correctheid |
+| Plausibility | Klinische logica |
+| Verification | Source vergelijking |
+
+### Voorbeelden Checks
+
+| Check | Type |
+|-------|------|
+| Person without observation period | Completeness |
+| Invalid concept ID | Conformance |
+| Age > 150 | Plausibility |
+| Counts match source | Verification |
+
+## Kwaliteitsdimensies
+
+### Intrinsic Quality
+
+| Dimensie | Vraag |
+|----------|-------|
+| Accuracy | Is het correct? |
+| Completeness | Is alles aanwezig? |
+| Consistency | Geen contradicties? |
+
+### Contextual Quality
+
+| Dimensie | Vraag |
+|----------|-------|
+| Timeliness | Actueel genoeg? |
+| Relevance | Geschikt voor doel? |
+| Fitness | Past bij use case? |
+
+## Verbetering Workflow
+
+### Iteratief Proces
+
+| Stap | Actie |
+|------|-------|
+| 1 | Run ACHILLES/DQD |
+| 2 | Analyseer bevindingen |
+| 3 | Prioriteer issues |
+| 4 | Fix in ETL |
+| 5 | Herhaal |
+
+### Documentatie
+
+| Item | Vastleggen |
+|------|------------|
+| Known issues | Bekende problemen |
+| Limitations | Beperkingen data |
+| Coverage | Welke data aanwezig |
+
+## Reporting
+
+### ACHILLES Web
+
+| View | Inhoud |
+|------|--------|
+| Dashboard | Overzicht metrics |
+| Data Density | Vulling over tijd |
+| Concept | Per domein |
+| Reports | Exporteerbaar |
+
+### DQD Report
+
+| Sectie | Inhoud |
+|--------|--------|
+| Summary | Overall score |
+| By category | Per check type |
+| Details | Individuele fails |
+| Trends | Over tijd |
+
+## Kernbegrippen
+
+- **ACHILLES**: Data characterization tool
+- **DQD**: Data Quality Dashboard
+- **Completeness**: Data aanwezigheid
+- **Plausibility**: Klinische logica
+- **Quality rule**: Geautomatiseerde check
+    `,
+    sources: [
+      { name: "ACHILLES", url: "https://github.com/OHDSI/Achilles" },
+      { name: "Data Quality Dashboard", url: "https://ohdsi.github.io/DataQualityDashboard/" }
+    ]
+  },
+
+  "111.7": {
+    title: "OMOP in de Nederlandse Zorg",
+    summary: "OMOP implementaties en projecten in Nederland",
+    content: `
+# OMOP in de Nederlandse Zorg
+
+## OMOP in Nederland
+
+Nederland kent groeiende adoptie van OMOP voor onderzoek en analytics.
+
+## Health-RI
+
+### Wat is Health-RI?
+Nationale infrastructuur voor gezondheidsonderzoek met data.
+
+### OMOP Rol
+
+| Aspect | Beschrijving |
+|--------|--------------|
+| Standaard | OMOP als data model |
+| Federatie | Gedistribueerde analyse |
+| Tools | OHDSI stack |
+
+### Doelen
+- Herbruikbare data
+- Multicenter onderzoek
+- Real-world evidence
+
+## Nederlandse OMOP Projecten
+
+### OHDSI Netherlands
+
+| Aspect | Details |
+|--------|---------|
+| Type | Nationaal chapter |
+| Focus | Kennisdeling |
+| Activiteiten | Meetings, training |
+
+### EHDEN
+
+| Aspect | Details |
+|--------|---------|
+| Naam | European Health Data Evidence Network |
+| Rol NL | Meerdere databronnen |
+| Doel | Europese federatie |
+
+### DARWIN EU
+
+| Aspect | Details |
+|--------|---------|
+| Doel | EMA regulatory evidence |
+| Data | OMOP databases |
+| Analyses | Drug safety |
+
+## Nederlandse Databronnen
+
+### Potentiële Bronnen
+
+| Bron | Type data |
+|------|-----------|
+| Ziekenhuis EPD | Klinische data |
+| Huisarts HIS | Eerstelijn |
+| NIVEL | Registraties |
+| Apotheek | Medicatie |
+| Vektis | Declaraties |
+
+### ETL Uitdagingen NL
+
+| Uitdaging | Specificiteit |
+|-----------|---------------|
+| ICD-10-NL | Nederlandse variant |
+| ATC | Medicatie codering |
+| CBV | Verrichtingen |
+| G-Standaard | Geneesmiddelen |
+
+## Vocabulaire Mapping NL
+
+### Nederlandse Codes
+
+| Code | OMOP Mapping |
+|------|--------------|
+| ICD-10-NL | ICD10CM/SNOMED |
+| ATC | RxNorm Extension |
+| NZa codes | SNOMED/Custom |
+| CBV | SNOMED/CPT4 |
+
+### G-Standaard naar RxNorm
+
+| Niveau | Mapping |
+|--------|---------|
+| GPK | RxNorm Ingredient |
+| PRK | RxNorm Clinical Drug |
+| HPK | RxNorm Branded Drug |
+
+## Implementatie Strategie
+
+### Stappen
+
+| Fase | Activiteiten |
+|------|--------------|
+| 1 | Bronanalyse (White Rabbit) |
+| 2 | Mapping ontwerp |
+| 3 | Vocabulaire mapping (Usagi) |
+| 4 | ETL ontwikkeling |
+| 5 | Data quality checks |
+| 6 | Validatie met clinici |
+
+### Governance
+
+| Aspect | Aanpak |
+|--------|--------|
+| Privacy | AVG compliance |
+| Consent | Toestemming model |
+| Security | NEN 7510 |
+| Access | Autorisatiemodel |
+
+## Use Cases NL
+
+### Klinisch Onderzoek
+
+| Type | Voorbeeld |
+|------|-----------|
+| Drug safety | Bijwerkingenonderzoek |
+| Effectiveness | Behandeleffecten |
+| Epidemiologie | Ziektelast |
+
+### Healthcare Analytics
+
+| Type | Voorbeeld |
+|------|-----------|
+| Quality | Kwaliteitsindicatoren |
+| Benchmarking | Ziekenhuisvergelijking |
+| Efficiency | Zorgpadanalyse |
+
+## Toekomst
+
+### Trends
+
+| Trend | Ontwikkeling |
+|-------|--------------|
+| Federatie | Health-RI netwerk |
+| Real-time | Streaming naar OMOP |
+| AI/ML | Predictive analytics |
+
+## Kernbegrippen
+
+- **Health-RI**: Nederlandse onderzoeksinfrastructuur
+- **EHDEN**: Europees OMOP netwerk
+- **G-Standaard**: Nederlandse medicatiedatabase
+- **Federatie**: Gedistribueerd onderzoek
+- **CBV**: Code Beheer Verrichtingen
+    `,
+    sources: [
+      { name: "Health-RI", url: "https://www.health-ri.nl" },
+      { name: "EHDEN", url: "https://www.ehden.eu" },
+      { name: "OHDSI Europe", url: "https://www.ohdsi-europe.org" }
+    ]
+  },
+
+  "111.8": {
+    title: "OMOP, FHIR & OpenEHR: Samen Gebruiken",
+    summary: "Integratie van OMOP met FHIR en OpenEHR voor complete data architectuur",
+    content: `
+# OMOP, FHIR & OpenEHR: Samen Gebruiken
+
+## Complementaire Standaarden
+
+| Standaard | Primaire rol |
+|-----------|--------------|
+| FHIR | Uitwisseling |
+| OpenEHR | Klinische opslag |
+| OMOP | Onderzoek & analytics |
+
+## Integratie Architectuur
+
+### Multi-Model Benadering
+
+| Laag | Standaard |
+|------|-----------|
+| Operationeel | OpenEHR/FHIR |
+| Uitwisseling | FHIR |
+| Analytics | OMOP |
+| Research | OMOP |
+
+### Data Flow
+
+| Stap | Flow |
+|------|------|
+| 1 | Data capture in EPD |
+| 2 | Opslag in OpenEHR |
+| 3 | Uitwisseling via FHIR |
+| 4 | ETL naar OMOP |
+| 5 | Onderzoek in ATLAS |
+
+## FHIR naar OMOP
+
+### Mapping Strategieën
+
+| FHIR Resource | OMOP Tabel |
+|---------------|------------|
+| Patient | PERSON |
+| Condition | CONDITION_OCCURRENCE |
+| MedicationRequest | DRUG_EXPOSURE |
+| Observation | MEASUREMENT/OBSERVATION |
+| Procedure | PROCEDURE_OCCURRENCE |
+| Encounter | VISIT_OCCURRENCE |
+
+### ETL Tools
+
+| Tool | Beschrijving |
+|------|--------------|
+| FHIR to OMOP | Open source ETL |
+| Custom scripts | Python/SQL |
+| Integration engines | Informatica, etc |
+
+### Mapping Challenges
+
+| Challenge | Oplossing |
+|-----------|-----------|
+| Granulariteit | Aggregatie regels |
+| Vocabularies | Concept mapping |
+| Temporality | Datum logica |
+| References | ID mapping |
+
+## OpenEHR naar OMOP
+
+### Mapping Aanpak
+
+| OpenEHR | OMOP |
+|---------|------|
+| OBSERVATION | MEASUREMENT |
+| EVALUATION | CONDITION_OCCURRENCE |
+| INSTRUCTION | DRUG_EXPOSURE |
+| ACTION | PROCEDURE_OCCURRENCE |
+
+### AQL naar SQL
+
+| Stap | Actie |
+|------|-------|
+| 1 | Definieer AQL query |
+| 2 | Extract naar tussenstap |
+| 3 | Transform naar OMOP |
+| 4 | Load in CDM |
+
+## Unified Architecture
+
+### Reference Architecture
+
+| Component | Technologie |
+|-----------|-------------|
+| Capture | EHR, devices |
+| Store | OpenEHR CDR |
+| Exchange | FHIR server |
+| Analytics | OMOP database |
+| Research | OHDSI tools |
+
+### Data Governance
+
+| Aspect | Aanpak |
+|--------|--------|
+| Master data | Eenmalige definitie |
+| Lineage | Herkomst tracking |
+| Quality | Controles per laag |
+| Security | Role-based access |
+
+## Use Cases
+
+### Clinical + Research
+
+| Fase | Standaard |
+|------|-----------|
+| Zorgverlening | OpenEHR |
+| Overdracht | FHIR |
+| Kwaliteitsregistratie | OMOP |
+| Onderzoek | OMOP |
+
+### Real-World Evidence
+
+| Stap | Flow |
+|------|------|
+| 1 | Behandeling in EPD |
+| 2 | Data naar OMOP |
+| 3 | Cohort definitie |
+| 4 | Effectiviteitsanalyse |
+| 5 | Feedback naar kliniek |
+
+## Implementation Patterns
+
+### Pattern 1: Sequential
+
+| Stap | Actie |
+|------|-------|
+| 1 | Implementeer OpenEHR |
+| 2 | Voeg FHIR facade toe |
+| 3 | ETL naar OMOP |
+
+### Pattern 2: Parallel
+
+| System | Doel |
+|--------|------|
+| OpenEHR | Primair |
+| FHIR | Integratie |
+| OMOP | Analytics (sync) |
+
+### Pattern 3: Hub
+
+| Component | Rol |
+|-----------|-----|
+| Data lake | Centrale opslag |
+| OpenEHR view | Klinisch |
+| FHIR view | API |
+| OMOP view | Research |
+
+## Best Practices
+
+| Practice | Uitleg |
+|----------|--------|
+| Single source | Een bron van waarheid |
+| Terminology alignment | Consistente codes |
+| Automated ETL | Continue sync |
+| Quality gates | Checks per overgang |
+
+## Kernbegrippen
+
+- **Multi-model**: Meerdere standaarden samen
+- **Data lineage**: Herkomst tracking
+- **Unified architecture**: Geïntegreerd ontwerp
+- **Real-world evidence**: Bewijs uit praktijkdata
+- **Data lake**: Centrale data opslag
+    `,
+    sources: [
+      { name: "OHDSI on FHIR", url: "https://build.fhir.org/ig/HL7/cdmh/" },
+      { name: "OpenEHR OMOP", url: "https://www.openehr.org" },
+      { name: "Health Data Architecture", url: "https://www.nictiz.nl" }
+    ]
   }
 }
 

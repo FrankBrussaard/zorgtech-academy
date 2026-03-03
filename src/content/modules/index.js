@@ -106,6 +106,20 @@ export const basicsTracks = [
       { id: "7.6", title: "Gehandicaptenzorg", duration: 10, tags: ["gehandicaptenzorg", "wlz", "pgb", "dagbesteding"] },
       { id: "7.7", title: "Publieke Gezondheidszorg & GGD", duration: 10, tags: ["ggd", "preventie", "wpg", "infectieziekten"] }
     ]
+  },
+  {
+    id: 8,
+    title: "Zorgdata Standaarden & Modellen",
+    description: "Vergelijking van datastandaarden: FHIR, OpenEHR, OMOP en terminologieën",
+    icon: "🗂️",
+    level: "basics",
+    modules: [
+      { id: "8.1", title: "Overzicht Zorgdata Standaarden", duration: 12, tags: ["standaarden", "fhir", "openehr", "omop", "vergelijking"] },
+      { id: "8.2", title: "Messaging vs Documents vs Models", duration: 10, tags: ["messaging", "documents", "datamodellen", "paradigma"] },
+      { id: "8.3", title: "Terminologieën: SNOMED, LOINC, ICD, ATC", duration: 12, tags: ["snomed", "loinc", "icd", "atc", "terminologie"] },
+      { id: "8.4", title: "Wanneer welke standaard?", duration: 10, tags: ["keuze", "use-cases", "strategie", "architectuur"] },
+      { id: "8.5", title: "Mapping en Transformatie tussen Standaarden", duration: 10, tags: ["mapping", "transformatie", "interoperabiliteit", "etl"] }
+    ]
   }
 ]
 
@@ -233,6 +247,57 @@ export const expertTracks = [
       { id: "108.2", title: "Medicatieoverdracht & LSP", duration: 15, tags: ["medicatie", "lsp", "allergie", "interactie", "expert"] },
       { id: "108.3", title: "MP9: FHIR Medicatiestandaard", duration: 15, tags: ["mp9", "fhir", "nictiz", "medicatieproces", "expert"] },
       { id: "108.4", title: "Ziekenhuisfarmacie & CPOE", duration: 12, tags: ["cpoe", "ziekenhuisapotheek", "voorschrijven", "bereidingen", "expert"] }
+    ]
+  },
+  {
+    id: 109,
+    title: "HL7 FHIR Deep Dive",
+    description: "Diepgaande technische kennis van FHIR: resources, profielen, API's en implementatie",
+    icon: "🔥",
+    level: "expert",
+    modules: [
+      { id: "109.1", title: "FHIR Architectuur & Ontwerpprincipes", duration: 18, tags: ["fhir", "architectuur", "rest", "resources", "expert"] },
+      { id: "109.2", title: "FHIR Resources & Datatypes", duration: 20, tags: ["fhir", "resources", "datatypes", "references", "expert"] },
+      { id: "109.3", title: "FHIR Profielen & Extensions", duration: 18, tags: ["fhir", "profielen", "extensions", "conformance", "expert"] },
+      { id: "109.4", title: "FHIR API's: REST, Search & Operations", duration: 20, tags: ["fhir", "api", "rest", "search", "operations", "expert"] },
+      { id: "109.5", title: "FHIR Servers & Implementatie", duration: 18, tags: ["fhir", "server", "hapi", "firely", "implementatie", "expert"] },
+      { id: "109.6", title: "Nederlandse FHIR Profielen & Nictiz", duration: 15, tags: ["fhir", "nictiz", "nl-core", "informatiestandaarden", "expert"] },
+      { id: "109.7", title: "SMART on FHIR & CDS Hooks", duration: 15, tags: ["fhir", "smart", "cds-hooks", "apps", "oauth", "expert"] },
+      { id: "109.8", title: "FHIR voor Bulk Data & Analytics", duration: 15, tags: ["fhir", "bulk-data", "analytics", "flat-fhir", "expert"] }
+    ]
+  },
+  {
+    id: 110,
+    title: "OpenEHR Deep Dive",
+    description: "Diepgaande kennis van OpenEHR: archetypes, templates, AQL en klinisch modelleren",
+    icon: "📐",
+    level: "expert",
+    modules: [
+      { id: "110.1", title: "OpenEHR Architectuur & Filosofie", duration: 18, tags: ["openehr", "architectuur", "two-level", "modeling", "expert"] },
+      { id: "110.2", title: "Reference Model & Datatypes", duration: 18, tags: ["openehr", "reference-model", "datatypes", "compositions", "expert"] },
+      { id: "110.3", title: "Archetypes: Ontwerp & Beheer", duration: 20, tags: ["openehr", "archetypes", "adl", "ckm", "expert"] },
+      { id: "110.4", title: "Templates & Operational Templates", duration: 18, tags: ["openehr", "templates", "opt", "formulieren", "expert"] },
+      { id: "110.5", title: "AQL: Archetype Query Language", duration: 18, tags: ["openehr", "aql", "queries", "dataextractie", "expert"] },
+      { id: "110.6", title: "OpenEHR Platforms & CDR's", duration: 15, tags: ["openehr", "ehrbase", "better", "cdr", "expert"] },
+      { id: "110.7", title: "Klinisch Modelleren met OpenEHR", duration: 18, tags: ["openehr", "modelleren", "clinici", "governance", "expert"] },
+      { id: "110.8", title: "OpenEHR & FHIR Integratie", duration: 15, tags: ["openehr", "fhir", "integratie", "mapping", "expert"] }
+    ]
+  },
+  {
+    id: 111,
+    title: "OMOP & OHDSI Deep Dive",
+    description: "Diepgaande kennis van OMOP CDM, OHDSI tools en observationeel onderzoek",
+    icon: "🔬",
+    level: "expert",
+    modules: [
+      { id: "111.1", title: "OMOP Common Data Model Fundamentals", duration: 18, tags: ["omop", "cdm", "ohdsi", "datamodel", "expert"] },
+      { id: "111.2", title: "OMOP Vocabularies & Concept Mapping", duration: 20, tags: ["omop", "vocabularies", "athena", "mapping", "expert"] },
+      { id: "111.3", title: "ETL naar OMOP: Strategie & Tools", duration: 22, tags: ["omop", "etl", "white-rabbit", "rabbit-in-a-hat", "expert"] },
+      { id: "111.4", title: "OHDSI Tools: ATLAS & Cohort Definitie", duration: 18, tags: ["omop", "atlas", "cohorts", "phenotyping", "expert"] },
+      { id: "111.5", title: "Observationeel Onderzoek met OHDSI", duration: 18, tags: ["omop", "ohdsi", "ple", "pss", "onderzoek", "expert"] },
+      { id: "111.6", title: "Data Quality & ACHILLES", duration: 15, tags: ["omop", "achilles", "datakwaliteit", "dqd", "expert"] },
+      { id: "111.7", title: "OMOP in de Nederlandse Zorg", duration: 15, tags: ["omop", "nederland", "health-ri", "projecten", "expert"] },
+      { id: "111.8", title: "OMOP, FHIR & OpenEHR: Samen Gebruiken", duration: 15, tags: ["omop", "fhir", "openehr", "integratie", "expert"] }
     ]
   }
 ]
